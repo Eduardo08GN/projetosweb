@@ -35,6 +35,7 @@
 ### Instagram
 | Campo | Valor |
 |-------|-------|
+| URL | instagram.com/rodgerkoller |
 | Handle | @rodgerkoller |
 | Seguidores | 15.900 |
 | Posts | 582 |
@@ -49,6 +50,7 @@
 | Campo | Valor |
 |-------|-------|
 | Canal | Rodger Koller - Fly to Fluency ® |
+| URL | youtube.com/@RodgerKoller |
 | Handle | @RodgerKoller |
 | URL antiga | youtube.com/CrazyKoller |
 | Inscritos | 32.200 |

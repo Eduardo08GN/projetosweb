@@ -32,6 +32,7 @@ Rodger Koller é um professor de inglês com credenciais de elite (Cambridge CPE
 ## 1. AUDITORIA DE CANAIS
 
 ### 1.1 Instagram (@rodgerkoller) — ATIVO
+> URL: instagram.com/rodgerkoller
 
 | Métrica | Valor |
 |---------|-------|
@@ -55,6 +56,7 @@ Rodger Koller é um professor de inglês com credenciais de elite (Cambridge CPE
 ---
 
 ### 1.2 YouTube (@RodgerKoller) — ATIVO (parcialmente)
+> URL: youtube.com/@RodgerKoller | URL antiga: youtube.com/CrazyKoller
 
 | Métrica | Valor |
 |---------|-------|
@@ -91,6 +93,8 @@ Rodger Koller é um professor de inglês com credenciais de elite (Cambridge CPE
 ---
 
 ### 1.3 Hotmart — PRODUTO INDISPONÍVEL
+> Perfil: hotmart.com/pt-br/marketplace/especialista/rodger-koller/YAHPE5SLJZ
+> Produto: hotmart.com/en/marketplace/products/curso-de-ingles-definitivo-metodo-koller/M29908265M
 
 | Métrica | Valor |
 |---------|-------|
@@ -121,6 +125,7 @@ Rodger Koller é um professor de inglês com credenciais de elite (Cambridge CPE
 ---
 
 ### 1.4 Spotify (podcast) — MORTO
+> URL: open.spotify.com/show/74VTHY4ZL8mmH1uqhTUg1b
 
 | Métrica | Valor |
 |---------|-------|
@@ -151,6 +156,7 @@ Rodger Koller é um professor de inglês com credenciais de elite (Cambridge CPE
 ---
 
 ### 1.5 LinkedIn — ABANDONADO
+> URL: linkedin.com/in/rodger-koller-189260b4/
 
 | Métrica | Valor |
 |---------|-------|
