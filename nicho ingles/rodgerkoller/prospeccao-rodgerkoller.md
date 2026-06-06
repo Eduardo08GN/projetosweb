@@ -23,6 +23,10 @@
 | **Alunos declarados** | +34.000 |
 | **Email comercial** | koller.institute@gmail.com |
 | **Email aulas particulares** | onlineteacherkoller@gmail.com |
+| **Email financeiro** | rodgerkoller2018@gmail.com |
+| **Facebook** | facebook.com/RodgerKoller |
+| **Twitter** | @RodgerKoller |
+| **Telegram** | Grupo de estudos gratuito (para inscritos do YT — enviar print de inscrição) |
 
 ---
 
@@ -87,12 +91,38 @@
 ### Hotmart (produto pago)
 | Campo | Valor |
 |-------|-------|
-| URL | hotmart.com/pt-br/marketplace/especialista/rodger-koller/YAHPE5SLJZ |
+| URL perfil | hotmart.com/pt-br/marketplace/especialista/rodger-koller/YAHPE5SLJZ |
+| URL produto | hotmart.com/en/marketplace/products/curso-de-ingles-definitivo-metodo-koller/M29908265M |
 | Tempo na plataforma | 6 anos (~2020) |
-| Produto | **CURSO DE INGLÊS DEFINITIVO** |
+| Produto | **CURSO DE INGLÊS DEFINITIVO [MÉTODO KOLLER]** |
+| Status | **PRODUTO INDISPONÍVEL** — só exibe formulário de lista de espera ("Product unavailable") |
+| Badge | Top Rated |
+| Idioma | English |
 | Avaliação | 4.8 estrelas (13 reviews) |
-| Redes linkadas | Facebook, YouTube, Instagram, Twitter |
-| Bio Hotmart | "Acredito no método da imersão... Meu intuito com meus cursos é transformar meus alunos em falantes ativos da língua inglesa através do MÉTODO KOLLER" |
+| Redes linkadas | Facebook (RodgerKoller), YouTube (CrazyKoller), Instagram (@rodgerkoller), Twitter (@RodgerKoller) |
+| Bio Hotmart | "Acredito no método da imersão. Quanto mais você tiver contato com inglês, melhor você saberá inglês. Meu intuito com meus cursos é transformar meus alunos em falantes ativos da língua inglesa através do MÉTODO KOLLER. Seguindo este método com disciplina, falantes de qualquer língua poderão alcançar um nível muito alto em sua fala, escrita, compreensão auditiva e leitura, assim como conseguirão falar inglês com qualquer sotaque nativo que escolher." |
+| Descrição do curso | "O principal objetivo deste curso é transformá-lo em um estudante independente e ao mesmo tempo te ensinar inglês com conteúdo de qualidade." |
+| Estrutura | **4 cursos em 1 pacote** (ver módulos abaixo) |
+| Diferencial | Acompanhamento pessoal do professor por 1 ANO após lançamento (correção, plano semanal, feedback) |
+
+#### Módulos do curso (Hotmart)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 01 | Introdutório | Explicando como usar o curso |
+| 02 | Preparatório | Preparatório para o Básico 3.0 |
+| 03 | Métodos para ser autodidata | Como ser um estudante independente em qualquer nível (videoaulas + ebook) |
+| 04 | Básico 3.0 | Módulo preparatório para o próximo (videoaulas, ebooks, prática de pronúncia, prova final) — **BRINDE** |
+| 05 | Todos os tempos verbais | Pré-intermediário, intermediário e avançado (videoaulas, ebooks, pronúncia, exercícios) |
+| 06 | Pronúncia perfeita | 1.400 frases para prática, técnicas de pronúncia, acompanhamento semanal, feedback |
+
+#### Reviews visíveis (Hotmart)
+| Data | Nota | Aluno | Comentário |
+|------|------|-------|-----------|
+| 25/06/2022 | 5★ | Cleber | — |
+| 14/06/2021 | 5★ | Gilmar | "Com certeza é o melhor e mais completo curso online para aprender inglês. Pela qualidade do curso achei o preço excelente, outro diferencial é o contato semanal que o professor tem com os alunos..." |
+| 20/03/2021 | 5★ | Murilo | — |
+| 19/03/2021 | 5★ | João | "O maior diferencial que encontrei no curso do Rodger é o acompanhamento que ele faz com todos os alunos. Cara isso é DEMAIS!!! O professor manda msg para vc cobrando os exercícios..." |
+| 17/03/2021 | 5★ | Tânia | "Amei o método agora sei que posso aprender inglês" |
 
 ### YouTube Courses (gratuitos)
 | Curso | Lições |
@@ -111,7 +141,19 @@
 | Avaliação | 5 estrelas (2 reviews) |
 | Categorias | Documentário, Histórias pessoais |
 | Último episódio | 21/mai/2019 — **INATIVO HÁ 7 ANOS** |
-| Sobre | "Interact with subscribers, improve listening skills, my voice is extremely beautiful" |
+| Sobre | "The main objective of this podcast is to interact with my subscribers, answer their questions, I also want to help them improve their listening skills in English and of course I just talk to them without holding myself back. My voice is extremely beautiful." |
+| Plataformas | Spotify, Anchor, Pocketcasts, Radio Public, Breaker, Soundcloud, Podbean, Apple Podcasts, Podcast Addict, Google Podcasts |
+| Série especial | **The Thorks** — conteúdo de ficção/audiobook com vídeo no YouTube |
+
+#### Episódios (Spotify)
+| Episódio | Data | Duração |
+|----------|------|---------|
+| I NEED TO TALK ABOUT A SERIOUS PROBLEM. IT NEEDS TO STOP NOW. | 21/mai/2019 | 12:17 |
+| Game of Thrones S8E6 — Inside the Episode (HBO) IT'S OVER. | 20/mai/2019 | 8:32 |
+| Game of Thrones S8E5 — Inside the Episode (HBO) | 13/mai/2019 | 5:19 |
+| IS IT POSSIBLE TO LEARN A LANGUAGE IN 30 DAYS? WHAT IS FLUENCY? | 10/mai/2019 | 39:46 |
+| MY MULTIPLE PERSONALITIES. IS IT COMMON? | 08/mai/2019 | 6:58 |
+| The Thorks / Episode 6 | 08/mai/2019 | 10:39 |
 
 ### Patreon
 | Campo | Valor |
@@ -160,24 +202,28 @@
 | # | Problema | Impacto |
 |---|---------|---------|
 | 1 | **Systeme.io bloqueado** — todo o funil de captação morto | Zero leads de todos os 412 vídeos do YouTube. Cada vídeo tem link pro Systeme.io que retorna erro |
-| 2 | **Canal "morrendo" (palavras dele)** — 32.5K inscritos mas só 70 ativos (0,21%) | Declarado pelo próprio Rodger num post de 7 anos atrás. Situação pode ter piorado |
-| 3 | **LinkedIn abandonado** — 67 conexões, 0 publicações recentes | Audiência corporativa (professores, tradutores) completamente perdida |
-| 4 | **Sem site/landing page** — dependia 100% do Systeme.io | Sem presença própria na web. Zero SEO. Zero Google Meu Negócio |
-| 5 | **Shorts com baixíssimas views** — 200-600 views por short | O algoritmo não está entregando o conteúdo |
-| 6 | **Posts do YouTube parados há 7 anos** — último post comunitário é de 2019 | Feature de comunidade completamente abandonada |
+| 2 | **Hotmart INDISPONÍVEL** — produto pago fora do ar | "Product unavailable" — mesmo quem chega na página não consegue comprar. Só lista de espera |
+| 3 | **DOIS funis mortos simultâneos** — Systeme (leads) + Hotmart (vendas) | Literalmente não existe caminho funcional do conteúdo até o pagamento |
+| 4 | **Canal "morrendo" (palavras dele)** — 32.5K inscritos mas só 70 ativos (0,21%) | Declarado pelo próprio Rodger num post de 7 anos atrás. Situação pode ter piorado |
+| 5 | **LinkedIn abandonado** — 67 conexões, 0 publicações recentes | Audiência corporativa (professores, tradutores) completamente perdida |
+| 6 | **Sem site/landing page** — dependia 100% do Systeme.io | Sem presença própria na web. Zero SEO. Zero Google Meu Negócio |
+| 7 | **Shorts com baixíssimas views** — 200-600 views por short | O algoritmo não está entregando o conteúdo |
+| 8 | **Posts do YouTube parados há 7 anos** — último post comunitário é de 2019 | Feature de comunidade completamente abandonada |
 
 ### MÉDIOS
 
 | # | Problema | Impacto |
 |---|---------|---------|
-| 7 | **Marca fragmentada** — "Fly to Fluency" no YT, "Koller Institute" no email, "Crazy Koller" no Patreon/Spotify, "@rodgerkoller" no IG | 5 nomes diferentes pra mesma pessoa |
-| 8 | **Produto pago escondido** — "Curso de Inglês Definitivo" na Hotmart (4.8★, 13 reviews) mas bio do IG diz "CURSO GRATUITO" | Não está direcionando tráfego pro produto pago |
-| 9 | **Podcast morto** — Spotify inativo desde mai/2019 (7 anos) | Canal de áudio abandonado com audiência perdida |
-| 10 | **Patreon provavelmente morto** — mencionado em 2019, URL usa nome antigo "CrazyKoller" | Receita recorrente perdida |
-| 11 | **2 emails diferentes** — koller.institute@gmail.com (IG) + onlineteacherkoller@gmail.com (Spotify) | Comunicação descentralizada |
-| 12 | **67 lições gratuitas no YouTube** sem funil pra pago | Dá aula de graça pra 32K inscritos sem converter pro "Definitivo" da Hotmart |
-| 13 | **Descrição do canal genérica** — só "Intercâmbio na Irlanda" | Não descreve o que o canal oferece, não tem keywords |
-| 14 | **660K views em 10 anos** — média de 1.600 views/vídeo | Conteúdo de qualidade mas sem estratégia de distribuição |
+| 9 | **Marca fragmentada** — "Fly to Fluency" no YT, "Koller Institute" no email, "Crazy Koller" no Patreon/Spotify, "@rodgerkoller" no IG | 5 nomes diferentes pra mesma pessoa |
+| 10 | **Produto pago escondido** — "Curso de Inglês Definitivo" na Hotmart (4.8★, 13 reviews) mas bio do IG diz "CURSO GRATUITO" | Não está direcionando tráfego pro produto pago. Mesmo que quisesse, não consegue — está indisponível |
+| 11 | **Podcast morto** — Spotify inativo desde mai/2019 (7 anos), 10 plataformas listadas | Canal de áudio abandonado com audiência perdida em 10 plataformas |
+| 12 | **Patreon provavelmente morto** — mencionado em 2019, URL usa nome antigo "CrazyKoller" | Receita recorrente perdida. Grupo exclusivo do WhatsApp provavelmente inexistente |
+| 13 | **3 emails diferentes** — koller.institute@gmail.com (IG) + onlineteacherkoller@gmail.com (Spotify/YT) + rodgerkoller2018@gmail.com (financeiro) | Comunicação totalmente descentralizada |
+| 14 | **67 lições gratuitas no YouTube** sem funil pra pago | Dá aula de graça pra 32K inscritos sem converter pro "Definitivo" da Hotmart (que nem está à venda) |
+| 15 | **Telegram abandonado** — grupo de estudos gratuito mencionado em 2019 | Mais um canal morto que prometia comunidade |
+| 16 | **Último review do Hotmart: jun/2022** — 4 anos sem nova avaliação | Produto provavelmente sem vendas há anos |
+| 17 | **Descrição do canal genérica** — só "Intercâmbio na Irlanda" | Não descreve o que o canal oferece, não tem keywords |
+| 18 | **660K views em 10 anos** — média de 1.600 views/vídeo | Conteúdo de qualidade mas sem estratégia de distribuição |
 
 ---
 
@@ -211,24 +257,46 @@
 
 ### Gancho de primeiro contato
 
-O Rodger tem um problema **urgente e visível**: seu funil inteiro está morto (Systeme.io bloqueado). Isso significa que todo o esforço de criação de conteúdo dos últimos anos não está convertendo em nada.
+O Rodger tem **DOIS problemas urgentes e visíveis**: seu funil de captação (Systeme.io bloqueado) E seu funil de vendas (Hotmart indisponível) estão mortos simultaneamente. Ele produz conteúdo pra 32K inscritos sem nenhum caminho funcional até o pagamento.
 
-**Mensagem sugerida:**
+**Mensagem sugerida (v2 — com descoberta do Hotmart):**
 
-> "Rodger, vi que o link do PDF gratuito nos seus vídeos do YouTube
+> "Rodger, fiz uma análise completa da tua presença online e encontrei
+> dois problemas sérios:
+>
+> 1. O link do PDF gratuito nos seus vídeos do YouTube
 > (rodgerkoller2018.systeme.io) está retornando 'Account has been blocked'.
-> Isso significa que todos os seus 412 vídeos estão com o CTA quebrado.
-> Trabalhamos com automação de marketing pra professores de inglês
-> e podemos resolver isso + montar um funil que funciona.
-> Posso te mostrar como?"
+> Os 412 vídeos estão com o CTA quebrado.
+>
+> 2. O 'Curso de Inglês Definitivo' na Hotmart aparece como
+> 'Product unavailable' — ninguém consegue comprar.
+>
+> Ou seja: nem o lead magnet gratuito nem o produto pago estão funcionando.
+> Seus 32K inscritos não têm pra onde ir.
+>
+> Trabalhamos com automação de marketing pra professores de inglês.
+> Posso te mostrar como resolver isso em 7 dias?"
 
-### Dados que ainda precisamos
+### Dados que já temos vs. dados que faltam
 
+#### Já sabemos
+| Dado | Valor |
+|------|-------|
+| Produto pago | CURSO DE INGLÊS DEFINITIVO [MÉTODO KOLLER] — 6 módulos, 4.8★ |
+| Plataforma de vendas | Hotmart (mas produto indisponível) |
+| Método | MÉTODO KOLLER — imersão, 4 passos, foco em falantes ativos |
+| Diferenciais | CPE+CELTA Cambridge, 34K alunos, trilíngue, 1 ano de acompanhamento pessoal |
+| 3 emails | koller.institute / onlineteacherkoller / rodgerkoller2018 @gmail.com |
+| Redes | IG (15.9K), YT (32.2K), LinkedIn (67), Facebook, Twitter, Threads |
+| Redes mortas | Spotify podcast (2019), Patreon (2019), Telegram (2019), LinkedIn (0 posts) |
+
+#### Ainda precisamos
 | Dado | Por que | Como pedir |
 |------|---------|-----------|
-| Produto pago (nome, preço, formato) | Preencher `empresa.md` | "Qual curso pago você oferece hoje?" |
-| Plataforma do curso (Hotmart? Kiwify?) | Integrações de pagamento | "Onde seus alunos acessam o curso?" |
+| Preço do curso | Calibrar proposta comercial | "Qual era o preço do Definitivo na Hotmart?" |
+| Status do Hotmart | Entender se saiu de propósito ou esqueceu | "Você tirou o curso do ar ou a Hotmart bloqueou?" |
 | WhatsApp Business | Automação de WhatsApp | "Tem número dedicado pro negócio?" |
 | Orçamento atual de Ads | Calibrar `/anuncio-google` | "Já anuncia? Quanto investe?" |
 | Foco/meta atual | Preencher `estrategia.md` | "O que mais importa pra você agora?" |
 | Assets visuais (avatar, logo em alta) | Design guide | "Pode mandar o avatar em PNG?" |
+| Grupo do Telegram | Saber se ainda existe | "O grupo de estudos no Telegram ainda está ativo?" |
