@@ -2,7 +2,7 @@
 
 > **Data da pesquisa:** 06/06/2026
 > **Status:** Potencial cliente MazyOS
-> **Fontes:** Instagram, YouTube, LinkedIn, Systeme.io
+> **Fontes:** Instagram, YouTube, LinkedIn, Systeme.io, Hotmart, Spotify, Patreon
 
 ---
 
@@ -15,12 +15,14 @@
 | **Marca anterior** | Crazy Koller (renomeado ~2019) |
 | **Profissao** | Professor de inglês, tradutor, intérprete, guia turístico, legendador |
 | **Certificacao** | CPE + CELTA — University of Cambridge |
-| **Formacao** | Faculdades Metropolitanas Unidas (FMU) — São Paulo |
+| **Formacao** | Letras (graduação) + Pós-graduação em Tradução — FMU (Faculdades Metropolitanas Unidas) |
 | **Experiencia** | Speak Up Idiomas (2012–presente, 14+ anos) |
 | **Localizacao** | São Paulo, SP, Brasil |
 | **Viveu no exterior** | Irlanda (intercâmbio em Dublin) |
+| **Metodo** | **MÉTODO KOLLER** — baseado em imersão. "Quanto mais contato com inglês, melhor você saberá inglês." Transforma alunos em "falantes ativos" |
 | **Alunos declarados** | +34.000 |
 | **Email comercial** | koller.institute@gmail.com |
+| **Email aulas particulares** | onlineteacherkoller@gmail.com |
 
 ---
 
@@ -82,6 +84,42 @@
 | Publicações recentes | NENHUMA |
 | Titulo | Professor de inglês, tradutor, intérprete, guia turístico no Reino Unido e legendador |
 
+### Hotmart (produto pago)
+| Campo | Valor |
+|-------|-------|
+| URL | hotmart.com/pt-br/marketplace/especialista/rodger-koller/YAHPE5SLJZ |
+| Tempo na plataforma | 6 anos (~2020) |
+| Produto | **CURSO DE INGLÊS DEFINITIVO** |
+| Avaliação | 4.8 estrelas (13 reviews) |
+| Redes linkadas | Facebook, YouTube, Instagram, Twitter |
+| Bio Hotmart | "Acredito no método da imersão... Meu intuito com meus cursos é transformar meus alunos em falantes ativos da língua inglesa através do MÉTODO KOLLER" |
+
+### YouTube Courses (gratuitos)
+| Curso | Lições |
+|-------|--------|
+| CURSO GRATUITO / FREE ENGLISH COURSE / CORSO GRATUITO | 14 |
+| PRESENT PERFECT | 5 |
+| BASIC COURSE 1.0 (com material gratuito para inscritos) | 29 |
+| INTERMEDIATE COURSE 1.0 [WITH PDF FOR SUBSCRIBERS] | 19 |
+| **Total** | **67 lições gratuitas** |
+
+### Spotify (podcast)
+| Campo | Valor |
+|-------|-------|
+| URL | open.spotify.com/show/74VTHY4ZL8mmH1uqhTUg1b |
+| Nome | RODGER KOLLER |
+| Avaliação | 5 estrelas (2 reviews) |
+| Categorias | Documentário, Histórias pessoais |
+| Último episódio | 21/mai/2019 — **INATIVO HÁ 7 ANOS** |
+| Sobre | "Interact with subscribers, improve listening skills, my voice is extremely beautiful" |
+
+### Patreon
+| Campo | Valor |
+|-------|-------|
+| URL | patreon.com/CrazyKoller |
+| Status | Mencionado nos episódios do podcast (2019). Status atual desconhecido |
+| Oferta | "Become a patron and I'll add you to my exclusive WhatsApp group" |
+
 ### Systeme.io (funil)
 | Campo | Valor |
 |-------|-------|
@@ -132,10 +170,14 @@
 
 | # | Problema | Impacto |
 |---|---------|---------|
-| 7 | **Marca fragmentada** — "Fly to Fluency" no YT, "Koller Institute" no email, "@rodgerkoller" no IG | Não consolida identidade |
-| 8 | **Sem produto pago visível** — bio do IG diz "CURSO GRATUITO" | Se tem produto pago, não está sendo oferecido de forma clara |
-| 9 | **Descrição do canal genérica** — só "Intercâmbio na Irlanda" | Não descreve o que o canal oferece, não tem keywords |
-| 10 | **660K views em 10 anos** — média de 1.600 views/vídeo | Conteúdo de qualidade mas sem estratégia de distribuição |
+| 7 | **Marca fragmentada** — "Fly to Fluency" no YT, "Koller Institute" no email, "Crazy Koller" no Patreon/Spotify, "@rodgerkoller" no IG | 5 nomes diferentes pra mesma pessoa |
+| 8 | **Produto pago escondido** — "Curso de Inglês Definitivo" na Hotmart (4.8★, 13 reviews) mas bio do IG diz "CURSO GRATUITO" | Não está direcionando tráfego pro produto pago |
+| 9 | **Podcast morto** — Spotify inativo desde mai/2019 (7 anos) | Canal de áudio abandonado com audiência perdida |
+| 10 | **Patreon provavelmente morto** — mencionado em 2019, URL usa nome antigo "CrazyKoller" | Receita recorrente perdida |
+| 11 | **2 emails diferentes** — koller.institute@gmail.com (IG) + onlineteacherkoller@gmail.com (Spotify) | Comunicação descentralizada |
+| 12 | **67 lições gratuitas no YouTube** sem funil pra pago | Dá aula de graça pra 32K inscritos sem converter pro "Definitivo" da Hotmart |
+| 13 | **Descrição do canal genérica** — só "Intercâmbio na Irlanda" | Não descreve o que o canal oferece, não tem keywords |
+| 14 | **660K views em 10 anos** — média de 1.600 views/vídeo | Conteúdo de qualidade mas sem estratégia de distribuição |
 
 ---
 
