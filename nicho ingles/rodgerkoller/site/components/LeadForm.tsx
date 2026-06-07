@@ -42,20 +42,23 @@ export function LeadForm({
     try {
       const params = new URLSearchParams(window.location.search)
 
-      const res = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...data,
-          bloco,
-          fonte: bloco === 'exit-intent' ? 'exit-intent' : 'formulario',
-          utmSource: params.get('utm_source'),
-          utmMedium: params.get('utm_medium'),
-          utmCampaign: params.get('utm_campaign'),
-        }),
-      })
-
-      if (!res.ok) throw new Error()
+      // Tenta enviar pro backend (só funciona com API route no Coolify)
+      try {
+        await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...data,
+            bloco,
+            fonte: bloco === 'exit-intent' ? 'exit-intent' : 'formulario',
+            utmSource: params.get('utm_source'),
+            utmMedium: params.get('utm_medium'),
+            utmCampaign: params.get('utm_campaign'),
+          }),
+        })
+      } catch {
+        // Modo estático (Netlify) — sem backend, segue direto pro WhatsApp
+      }
 
       localStorage.setItem('leadCaptured', 'true')
 

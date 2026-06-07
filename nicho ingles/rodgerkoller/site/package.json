@@ -4,27 +4,29 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
+    "build:full": "prisma generate && next build",
     "start": "next start",
     "db:push": "prisma db push",
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@prisma/client": "^6.2.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@prisma/client": "^6.2.0",
     "react-hook-form": "^7.54.0",
-    "zod": "^3.24.0",
-    "@hookform/resolvers": "^3.9.0"
+    "zod": "^3.24.0"
   },
   "devDependencies": {
-    "typescript": "^5.7.0",
+    "@netlify/plugin-nextjs": "^5.15.11",
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "prisma": "^6.2.0",
     "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0",
-    "prisma": "^6.2.0"
+    "typescript": "^5.7.0"
   }
 }
