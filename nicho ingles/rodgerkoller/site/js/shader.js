@@ -76,6 +76,9 @@
     '  vignette = smoothstep(0.0, 0.7, vignette);',
     '  col *= 0.7 + 0.3 * vignette;',
     '',
+    '  float bottomFade = smoothstep(0.0, 0.4, uv.y);',
+    '  col = mix(c4, col, bottomFade);',
+    '',
     '  gl_FragColor = vec4(col, 1.0);',
     '}'
   ].join('\n');
