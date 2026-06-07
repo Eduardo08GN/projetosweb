@@ -288,6 +288,40 @@ Este projeto operou entre os **Niveis 2 a 6** do Protocolo:
 
 ---
 
+## Erros Encontrados Pos-Deploy e Correcoes
+
+Apos o primeiro deploy, revisao visual identificou 3 erros que violavam regras do proprio protocolo. Documentados aqui como diretriz para futuras producoes.
+
+### Erro 1: Badge "Cambridge CPE + CELTA" com estilo neon (ANTI-SLOP)
+
+**O que aconteceu:** O hero badge usava `background: rgba(37, 99, 235, 0.1)` + `border: 1px solid rgba(37, 99, 235, 0.2)` + `color: var(--cambridge-light)` — exatamente o padrao de "caixa delineadora neon" proibido pela Regra Anti-Slop item 4.
+
+**Por que aconteceu:** O Executor seguiu um padrao muito comum em templates AI-generated onde badges usam a cor semantica em todas as camadas (fundo, borda, texto). Esse padrao e a assinatura visual do AI Slop — qualquer designer identifica imediatamente.
+
+**Correcao:** Badge agora usa `background: var(--bg-elevated)` + `border: var(--border)` + `color: var(--text-primary)`. Cor semantica fica apenas no icone SVG (`color: var(--accent)`), nao no container.
+
+**Diretriz adicionada ao protocolo:** O padrao `rgba(COR, 0.1)` + `rgba(COR, 0.2)` + `COR` esta agora explicitamente descrito na Regra Anti-Slop como assinatura de AI Slop a ser detectada e corrigida.
+
+### Erro 2: Avatares de depoimentos sem foto (UNSPLASH OBRIGATORIO)
+
+**O que aconteceu:** Os 4 avatares de depoimentos usavam apenas a inicial do nome em um circulo com gradiente colorido (`background: linear-gradient(135deg, var(--cambridge), var(--accent))`). Nenhuma imagem real.
+
+**Por que aconteceu:** O protocolo mencionava Unsplash como "fonte oficial" para assets secundarios, mas nao deixava explicito que avatares de depoimentos exigem foto real. O Executor interpretou que circulos com iniciais eram aceitaveis.
+
+**Correcao:** Todos os 4 avatares agora usam fotos do Unsplash CDN (`images.unsplash.com`) com `?w=80&h=80&fit=crop&crop=face` para curadoria facial precisa.
+
+**Diretriz adicionada ao protocolo:** Secao "Regra de Zero Placeholders Visuais" criada — nenhum elemento visual pode ir pro deploy sem imagem. Circulos com iniciais sao explicitamente listados como violacao.
+
+### Erro 3: Unsplash nao utilizado como suplemento obrigatorio
+
+**O que aconteceu:** O protocolo listava Unsplash como "fonte oficial para suprir demanda de imagens complementares", mas na pratica a implementacao nao usou o CDN em nenhum lugar. Avatares, backgrounds complementares e fotos de apoio que poderiam ter sido supridos pelo Unsplash ficaram sem imagem.
+
+**Correcao:** Unsplash CDN agora integrado nos avatares de depoimentos. Formato padrao: `https://images.unsplash.com/photo-ID?w=LARGURA&h=ALTURA&fit=crop&crop=face`.
+
+**Diretriz adicionada ao protocolo:** Unsplash passou de "recomendado" para "OBRIGATORIO" na secao Fonte de Assets. Regra: "Se nao tem foto do cliente, tem Unsplash. Se nao tem Unsplash, tem defeito."
+
+---
+
 ## O que Falta (Pendencias Pos-Deploy)
 
 | Item | Status | Impacto |
@@ -325,6 +359,12 @@ MCP: 21st Dev (Component Inspiration)
   → Footer 7 (minimal, socials, sections)
       |
       v
+CDN: Unsplash (Assets Secundarios Obrigatorios)
+  → Avatares de depoimentos (4 fotos faciais com crop preciso)
+  → Formato: images.unsplash.com/photo-ID?w=80&h=80&fit=crop&crop=face
+  → Regra: se nao tem foto do cliente, tem Unsplash. Sem excecao.
+      |
+      v
 SISTEMA DE DOIS AGENTES
   Architect (5 specs .md salvos como artefatos)
     → Executor (5 gomos de implementacao com aprovacao entre cada)
@@ -343,6 +383,11 @@ CRIVO $10K CHECKLIST (8 criterios)
       v
 FILTRO ANTI-SLOP (7 itens proibidos)
   Emojis ✓ Hifens ✓ Jargao ✓ Neon boxes ✓ Inter/Roboto ✓ Icones ✓ AOS ✓
+  (Neon box detectado pos-deploy no badge hero → corrigido)
+
+FILTRO ZERO PLACEHOLDERS
+  Nenhum elemento visual sem imagem ✓
+  (Avatares com iniciais detectados pos-deploy → corrigidos com Unsplash CDN)
       |
       v
 FILTRO MAZYOS

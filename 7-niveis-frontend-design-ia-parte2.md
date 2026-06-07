@@ -246,9 +246,20 @@ Antes de qualquer decisao de design ou implementacao, o Architect e o Executor d
 ## Fonte de Assets
 
 1. **Assets primarios:** Fotos, logos e materiais fornecidos pelo cliente.
-2. **Assets secundarios:** Unsplash — fonte oficial para suprir demanda de imagens complementares (backgrounds, texturas, fotos de apoio). Usar imagens com curadoria apertada que combinem com a direcao de arte do projeto. Nunca usar as "Unsplash defaults que todo mundo ja viu" — a curadoria deve fazer as imagens parecerem encomendadas.
+2. **Assets secundarios (OBRIGATORIO):** Unsplash via CDN (`images.unsplash.com`) — fonte oficial e obrigatoria para suprir QUALQUER demanda de imagem que o cliente nao forneceu. Isso inclui: avatares de depoimentos, fotos de apoio, backgrounds, texturas, hero images suplementares. **Nunca deixar um elemento visual sem imagem.** Circulos com iniciais, placeholders coloridos ou areas vazias onde deveria haver foto sao AI Slop. Usar imagens com curadoria apertada que combinem com a direcao de arte do projeto. Nunca usar as "Unsplash defaults que todo mundo ja viu" — a curadoria deve fazer as imagens parecerem encomendadas. Formato do CDN: `https://images.unsplash.com/photo-ID?w=LARGURA&h=ALTURA&fit=crop&crop=face`.
 3. **Icones:** Lucide React como piso minimo. Nunca usar icones inferiores, emoji como icone, ou icon packs genericos.
 4. **Flags e assets complementares:** SVGs de alta qualidade ou extraidos de fontes confiáveis.
+
+### Regra de Zero Placeholders Visuais
+
+Nenhum elemento que deveria conter uma imagem pode ir pro deploy sem imagem. Se o cliente nao forneceu, Unsplash supre. Exemplos de violacoes:
+
+- Avatares de depoimentos com apenas a inicial da pessoa em um circulo colorido
+- Areas de foto com fundo solido ou gradiente em vez de imagem real
+- Secoes "sobre" ou "equipe" sem fotos de pessoas
+- Cards com icone generico onde deveria haver foto
+
+**Se nao tem foto do cliente, tem Unsplash. Se nao tem Unsplash, tem defeito.**
 
 ---
 
@@ -301,7 +312,7 @@ Recursos terminantemente **PROIBIDOS** em qualquer site produzido por este proto
 1. **Emojis** — Nunca. Em nenhum lugar. A menos que o nicho do cliente exija expressamente.
 2. **Hifens decorativos** — Nunca como separador visual ou recurso de design.
 3. **Jargao tecnico verborragico** — Copy limpa e direta. Sem encher linguica com termos tecnicos que o publico-alvo nao usa.
-4. **Caixas delineadoras neon** — Caixas com borda neon + fundo neon transparente sao TERMINANTEMENTE PROIBIDAS. Zero tolerancia.
+4. **Caixas delineadoras neon** — Caixas com borda neon + fundo neon transparente sao TERMINANTEMENTE PROIBIDAS. Zero tolerancia. Isso inclui badges, pills, tags e qualquer elemento com `background: rgba(COR, 0.1)` + `border: 1px solid rgba(COR, 0.2)` + `color: COR` — esse padrao e a assinatura visual do AI Slop. Badges e pills devem usar `background: var(--bg-elevated)` + `border: var(--border)` + `color: var(--text-primary)`. Cores semanticas vao nos icones, nao no container.
 5. **Fontes genericas** — Inter, Roboto, Open Sans e similares estao banidas. Tipografia sempre premium e com personalidade.
 6. **Icones inferiores** — Lucide React e o piso minimo. Nada abaixo disso. Nunca emoji como icone.
 7. **AOS fade-up generico** — Animacoes de entrada genericas (fade-up, fade-in basico) sem personalidade sao AI Slop.
