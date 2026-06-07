@@ -156,6 +156,17 @@ section {
   color: var(--text-dark);
 }
 
+/* Light section global overrides */
+.section-credenciais,
+.section-habilidades,
+.section-ofertas,
+.section-contato {
+  --text-primary: var(--text-dark);
+  --muted: #64748b;
+  --border: rgba(15, 23, 42, 0.08);
+  --bg-elevated: white;
+}
+
 /* Skip Link */
 .skip-link {
   position: absolute;
@@ -1500,7 +1511,7 @@ section {
 .form-group select {
   width: 100%;
   padding: var(--space-3) var(--space-4);
-  background: var(--bg-light);
+  background: #f8fafc;
   border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: var(--radius-md);
   color: var(--text-dark);
