@@ -58,6 +58,7 @@ A producao do site e dividida em dois agentes com roles distintos, operando em s
 - Analisar os prints de referencia e classificar o estilo
 - Buscar sites similares para engenharia reversa quando necessario
 - Formular os prompts de implementacao divididos em 5 partes
+- **Cada prompt deve ser salvo como arquivo .md dedicado** na pasta do projeto com nome descritivo e humano (ex: `site-rodge-parte-1.md`, `site-clinica-parte-3.md`). Nomes genericos como `architect-parte-1.md` sao proibidos. Nunca formular prompt apenas no chat — sempre persistir no artefato
 
 **Regra de operacao:**
 - Sempre divide a formulacao em **5 partes** (5 turnos)
