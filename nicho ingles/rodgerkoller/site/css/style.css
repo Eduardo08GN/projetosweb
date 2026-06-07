@@ -424,22 +424,17 @@ section {
   position: relative;
 }
 
-.hero::before {
-  content: '';
+#hero-shader {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  background: radial-gradient(
-    ellipse at 70% 50%,
-    rgba(37, 99, 235, 0.06) 0%,
-    transparent 70%
-  );
   pointer-events: none;
 }
 
 .hero-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-8);
@@ -2039,7 +2034,91 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-/* Section Transitions */
+/* ========================================
+   SECTION TRANSITIONS (variadas)
+   ======================================== */
+
+/* Gradient Bleed: dark → light */
+.section-credenciais::before,
+.section-habilidades::before,
+.section-ofertas::before,
+.section-contato::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, var(--bg-deep), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section-credenciais,
+.section-habilidades,
+.section-ofertas,
+.section-contato {
+  position: relative;
+}
+
+/* Gradient Bleed: light → dark (ofertas → depoimentos handled by depoimentos) */
+.section-ofertas::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, transparent, var(--bg-deep));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section-ofertas {
+  position: relative;
+}
+
+/* Clip-Path Curve: credenciais (light) → sobre (dark) */
+.section-sobre {
+  position: relative;
+  margin-top: -60px;
+  padding-top: calc(var(--space-20) + 60px);
+  background: var(--bg-deep);
+}
+
+.section-sobre::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: var(--bg-light);
+  clip-path: ellipse(55% 100% at 50% 0%);
+  pointer-events: none;
+}
+
+/* Overlap + Border Radius: habilidades (light) → metodo (dark) */
+.section-metodo {
+  position: relative;
+  margin-top: -40px;
+  padding-top: calc(var(--space-20) + 40px);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  background: var(--bg-deep);
+  z-index: 2;
+}
+
+/* Clip-Path Curve: ofertas (light) → depoimentos (dark) - via ofertas::after gradient */
+
+/* Overlap + Border Radius: contato (light) → faq (dark) */
+.section-faq {
+  position: relative;
+  margin-top: -40px;
+  padding-top: calc(var(--space-20) + 40px);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  background: var(--bg-deep);
+  z-index: 2;
+}
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
