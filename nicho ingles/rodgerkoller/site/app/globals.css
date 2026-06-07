@@ -1,16 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #1a3a5c;
-  --color-brand-light: #2d6cb4;
-  --color-accent: #f59e0b;
-  --color-cta: #25d366;
-  --color-cta-hover: #1ebe5d;
+  --color-dark: #0B1428;
+  --color-dark-lighter: #122040;
+  --color-dark-card: #1A2F52;
+
+  --color-brand: #1E3A5F;
+  --color-brand-light: #2D6CB4;
+
+  --color-gold: #C9A96E;
+  --color-gold-light: #E8D5A3;
+  --color-gold-dark: #A88B4A;
+
+  --color-cta: #22C55E;
+  --color-cta-hover: #16A34A;
+  --color-accent: #C9A96E;
+
   --color-bg: #ffffff;
-  --color-bg-soft: #f0f6ff;
-  --color-text: #1a1a2e;
-  --color-text-muted: #6b7280;
-  --font-heading: 'Inter', system-ui, sans-serif;
+  --color-bg-soft: #F8FAFC;
+  --color-bg-warm: #FBF8F3;
+
+  --color-text: #0F172A;
+  --color-text-muted: #64748B;
+
+  --font-heading: 'DM Serif Display', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
 }
 
@@ -34,20 +47,27 @@ body {
   50% { transform: scale(1.05); }
 }
 
-@keyframes count-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes slide-up {
   from { opacity: 0; transform: translateY(100%); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-marquee {
-  animation: marquee 20s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 
 .animate-pulse-soft {
   animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #C9A96E, #E8D5A3, #C9A96E);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dot-pattern {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 32px 32px;
 }

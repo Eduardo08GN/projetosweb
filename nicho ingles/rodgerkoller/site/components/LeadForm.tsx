@@ -81,7 +81,7 @@ export function LeadForm({
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-[#25d366] text-white font-bold py-4 px-8 rounded-xl text-lg hover:bg-[#1ebe5d] transition-colors"
         >
-          💬 Inscrever pelo WhatsApp
+          Inscrever pelo WhatsApp
         </a>
       </div>
     )

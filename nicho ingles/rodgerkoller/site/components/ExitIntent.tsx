@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { Gift } from 'lucide-react'
 import { LeadForm } from './LeadForm'
 
 export function ExitIntent() {
@@ -66,7 +67,9 @@ export function ExitIntent() {
         </button>
 
         <div className="text-center mb-6">
-          <p className="text-4xl mb-3">🎁</p>
+          <div className="w-14 h-14 bg-gold/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <Gift className="w-7 h-7 text-gold" />
+          </div>
           <h3 className="text-2xl font-bold text-brand mb-2">
             Espera! Leva um presente.
           </h3>
