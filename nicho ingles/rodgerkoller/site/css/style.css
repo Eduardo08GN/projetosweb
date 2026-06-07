@@ -593,16 +593,12 @@ section {
   width: 100%;
   height: auto;
   object-fit: contain;
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
 
 .hero-image-fade {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 30%;
-  background: linear-gradient(to top, var(--bg-deep), transparent);
-  pointer-events: none;
+  display: none;
 }
 
 .hero-float-badge {
@@ -2059,6 +2055,7 @@ body::after {
 .section-ofertas,
 .section-contato {
   position: relative;
+  padding-top: clamp(12rem, 18vw, 16rem);
 }
 
 /* Gradient Bleed: light → dark (ofertas → depoimentos) */
