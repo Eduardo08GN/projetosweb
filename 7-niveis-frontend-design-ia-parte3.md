@@ -140,7 +140,7 @@ O conteudo foi produzido com copy real do negocio do Rodger — nenhum Lorem ips
 
 ---
 
-## Crivo dos 8 Criterios ($10K Checklist)
+## Crivo dos 9 Criterios ($10K Checklist)
 
 Validacao final aplicada ao site completo:
 
@@ -172,6 +172,15 @@ Validacao final aplicada ao site completo:
 - SEO: Meta tags completas (OG, Twitter Card), Schema.org JSON-LD (EducationalOrganization), canonical URL, titulo semantico
 - Seguranca: Netlify headers (X-Frame-Options DENY, nosniff, strict referrer-policy, permissions-policy)
 - Cache: Headers de 1 ano imutavel para CSS/JS/assets/fonts
+
+### 09. Transicoes entre secoes
+**APROVADO.**
+- Nenhum corte reto entre secoes. 8 juncoes tratadas com 3 tecnicas variadas:
+  - **Gradient bleed (120px)**: hero→credenciais, sobre→habilidades, metodo→ofertas, ofertas→depoimentos, depoimentos→contato
+  - **Clip-path ellipse**: credenciais→sobre (margin-top negativo + ellipse que sangra a cor clara)
+  - **Overlap + border-radius**: habilidades→metodo, contato→faq (secao escura sobe com margin-top -40px + border-radius 1.5rem no topo)
+- FAQ→footer sem transicao (mesma cor, sem necessidade)
+- Tecnicas alternadas para evitar monotonia ao scrollar
 
 ---
 
@@ -370,7 +379,7 @@ SISTEMA DE DOIS AGENTES
     → Executor (5 gomos de implementacao com aprovacao entre cada)
       |
       v
-CRIVO $10K CHECKLIST (8 criterios)
+CRIVO $10K CHECKLIST (9 criterios)
   01. Ponto de vista ✓
   02. Tipografia ✓
   03. Cores contidas ✓
@@ -379,6 +388,7 @@ CRIVO $10K CHECKLIST (8 criterios)
   06. Motion premium ✓
   07. Mobile desenhado ✓
   08. Caro invisivel ✓
+  09. Transicoes entre secoes ✓
       |
       v
 FILTRO ANTI-SLOP (7 itens proibidos)

@@ -263,9 +263,9 @@ Nenhum elemento que deveria conter uma imagem pode ir pro deploy sem imagem. Se 
 
 ---
 
-## Crivo dos 8 Criterios ($10K Checklist)
+## Crivo dos 9 Criterios ($10K Checklist)
 
-Todo site produzido pelo protocolo deve passar por estes 8 criterios antes de ser considerado pronto. Se falhar em qualquer um, nao esta pronto.
+Todo site produzido pelo protocolo deve passar por estes 9 criterios antes de ser considerado pronto. Se falhar em qualquer um, nao esta pronto.
 
 ### 01. Ponto de vista, nao template.
 O site se compromete com uma direcao de design especifica e executa sem vacilar. Site generico e de $200. Site com gosto e de $10K.
@@ -290,6 +290,9 @@ Decisoes de layout pro celular sao diferentes do desktop, nao a versao desktop c
 
 ### 08. O caro invisivel.
 Sub-2s de load, contraste WCAG AA, navegacao por teclado, HTML semantico, meta tags reais. O visitante nao ve diretamente mas sente "esse site e rapido e funciona".
+
+### 09. Transicoes entre secoes.
+Nenhuma juncao entre secoes pode ser um corte reto. Toda mudanca de background (dark→light ou light→dark) exige tratamento de transicao. Tecnicas aceitas: **gradient bleed** (80-120px de gradiente que sangra a cor da secao anterior na proxima), **clip-path curve** (ellipse ou polygon com curvas suaves), **overlap com negative margin** (secao de baixo sobe com margin-top negativo + border-radius no topo). Variar as tecnicas ao longo da pagina para evitar monotonia — usar no minimo 2 tecnicas diferentes. SVG wave dividers so se MUITO sutil (risco alto de cair em "templatezao"). O criterio: ao scrollar a pagina inteira, as secoes devem fluir como um todo continuo, nao como blocos empilhados.
 
 ---
 
