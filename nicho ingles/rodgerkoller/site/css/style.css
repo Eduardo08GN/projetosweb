@@ -2033,95 +2033,73 @@ body::after {
 }
 
 /* ========================================
-   SECTION TRANSITIONS (variadas)
+   FLAG MARQUEE & RIBBON (section dividers)
    ======================================== */
 
-/* Gradient Bleed: dark → light */
-/* ========================================
-   SECTION TRANSITIONS — background gradients
-   No pseudo-element overlays. The transition
-   IS the section background itself.
-   ======================================== */
+.flag-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 48px;
+  background: var(--bg-deep);
+  z-index: 5;
+}
 
-/* Dark → Light: section background walks through
-   the slate scale so the transition is organic */
+.flag-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 40s linear infinite;
+}
+
+.flag-marquee-track img {
+  display: block;
+  height: 48px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.flag-ribbon {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 40px;
+  z-index: 5;
+}
+
+.flag-ribbon img {
+  display: block;
+  height: 40px;
+  width: auto;
+  min-width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Light sections: simple flat background */
 .section-credenciais,
 .section-habilidades,
+.section-ofertas,
 .section-contato {
-  background: linear-gradient(180deg,
-    #0f172a 0%,
-    #1e293b 6%,
-    #334155 11%,
-    #94a3b8 17%,
-    #cbd5e1 21%,
-    #e2e8f0 26%,
-    #f1f5f9 32%,
-    #f1f5f9 100%
-  );
-  padding-top: clamp(14rem, 20vw, 18rem);
+  background: var(--bg-light);
 }
 
-/* Ofertas: dark→light at top AND light→dark at bottom */
-.section-ofertas {
-  background: linear-gradient(180deg,
-    #0f172a 0%,
-    #1e293b 5%,
-    #334155 9%,
-    #94a3b8 14%,
-    #cbd5e1 18%,
-    #e2e8f0 22%,
-    #f1f5f9 28%,
-    #f1f5f9 72%,
-    #e2e8f0 78%,
-    #cbd5e1 82%,
-    #94a3b8 86%,
-    #334155 91%,
-    #1e293b 95%,
-    #0f172a 100%
-  );
-  padding-top: clamp(14rem, 20vw, 18rem);
-  padding-bottom: clamp(14rem, 20vw, 18rem);
-}
-
-/* Clip-Path Curve: credenciais (light) → sobre (dark) */
-.section-sobre {
-  position: relative;
-  margin-top: -80px;
-  padding-top: calc(var(--space-20) + 80px);
-  background: var(--bg-deep);
-}
-
-.section-sobre::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: #f1f5f9;
-  clip-path: ellipse(60% 100% at 50% 0%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Overlap + Border Radius: habilidades → metodo */
-.section-metodo {
-  position: relative;
-  margin-top: -60px;
-  padding-top: calc(var(--space-20) + 60px);
-  border-radius: 2.5rem 2.5rem 0 0;
-  background: var(--bg-deep);
-  z-index: 2;
-}
-
-/* Overlap + Border Radius: contato → faq */
+/* Dark sections */
+.section-sobre,
+.section-metodo,
 .section-faq {
-  position: relative;
-  margin-top: -60px;
-  padding-top: calc(var(--space-20) + 60px);
-  border-radius: 2.5rem 2.5rem 0 0;
   background: var(--bg-deep);
-  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .flag-marquee { height: 32px; }
+  .flag-marquee-track img { height: 32px; }
+  .flag-ribbon { height: 28px; }
+  .flag-ribbon img { height: 28px; }
 }
 
 /* Reduced Motion */
