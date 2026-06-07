@@ -670,9 +670,8 @@ section {
    CREDENCIAIS
    ======================================== */
 .section-credenciais {
-  background: var(--bg-elevated);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  background: var(--bg-light);
+  color: var(--text-dark);
 }
 
 .credentials-grid {
@@ -688,32 +687,20 @@ section {
 }
 
 .credential-card {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(245, 158, 11, 0.04));
-  border: 1px solid var(--border);
+  background: white;
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: var(--radius-lg);
   padding: var(--space-8);
   text-align: center;
   position: relative;
   overflow: hidden;
-  transition: border-color 300ms var(--ease-out-expo), transform 300ms var(--ease-out-expo);
+  transition: border-color 300ms var(--ease-out-expo), transform 300ms var(--ease-out-expo), box-shadow 300ms var(--ease-out-expo);
 }
 
 .credential-card:hover {
-  border-color: var(--cambridge-light);
+  border-color: rgba(37, 99, 235, 0.2);
   transform: translateY(-4px);
-}
-
-.credential-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.12), transparent 70%);
-  opacity: 0;
-  transition: opacity 400ms;
-}
-
-.credential-card:hover::before {
-  opacity: 1;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 }
 
 .credential-icon {
@@ -723,7 +710,7 @@ section {
   width: 64px;
   height: 64px;
   border-radius: var(--radius-lg);
-  background: rgba(37, 99, 235, 0.1);
+  background: rgba(37, 99, 235, 0.08);
   margin-bottom: var(--space-4);
 }
 
@@ -743,7 +730,7 @@ section {
 .credential-label {
   font-family: var(--font-body);
   font-size: 1rem;
-  color: var(--text-primary);
+  color: var(--text-dark);
   font-weight: 500;
   display: block;
 }
@@ -751,7 +738,7 @@ section {
 .credential-sublabel {
   font-family: var(--font-body);
   font-size: 0.875rem;
-  color: var(--muted);
+  color: #64748b;
   margin-top: var(--space-1);
   display: block;
 }
@@ -869,7 +856,8 @@ section {
    HABILIDADES
    ======================================== */
 .section-habilidades {
-  background: var(--bg-elevated);
+  background: var(--bg-light);
+  color: var(--text-dark);
 }
 
 .section-header {
@@ -885,10 +873,24 @@ section {
   margin-bottom: var(--space-4);
 }
 
+.section-light .section-header h2,
+.section-credenciais .section-header h2,
+.section-habilidades .section-header h2,
+.section-ofertas .section-header h2,
+.section-contato .section-header h2 {
+  color: var(--text-dark);
+}
+
 .section-subtitle {
   font-size: var(--text-lg);
   color: var(--muted);
   line-height: 1.6;
+}
+
+.section-habilidades .section-subtitle,
+.section-ofertas .section-subtitle,
+.section-contato .section-subtitle {
+  color: #64748b;
 }
 
 .skills-grid {
@@ -910,18 +912,19 @@ section {
 }
 
 .skill-card {
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.3));
-  border: 1px solid var(--border);
+  background: white;
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: var(--radius-lg);
   padding: var(--space-8);
   position: relative;
   overflow: visible;
-  transition: border-color 300ms, transform 300ms var(--ease-out-expo);
+  transition: border-color 300ms, transform 300ms var(--ease-out-expo), box-shadow 300ms var(--ease-out-expo);
 }
 
 .skill-card:hover {
-  border-color: rgba(148, 163, 184, 0.3);
+  border-color: rgba(15, 23, 42, 0.15);
   transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 }
 
 .skill-card-glow {
@@ -968,8 +971,8 @@ section {
   width: 48px;
   height: 48px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(37, 99, 235, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -977,21 +980,21 @@ section {
 }
 
 .skill-card-icon svg {
-  color: var(--text-primary);
+  color: var(--cambridge);
 }
 
 .skill-card-title {
   font-family: var(--font-heading);
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-dark);
   margin-bottom: var(--space-2);
 }
 
 .skill-card-desc {
   font-family: var(--font-body);
   font-size: 0.875rem;
-  color: var(--muted);
+  color: #64748b;
   line-height: 1.6;
 }
 
@@ -1087,7 +1090,8 @@ section {
    OFERTAS (PRICING)
    ======================================== */
 .section-ofertas {
-  background: var(--bg-elevated);
+  background: var(--bg-light);
+  color: var(--text-dark);
 }
 
 .pricing-grid {
@@ -1111,28 +1115,30 @@ section {
 }
 
 .pricing-card {
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.8) 100%);
-  border: 1px solid var(--border);
+  background: white;
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: var(--radius-lg);
   padding: var(--space-8);
   position: relative;
-  transition: border-color 300ms, transform 300ms var(--ease-out-expo);
+  transition: border-color 300ms, transform 300ms var(--ease-out-expo), box-shadow 300ms var(--ease-out-expo);
 }
 
 .pricing-card:hover {
-  border-color: rgba(148, 163, 184, 0.2);
+  border-color: rgba(15, 23, 42, 0.15);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 }
 
 .pricing-card--featured {
   border-color: var(--accent);
-  background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(15, 23, 42, 0.9) 40%);
+  background: white;
   transform: scale(1.02);
-  box-shadow: 0 0 40px rgba(245, 158, 11, 0.08);
+  box-shadow: 0 4px 24px rgba(245, 158, 11, 0.12);
 }
 
 .pricing-card--featured:hover {
   border-color: var(--accent-hover);
   transform: scale(1.04);
+  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.18);
 }
 
 .pricing-badge {
@@ -1153,7 +1159,7 @@ section {
 .pricing-tier {
   font-family: var(--font-body);
   font-size: 0.875rem;
-  color: var(--muted);
+  color: #64748b;
   font-weight: 500;
   display: block;
   margin-bottom: var(--space-2);
@@ -1163,21 +1169,21 @@ section {
   font-family: var(--font-heading);
   font-size: clamp(2rem, 4vw, 2.5rem);
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-dark);
   display: block;
 }
 
 .pricing-period {
   font-family: var(--font-body);
   font-size: 0.875rem;
-  color: var(--muted);
+  color: #64748b;
   display: block;
   margin-top: var(--space-1);
 }
 
 .pricing-divider {
   height: 1px;
-  background: var(--border);
+  background: rgba(15, 23, 42, 0.08);
   margin: var(--space-6) 0;
 }
 
@@ -1202,7 +1208,7 @@ section {
 }
 
 .feature-included span {
-  color: var(--text-primary);
+  color: var(--text-dark);
 }
 
 .feature-excluded svg {
@@ -1242,26 +1248,26 @@ section {
 
 .cta-ghost {
   background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--border);
+  color: var(--text-dark);
+  border: 1px solid rgba(15, 23, 42, 0.15);
 }
 
 .cta-ghost:hover {
-  color: var(--text-primary);
-  border-color: var(--text-primary);
-  background: rgba(241, 245, 249, 0.05);
+  color: var(--text-dark);
+  border-color: rgba(15, 23, 42, 0.3);
+  background: rgba(15, 23, 42, 0.04);
 }
 
 .cta-outline {
   background: transparent;
-  color: var(--cambridge-light);
+  color: var(--cambridge);
   border: 1px solid var(--cambridge);
 }
 
 .cta-outline:hover {
-  color: var(--cambridge-light);
-  background: rgba(37, 99, 235, 0.1);
-  border-color: var(--cambridge-light);
+  color: white;
+  background: var(--cambridge);
+  border-color: var(--cambridge);
 }
 
 /* ========================================
@@ -1417,7 +1423,8 @@ section {
    CONTATO (FORMULARIO)
    ======================================== */
 .section-contato {
-  background: var(--bg-elevated);
+  background: var(--bg-light);
+  color: var(--text-dark);
 }
 
 .contact-grid {
@@ -1438,13 +1445,13 @@ section {
 
 .contact-text h2 {
   font-size: clamp(1.75rem, 3vw, 2.25rem);
-  color: var(--text-primary);
+  color: var(--text-dark);
   margin: var(--space-3) 0 var(--space-4);
 }
 
 .contact-subtitle {
   font-size: 1.0625rem;
-  color: var(--muted);
+  color: #64748b;
   line-height: 1.6;
   margin-bottom: var(--space-6);
 }
@@ -1460,19 +1467,20 @@ section {
   align-items: center;
   gap: var(--space-3);
   font-size: 0.9375rem;
-  color: var(--text-primary);
+  color: var(--text-dark);
 }
 
 .contact-benefits svg {
   flex-shrink: 0;
-  stroke: var(--cambridge-light);
+  stroke: var(--cambridge);
 }
 
 .contact-form {
-  background: var(--bg-deep);
-  border: 1px solid var(--border);
+  background: white;
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: var(--radius-lg);
   padding: var(--space-8);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
 }
 
 .form-group {
@@ -1484,7 +1492,7 @@ section {
   font-family: var(--font-heading);
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-dark);
   margin-bottom: var(--space-2);
 }
 
@@ -1492,10 +1500,10 @@ section {
 .form-group select {
   width: 100%;
   padding: var(--space-3) var(--space-4);
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: var(--bg-light);
+  border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-dark);
   font-family: var(--font-body);
   font-size: 0.9375rem;
   transition: border-color 200ms, box-shadow 200ms;
@@ -2021,26 +2029,6 @@ body::after {
 }
 
 /* Section Transitions */
-.section-credenciais,
-.section-habilidades,
-.section-ofertas,
-.section-contato {
-  position: relative;
-}
-
-.section-credenciais::before,
-.section-habilidades::before,
-.section-ofertas::before,
-.section-contato::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: linear-gradient(180deg, var(--bg-deep), transparent);
-  pointer-events: none;
-}
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
