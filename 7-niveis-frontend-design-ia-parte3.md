@@ -189,7 +189,7 @@ Validacao final aplicada ao site completo:
 | Item proibido | Status | Evidencia |
 |---------------|--------|-----------|
 | Emojis | ZERO | Nenhum emoji em nenhum arquivo. Icones sao SVG inline |
-| Hifens decorativos | ZERO | Nenhum hifem como separador visual |
+| Hifens | ZERO | Proibido em qualquer copy. Nem visual, nem pontuacao em textos |
 | Jargao verborragico | ZERO | Copy direta: "Aprenda ingles de verdade", "Do basico a fluencia" |
 | Caixas neon delineadoras | ZERO | Nenhuma borda neon + fundo neon transparente |
 | Inter / Roboto / Open Sans | ZERO | Space Grotesk + DM Sans exclusivamente |

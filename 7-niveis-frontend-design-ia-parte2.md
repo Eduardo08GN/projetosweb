@@ -313,7 +313,7 @@ Se algum desses arquivos estiver preenchido, o conteudo do site deve estar 100% 
 Recursos terminantemente **PROIBIDOS** em qualquer site produzido por este protocolo:
 
 1. **Emojis** — Nunca. Em nenhum lugar. A menos que o nicho do cliente exija expressamente.
-2. **Hifens decorativos** — Nunca como separador visual ou recurso de design.
+2. **Hifens** — Proibidos em qualquer copy de site. Nem como separador visual, nem como recurso de design, nem como pontuacao em textos. Substituir por ponto final, virgula ou reestruturar a frase.
 3. **Jargao tecnico verborragico** — Copy limpa e direta. Sem encher linguica com termos tecnicos que o publico-alvo nao usa.
 4. **Caixas delineadoras neon** — Caixas com borda neon + fundo neon transparente sao TERMINANTEMENTE PROIBIDAS. Zero tolerancia. Isso inclui badges, pills, tags e qualquer elemento com `background: rgba(COR, 0.1)` + `border: 1px solid rgba(COR, 0.2)` + `color: COR` — esse padrao e a assinatura visual do AI Slop. Badges e pills devem usar `background: var(--bg-elevated)` + `border: var(--border)` + `color: var(--text-primary)`. Cores semanticas vao nos icones, nao no container.
 5. **Fontes genericas** — Inter, Roboto, Open Sans e similares estao banidas. Tipografia sempre premium e com personalidade.
