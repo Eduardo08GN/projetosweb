@@ -24,3 +24,36 @@ node_modules/
 # Drop zone do usuário (só o README vai versionado)
 dados/*
 !dados/README.md
+
+# Local Netlify folder
+.netlify
+
+# Screenshots de debug (gerados pelo Playwright/auditoria)
+*.fullpage.png
+*.viewport.png
+audit-*.png
+check-*.png
+dark-*.png
+flag-marquee-*.png
+live-*.png
+mobile-*.png
+preview-*.png
+profkenny-*.png
+rodger-*.png
+rodgerkoller-*.png
+screenshot-*.png
+shader-*.png
+shape-dividers-*.png
+transition-*.png
+uk-blue-*.png
+v2-*.png
+v3-*.png
+v4-*.png
+v5-*.png
+kultivi-*.png
+fluencypass-*.png
+fullenglish-*.png
+
+# MCP config
+.mcp.json
+.playwright-mcp/
