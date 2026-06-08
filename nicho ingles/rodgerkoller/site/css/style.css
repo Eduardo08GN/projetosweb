@@ -161,7 +161,7 @@ section {
 }
 
 /* Light section global overrides */
-.section-credenciais,
+.video-showcase,
 .section-habilidades,
 .section-ofertas,
 .section-contato {
@@ -678,83 +678,6 @@ section {
 }
 
 /* ========================================
-   CREDENCIAIS
-   ======================================== */
-.section-credenciais {
-  background: var(--bg-light);
-  color: var(--text-dark);
-}
-
-.credentials-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-6);
-}
-
-@media (min-width: 768px) {
-  .credentials-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.credential-card {
-  background: white;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: var(--radius-lg);
-  padding: var(--space-8);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 300ms var(--ease-out-expo), transform 300ms var(--ease-out-expo), box-shadow 300ms var(--ease-out-expo);
-}
-
-.credential-card:hover {
-  border-color: rgba(37, 99, 235, 0.2);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-}
-
-.credential-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-lg);
-  background: rgba(37, 99, 235, 0.08);
-  margin-bottom: var(--space-4);
-}
-
-.credential-icon svg {
-  color: var(--cambridge);
-}
-
-.credential-number {
-  font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  color: var(--accent);
-  display: block;
-  margin: var(--space-4) 0 var(--space-2);
-}
-
-.credential-label {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--text-dark);
-  font-weight: 500;
-  display: block;
-}
-
-.credential-sublabel {
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  color: #64748b;
-  margin-top: var(--space-1);
-  display: block;
-}
-
-/* ========================================
    SOBRE
    ======================================== */
 .about-grid {
@@ -887,7 +810,6 @@ section {
 }
 
 .section-light .section-header h2,
-.section-credenciais .section-header h2,
 .section-habilidades .section-header h2,
 .section-ofertas .section-header h2,
 .section-contato .section-header h2 {
@@ -2261,7 +2183,7 @@ section {
    VIDEO SHOWCASE — Scroll Expansion + Backlight
    ======================================== */
 .video-showcase {
-  background: var(--bg-deep);
+  background: var(--bg-light);
   padding: var(--space-16) 0 var(--space-20);
   overflow: hidden;
   position: relative;
@@ -2286,7 +2208,7 @@ section {
   font-family: var(--font-heading);
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;
-  color: #fff;
+  color: var(--text-dark);
   letter-spacing: -0.02em;
 }
 
@@ -2305,10 +2227,10 @@ section {
 
 .video-backlight {
   position: absolute;
-  inset: -40px;
-  border-radius: 32px;
-  background: radial-gradient(ellipse at 30% 50%, rgba(1, 33, 105, 0.6) 0%, transparent 70%);
-  filter: blur(60px);
+  inset: -50px;
+  border-radius: 40px;
+  background: radial-gradient(ellipse at 30% 50%, rgba(1, 33, 105, 0.25) 0%, transparent 70%);
+  filter: blur(50px);
   opacity: var(--backlight-opacity, 0.4);
   z-index: 0;
   pointer-events: none;
@@ -2316,7 +2238,7 @@ section {
 }
 
 .video-backlight--red {
-  background: radial-gradient(ellipse at 70% 50%, rgba(200, 16, 46, 0.5) 0%, transparent 70%);
+  background: radial-gradient(ellipse at 70% 50%, rgba(200, 16, 46, 0.2) 0%, transparent 70%);
   animation: backlightShift 6s ease-in-out infinite alternate;
 }
 
@@ -2429,7 +2351,7 @@ body::after {
 }
 
 /* Light sections: simple flat background */
-.section-credenciais,
+.video-showcase,
 .section-habilidades,
 .section-ofertas,
 .section-contato {
