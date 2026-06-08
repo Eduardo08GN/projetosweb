@@ -3,7 +3,7 @@ const path = require("path");
 
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
 const API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
-const MODEL = "@cf/black-forest-labs/FLUX-1-schnell";
+const MODEL = "@cf/black-forest-labs/flux-1-schnell";
 
 if (!ACCOUNT_ID || !API_TOKEN) {
   console.error("Faltando CLOUDFLARE_ACCOUNT_ID ou CLOUDFLARE_API_TOKEN no .env");
@@ -36,12 +36,18 @@ async function generateImage(prompt, outputPath) {
     }),
   });
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Cloudflare API ${res.status}: ${text}`);
+  const data = await res.json();
+
+  if (!data.success || !data.result) {
+    throw new Error(`Cloudflare API: ${JSON.stringify(data.errors || data)}`);
   }
 
-  const buffer = Buffer.from(await res.arrayBuffer());
+  const base64 = data.result.image;
+  if (!base64) {
+    throw new Error("Resposta sem imagem. Resultado: " + JSON.stringify(data.result).slice(0, 200));
+  }
+
+  const buffer = Buffer.from(base64, "base64");
 
   const dir = path.dirname(outputPath);
   if (dir && !fs.existsSync(dir)) {
