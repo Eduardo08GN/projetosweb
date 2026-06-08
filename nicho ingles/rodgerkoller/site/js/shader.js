@@ -26,7 +26,7 @@
     'vec3 c1 = vec3(0.118, 0.122, 0.604);',  // hsl(243,68%,36%) purple
     'vec3 c2 = vec3(0.357, 0.659, 0.902);',  // hsl(205,91%,64%) light blue
     'vec3 c3 = vec3(0.302, 0.561, 0.831);',  // hsl(211,61%,57%) medium blue
-    'vec3 c4 = vec3(0.059, 0.090, 0.165);',  // base dark (#0f172a)
+    'vec3 c4 = vec3(0.004, 0.129, 0.412);',  // base dark (#012169 UK flag blue)
     '',
     'float hash(vec2 p) {',
     '  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);',

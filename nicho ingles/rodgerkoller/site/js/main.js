@@ -336,6 +336,27 @@
     }
   }
 
+  function initTestimonials() {
+    var cards = document.querySelectorAll('.testimonial-card');
+    if (!cards.length) return;
+
+    if (prefersReducedMotion) {
+      cards.forEach(function (c) { c.classList.add('is-visible'); });
+      return;
+    }
+
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    cards.forEach(function (c) { obs.observe(c); });
+  }
+
   // Preloader
   function initPreloader() {
     window.addEventListener('load', () => {
@@ -360,6 +381,7 @@
     initContactForm();
     initWhatsApp();
     initExitIntent();
+    initTestimonials();
   });
 
   initPreloader();
