@@ -38,7 +38,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/style.css?v=25">
+  <link rel="stylesheet" href="css/style.css?v=26">
   <link rel="stylesheet" href="css/animations.css?v=2">
 
   <!-- Preloader (inline to prevent FOUC) -->
@@ -194,13 +194,14 @@
           <h2 class="video-title">Veja o Rodger em acao</h2>
         </div>
         <div class="video-expansion-wrapper animate-on-scroll stagger-1" data-video-expand>
-          <div class="video-backlight" aria-hidden="true"></div>
-          <div class="video-backlight video-backlight--red" aria-hidden="true"></div>
-          <div class="video-frame video-facade" data-video-src="https://iframe.mediadelivery.net/embed/675956/179b928b-8315-43d0-b9f0-e377f0020e91?autoplay=true&loop=false&muted=false&preload=true&responsive=true" role="button" tabindex="0" aria-label="Clique para assistir o video do Rodger Koller">
-            <img src="assets/video-thumb.avif" alt="Video do Rodger Koller" loading="lazy" decoding="async" class="video-facade-thumb">
-            <div class="video-facade-play" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            </div>
+          <div class="video-frame">
+            <iframe
+              src="https://iframe.mediadelivery.net/embed/675956/179b928b-8315-43d0-b9f0-e377f0020e91?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
+              loading="lazy"
+              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen
+              title="Rodger Koller falando sobre suas aulas"
+            ></iframe>
           </div>
         </div>
       </div>
