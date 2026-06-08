@@ -525,18 +525,18 @@ section {
   font-size: var(--text-base);
   font-weight: 600;
   color: var(--text-primary);
-  background: transparent;
+  background: rgba(255, 255, 255, 0.06);
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
   transition: all 250ms var(--ease-out-expo);
   cursor: pointer;
 }
 
 .btn-secondary:hover {
   color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
 }
 
@@ -659,6 +659,14 @@ section {
     justify-content: center;
     flex-direction: column;
     align-items: stretch;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    text-align: center;
+    justify-content: center;
   }
 
   .hero-stats {
@@ -1739,7 +1747,7 @@ section {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1747,17 +1755,17 @@ section {
 }
 
 .footer-socials a:hover {
-  border-color: var(--cambridge-light);
-  background: rgba(37, 99, 235, 0.1);
+  border-color: var(--accent);
+  background: rgba(245, 158, 11, 0.1);
 }
 
 .footer-socials svg {
-  stroke: var(--muted);
+  stroke: rgba(255, 255, 255, 0.6);
   transition: stroke 200ms;
 }
 
 .footer-socials a:hover svg {
-  stroke: var(--cambridge-light);
+  stroke: var(--accent);
 }
 
 .footer-heading {
@@ -2341,6 +2349,8 @@ body::after {
   width: 100%;
   line-height: 0;
   overflow: hidden;
+  margin-top: -1px;
+  margin-bottom: -1px;
 }
 
 .shape-divider svg {
@@ -2428,18 +2438,6 @@ body::after {
 
 .video-facade:hover .video-facade-play svg {
   transform: scale(1.1);
-}
-
-/* Content Visibility — skip rendering for off-screen sections */
-.section-sobre,
-.section-habilidades,
-.section-metodo,
-.section-ofertas,
-.section-depoimentos,
-.section-contato,
-.section-faq {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 800px;
 }
 
 /* Reduced Motion */
