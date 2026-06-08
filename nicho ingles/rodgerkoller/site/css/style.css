@@ -650,9 +650,6 @@ section {
   margin-top: 2px;
 }
 
-.float-badge-mobile {
-  display: none;
-}
 
 /* Hero Mobile */
 @media (max-width: 767px) {
@@ -686,8 +683,12 @@ section {
 
   .hero-stats {
     justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--space-4);
+    flex-wrap: nowrap;
+    gap: var(--space-3);
+  }
+
+  .stat-hide-mobile {
+    display: none;
   }
 
   .hero-visual {
@@ -700,13 +701,6 @@ section {
     bottom: 20%;
   }
 
-  .float-badge-desktop {
-    display: none;
-  }
-
-  .float-badge-mobile {
-    display: block;
-  }
 }
 
 /* ========================================
