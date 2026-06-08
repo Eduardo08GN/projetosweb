@@ -1,30 +1,6 @@
-# syntax=docker/dockerfile:1.4
 FROM nginx:alpine
-
 RUN rm -rf /usr/share/nginx/html/*
 COPY ["nicho ingles/rodgerkoller/site/", "/usr/share/nginx/html/"]
-RUN rm -rf /usr/share/nginx/html/Dockerfile \
-           /usr/share/nginx/html/nginx.conf \
-           /usr/share/nginx/html/netlify.toml \
-           /usr/share/nginx/html/.netlify
-
-RUN cat > /etc/nginx/conf.d/default.conf << 'EOF'
-server {
-    listen 80;
-    server_name _;
-    root /usr/share/nginx/html;
-    index index.html;
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-    location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-    }
-    gzip on;
-    gzip_types text/plain text/css application/json application/javascript text/xml application/xml text/javascript image/svg+xml;
-    gzip_min_length 256;
-}
-EOF
-
+COPY ["nicho ingles/rodgerkoller/site/nginx.conf", "/etc/nginx/conf.d/default.conf"]
+RUN rm -f /usr/share/nginx/html/Dockerfile /usr/share/nginx/html/nginx.conf /usr/share/nginx/html/netlify.toml && rm -rf /usr/share/nginx/html/.netlify
 EXPOSE 80
