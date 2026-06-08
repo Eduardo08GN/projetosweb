@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 50px;
+    z-index: 10;
+  }
+
+  .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: #FAFAF7;
+  }
+
+  .counter {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #C8102E;
+    margin-bottom: 20px;
+  }
+
+  .regua {
+    width: 64px;
+    height: 4px;
+    background: #C8102E;
+    margin-bottom: 28px;
+    border-radius: 2px;
+  }
+
+  /* ===== SLIDE 1 — CAPA (HOOK) ===== */
+  .slide-capa {
+    background-image:
+      linear-gradient(180deg, rgba(15,23,42,0.5) 0%, rgba(15,23,42,0.93) 100%),
+      url('bg-capa.jpg');
+    background-size: cover;
+    background-position: center;
+    justify-content: flex-end;
+    padding: 0 70px 100px 70px;
+  }
+
+  .capa-content { z-index: 5; }
+
+  .capa-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 86px;
+    line-height: 0.97;
+    letter-spacing: -0.04em;
+    color: #FAFAF7;
+    margin-bottom: 28px;
+  }
+
+  .capa-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 48px;
+  }
+
+  .capa-handle {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ===== SLIDE 2 — PROBLEMA + AGITAÇÃO ===== */
+  .slide-problema {
+    background-image:
+      linear-gradient(180deg, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0.96) 100%),
+      url('bg-frustrated.jpg');
+    background-size: cover;
+    background-position: center top;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 70px 100px 70px;
+  }
+
+  .problema-h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 54px;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    color: #FAFAF7;
+    margin-bottom: 32px;
+  }
+
+  .problema-body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.65);
+    max-width: 880px;
+  }
+
+  .problema-body strong {
+    color: #C8102E;
+    font-weight: 600;
+  }
+
+  .agitacao-hook {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.2;
+    color: rgba(255,255,255,0.85);
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* ===== SLIDE 3 — VIRADA ===== */
+  .slide-virada {
+    background-image:
+      linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(30,41,59,0.97) 100%),
+      url('bg-light.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 70px 100px 70px;
+  }
+
+  .virada-destaque {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 62px;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    color: #FAFAF7;
+    margin-bottom: 36px;
+  }
+
+  .virada-destaque span {
+    color: #C8102E;
+  }
+
+  .virada-body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.6);
+    max-width: 820px;
+  }
+
+  .virada-loop {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    color: rgba(255,255,255,0.8);
+    margin-top: 52px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* ===== SLIDE 4 — SOLUÇÃO + MECANISMO ===== */
+  .slide-solucao {
+    background-image:
+      linear-gradient(90deg, rgba(15,23,42,0.96) 50%, rgba(15,23,42,0.4) 100%),
+      url('bg-headphones.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 70px 100px 70px;
+  }
+
+  .solucao-content { max-width: 600px; }
+
+  .solucao-h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 54px;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    color: #FAFAF7;
+    margin-bottom: 28px;
+  }
+
+  .solucao-body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .solucao-body strong {
+    color: #FAFAF7;
+    font-weight: 600;
+  }
+
+  .solucao-loop {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: #C8102E;
+    margin-top: 48px;
+  }
+
+  /* ===== SLIDE 5 — PROVA ===== */
+  .slide-prova {
+    background-image:
+      linear-gradient(180deg, rgba(15,23,42,0.9) 0%, rgba(15,23,42,0.96) 100%),
+      url('bg-cambridge.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 70px 100px 70px;
+    text-align: center;
+  }
+
+  .prova-stats {
+    display: flex;
+    gap: 60px;
+    margin-bottom: 56px;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 72px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #C8102E;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .prova-divider {
+    width: 80px;
+    height: 3px;
+    background: #C8102E;
+    margin-bottom: 40px;
+    border-radius: 2px;
+  }
+
+  .prova-quote {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: #FAFAF7;
+    max-width: 780px;
+    margin-bottom: 32px;
+  }
+
+  .prova-attr {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* ===== SLIDE 6 — BENEFÍCIO ===== */
+  .slide-beneficio {
+    background-image:
+      linear-gradient(180deg, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.95) 100%),
+      url('bg-flag.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 70px 100px 70px;
+  }
+
+  .beneficio-big {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 140px;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    color: #C8102E;
+    margin-bottom: 12px;
+  }
+
+  .beneficio-h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 52px;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    color: #FAFAF7;
+    margin-bottom: 32px;
+  }
+
+  .beneficio-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .beneficio-list li {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.65);
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .beneficio-list li span {
+    color: #FAFAF7;
+    font-weight: 600;
+  }
+
+  /* ===== SLIDE 7 — CTA ===== */
+  .slide-cta {
+    background: #C8102E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 70px;
+    text-align: center;
+  }
+
+  .cta-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 56px;
+    letter-spacing: -0.01em;
+  }
+
+  .cta-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    color: #FAFAF7;
+    margin-bottom: 28px;
+    max-width: 750px;
+  }
+
+  .cta-body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 48px;
+    max-width: 650px;
+  }
+
+  .cta-button {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #C8102E;
+    background: #FAFAF7;
+    padding: 24px 64px;
+    border-radius: 8px;
+    margin-bottom: 44px;
+  }
+
+  .cta-handle {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: rgba(255,255,255,0.5);
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 — HOOK -->
+<div class="slide slide-capa">
+  <div class="topbar">
+    <div class="logo">Fly to Fluency</div>
+    <div class="counter">1 / 7</div>
+  </div>
+  <div class="capa-content">
+    <div class="eyebrow">PRONÚNCIA</div>
+    <div class="regua"></div>
+    <h1 class="capa-title">Seu sotaque te entrega na primeira frase</h1>
+    <p class="capa-sub">Arrasta pra descobrir como mudar isso</p>
+    <span class="capa-handle">@rodgerkoller</span>
+  </div>
+</div>
+
+<!-- SLIDE 2 — PROBLEMA + AGITAÇÃO -->
+<div class="slide slide-problema">
+  <div class="topbar">
+    <div class="logo">Fly to Fluency</div>
+    <div class="counter">2 / 7</div>
+  </div>
+  <div class="eyebrow">O PROBLEMA</div>
+  <div class="regua"></div>
+  <h2 class="problema-h2">Você estuda, assiste série, faz exercício</h2>
+  <p class="problema-body">Mas quando abre a boca, a pessoa do outro lado <strong>já sabe que você é brasileiro</strong>. Às vezes pede pra repetir. Não porque seu inglês é ruim. Porque seu sotaque atrapalha a comunicação.</p>
+  <p class="agitacao-hook">E o pior: quanto mais você estuda gramática, mais longe fica de resolver isso.</p>
+</div>
+
+<!-- SLIDE 3 — VIRADA -->
+<div class="slide slide-virada">
+  <div class="topbar">
+    <div class="logo">Fly to Fluency</div>
+    <div class="counter">3 / 7</div>
+  </div>
+  <h2 class="virada-destaque">O problema <span>não é</span> falta de estudo</h2>
+  <p class="virada-body">É falta de um treino que ninguém te ensina na escola, no cursinho, no app. Existe uma técnica que funciona pra qualquer sotaque: americano, britânico, canadense, australiano.</p>
+  <p class="virada-loop">Meus amigos falaram pra eu não revelar isso. Mas eu não consigo segurar conhecimento.</p>
+</div>
+
+<!-- SLIDE 4 — SOLUÇÃO + MECANISMO -->
+<div class="slide slide-solucao">
+  <div class="topbar">
+    <div class="logo">Fly to Fluency</div>
+    <div class="counter">4 / 7</div>
+  </div>
+  <div class="solucao-content">
+    <div class="eyebrow">A TÉCNICA</div>
+    <div class="regua"></div>
+    <h2 class="solucao-h2">Pare de estudar. Comece a imitar.</h2>
+    <p class="solucao-body">Criança não aprende sotaque com gramática. Ela <strong>ouve e repete</strong>. Seu cérebro funciona igual. Escolhe alguém que você admira, ouve até decorar o ritmo, e repete até absorver. <strong>Simples. Mas tem um método de 5 passos por trás.</strong></p>
+    <p class="solucao-loop">E esses 5 passos mudam tudo.</p>
+  </div>
+</div>
+
+<!-- SLIDE 5 — PROVA -->
+<div class="slide slide-prova">
+  <div class="topbar">
+    <div class="logo">Fly to Fluency</div>
+    <div class="counter">5 / 7</div>
+  </div>
+  <div class="eyebrow" style="margin-bottom: 48px;">QUEM TE ENSINA ISSO</div>
+  <div class="prova-stats">
+    <div class="stat">
+      <div class="stat-number">14+</div>
+      <div class="stat-label">anos ensinando</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">CPE</div>
+      <div class="stat-label">Cambridge</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">600+</div>
+      <div class="stat-label">no Telegram</div>
+    </div>
+  </div>
+  <div class="prova-divider"></div>
+  <p class="prova-quote">Quanto mais contato com inglês, melhor você saberá inglês. Eu garanto: em 6 meses você fala com o sotaque que escolheu.</p>
+  <p class="prova-attr">Rodger Koller, CPE + CELTA Cambridge</p>
+</div>
+
+<!-- SLIDE 6 — BENEFÍCIO -->
+<div class="slide slide-beneficio">
+  <div class="topbar">
+    <div class="logo">Fly to Fluency</div>
+    <div class="counter">6 / 7</div>
+  </div>
+  <div class="beneficio-big">6</div>
+  <h2 class="beneficio-h2">meses pra falar com o sotaque que você escolher</h2>
+  <ul class="beneficio-list">
+    <li><span>Sem curso caro.</span> Só precisa de fone de ouvido e o método certo.</li>
+    <li><span>Sem morar fora.</span> Dá pra treinar no ônibus, no chuveiro, em qualquer lugar.</li>
+    <li><span>Qualquer sotaque.</span> Americano, britânico, canadense, australiano.</li>
+    <li><span>Você escolhe.</span> E o método te leva lá.</li>
+  </ul>
+</div>
+
+<!-- SLIDE 7 — CTA -->
+<div class="slide slide-cta">
+  <div class="topbar">
+    <div class="logo" style="color: rgba(255,255,255,0.75);">Fly to Fluency</div>
+    <div class="counter" style="color: rgba(255,255,255,0.35);">7 / 7</div>
+  </div>
+  <div class="cta-logo">Fly to Fluency ®</div>
+  <h2 class="cta-title">Quer os 5 passos completos?</h2>
+  <p class="cta-body">Comenta SOTAQUE que eu te mando o método direto no DM</p>
+  <div class="cta-button">SOTAQUE</div>
+  <span class="cta-handle">@rodgerkoller</span>
+</div>
+
+</body>
+</html>

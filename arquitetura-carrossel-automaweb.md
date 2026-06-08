@@ -128,10 +128,12 @@ node --env-file=.env scripts/postar-instagram.js pasta/do/angulo/
 
 | Modelo | Flag | Tempo | Qualidade | Formato request | Precisa cartao? |
 |--------|------|-------|-----------|-----------------|-----------------|
-| FLUX 1 Schnell | `schnell` | ~5s | Boa | JSON | Nao (free tier) |
+| **FLUX 1 Schnell** | `schnell` (default) | **~5s** | Boa | JSON | **Nao (free tier)** |
 | FLUX 2 Klein 4B | `klein4b` | ~22s | Superior | Multipart | A verificar |
 | FLUX 2 Klein 9B | `klein9b` | ~30s+ | Alta | Multipart | A verificar |
 | FLUX 2 Dev | `dev` | ~60s+ | Maxima | Multipart | A verificar |
+
+**Modelo ativo:** FLUX 1 Schnell. Custo zero, sem cartao, suficiente pro pipeline. Klein/Dev disponiveis no script caso precise de upgrade futuro.
 
 ### Sobre custos — por que funcionou sem cartao
 

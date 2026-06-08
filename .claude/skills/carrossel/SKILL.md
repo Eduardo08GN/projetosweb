@@ -241,8 +241,11 @@ Se sim, chamar `/publicar-tema` com o mesmo tema.
 ## Regras
 
 - Sempre ler `identidade/design-guide.md` antes de criar qualquer visual
+- Sempre processar copy via `_memoria/estrategias_de_copy.md` ANTES de `_memoria/preferencias.md`
 - Carrossel: 1080x1350 (4:5 retrato) — sempre. TikTok/Reels: 1080x1920 (9:16) — só quando pedido explicitamente
 - Linguagem segue `_memoria/preferencias.md` estritamente
+- **Ortografia 100% correta** — todo texto deve usar acentos e caracteres corretos do português (não, você, é, técnica, inglês, gramática, cérebro, método, etc.). Nunca publicar texto sem acentuação
+- **Imagens em 80%+ dos slides** — mínimo 5 de 7 slides devem ter imagem de fundo (com gradient overlay). Apenas o slide CTA final pode ser cor sólida sem imagem
 - Sempre considerar a sequência de capa no feed antes de definir capa nova
 - Sempre gerar legenda automaticamente ao final, salvando em `legenda.md`
 - Fotos IA: sempre pedir aprovação antes de usar no carrossel
