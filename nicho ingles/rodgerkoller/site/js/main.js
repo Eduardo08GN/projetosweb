@@ -357,6 +357,51 @@
     cards.forEach(function (c) { obs.observe(c); });
   }
 
+  // Video Showcase — Scroll-driven expansion + backlight
+  function initVideoExpansion() {
+    const wrapper = document.querySelector('[data-video-expand]');
+    if (!wrapper) return;
+
+    const frame = wrapper.querySelector('.video-frame');
+    if (!frame) return;
+
+    if (prefersReducedMotion) {
+      wrapper.style.setProperty('--video-scale', '1');
+      wrapper.style.setProperty('--video-opacity', '1');
+      wrapper.style.setProperty('--backlight-opacity', '0.8');
+      wrapper.style.setProperty('--video-radius', '12px');
+      return;
+    }
+
+    const update = () => {
+      const rect = wrapper.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const center = rect.top + rect.height / 2;
+      const progress = Math.min(Math.max(1 - (center - vh * 0.5) / (vh * 0.6), 0), 1);
+
+      const scale = 0.82 + progress * 0.18;
+      const opacity = 0.5 + progress * 0.5;
+      const backlight = 0.3 + progress * 0.7;
+      const radius = 20 - progress * 12;
+
+      wrapper.style.setProperty('--video-scale', scale.toFixed(3));
+      wrapper.style.setProperty('--video-opacity', opacity.toFixed(3));
+      wrapper.style.setProperty('--backlight-opacity', backlight.toFixed(3));
+      wrapper.style.setProperty('--video-radius', radius.toFixed(1) + 'px');
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => { update(); ticking = false; });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+  }
+
   // Preloader
   function initPreloader() {
     window.addEventListener('load', () => {
@@ -382,6 +427,7 @@
     initWhatsApp();
     initExitIntent();
     initTestimonials();
+    initVideoExpansion();
   });
 
   initPreloader();
