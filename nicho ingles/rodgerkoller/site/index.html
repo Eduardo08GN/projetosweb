@@ -24,13 +24,21 @@
   <meta name="twitter:description" content="Aprenda ingles de verdade com quem tem Cambridge CPE, CELTA e mais de 34.000 alunos.">
   <meta name="twitter:image" content="assets/og-image.jpg">
 
-  <!-- Fonts -->
+  <!-- DNS Prefetch & Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://iframe.mediadelivery.net">
+  <link rel="dns-prefetch" href="https://images.unsplash.com">
+
+  <!-- Preload critical assets -->
+  <link rel="preload" href="assets/rodger_hero04.avif" as="image" type="image/avif">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" as="style">
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/style.css?v=20">
+  <link rel="stylesheet" href="css/style.css?v=21">
   <link rel="stylesheet" href="css/animations.css?v=2">
 
   <!-- Preloader (inline to prevent FOUC) -->
@@ -161,10 +169,12 @@
         </div>
         <div class="hero-visual animate-on-scroll animate-right">
           <div class="hero-image-wrapper">
-            <img src="assets/rodger_hero04.png"
+            <img src="assets/rodger_hero04.avif"
                  alt="Professor Rodger Koller"
                  width="600" height="700"
-                 loading="eager">
+                 loading="eager"
+                 fetchpriority="high"
+                 decoding="async">
             <div class="hero-image-fade"></div>
             <div class="hero-float-badge">
               <span class="float-badge-number">+34K</span>
@@ -186,14 +196,11 @@
         <div class="video-expansion-wrapper animate-on-scroll stagger-1" data-video-expand>
           <div class="video-backlight" aria-hidden="true"></div>
           <div class="video-backlight video-backlight--red" aria-hidden="true"></div>
-          <div class="video-frame">
-            <iframe
-              src="https://iframe.mediadelivery.net/embed/675956/179b928b-8315-43d0-b9f0-e377f0020e91?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
-              loading="lazy"
-              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-              allowfullscreen
-              title="Rodger Koller falando sobre suas aulas"
-            ></iframe>
+          <div class="video-frame video-facade" data-video-src="https://iframe.mediadelivery.net/embed/675956/179b928b-8315-43d0-b9f0-e377f0020e91?autoplay=true&loop=false&muted=false&preload=true&responsive=true" role="button" tabindex="0" aria-label="Clique para assistir o video do Rodger Koller">
+            <img src="https://vz-b4f3a796-e52.b-cdn.net/179b928b-8315-43d0-b9f0-e377f0020e91/thumbnail.jpg" alt="Video do Rodger Koller" loading="lazy" decoding="async" class="video-facade-thumb">
+            <div class="video-facade-play" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
           </div>
         </div>
       </div>
@@ -203,11 +210,11 @@
       <div class="container">
         <div class="about-grid">
           <div class="about-photo-wrapper animate-on-scroll animate-left">
-            <img src="assets/rodge.png"
+            <img src="assets/rodge.avif"
                  alt="Rodger Koller em Dublin, Irlanda"
                  class="about-photo"
                  width="500" height="625"
-                 loading="lazy">
+                 loading="lazy" decoding="async">
           </div>
           <div class="about-content">
             <span class="eyebrow animate-on-scroll">SOBRE</span>
@@ -252,7 +259,7 @@
           <article class="skill-card animate-on-scroll animate-scale stagger-1">
             <div class="skill-card-glow"></div>
             <div class="skill-card-icon">
-              <img src="assets/speaking.png" alt="Speaking" width="64" height="64" loading="lazy">
+              <img src="assets/speaking.avif" alt="Speaking" width="64" height="64" loading="lazy" decoding="async">
             </div>
             <h3 class="skill-card-title">Speaking</h3>
             <p class="skill-card-desc">Conversacao fluente com confianca. Sem traduzir mentalmente, sem travar no meio da frase.</p>
@@ -260,7 +267,7 @@
           <article class="skill-card animate-on-scroll animate-scale stagger-2">
             <div class="skill-card-glow"></div>
             <div class="skill-card-icon">
-              <img src="assets/rogerlistening.png" alt="Listening" width="64" height="64" loading="lazy">
+              <img src="assets/rogerlistening.avif" alt="Listening" width="64" height="64" loading="lazy" decoding="async">
             </div>
             <h3 class="skill-card-title">Listening</h3>
             <p class="skill-card-desc">Compreensao auditiva real. Entender nativos em velocidade normal, com girias e sotaques.</p>
@@ -268,7 +275,7 @@
           <article class="skill-card animate-on-scroll animate-scale stagger-3">
             <div class="skill-card-glow"></div>
             <div class="skill-card-icon">
-              <img src="assets/reading.png" alt="Reading" width="64" height="64" loading="lazy">
+              <img src="assets/reading.avif" alt="Reading" width="64" height="64" loading="lazy" decoding="async">
             </div>
             <h3 class="skill-card-title">Reading</h3>
             <p class="skill-card-desc">Leitura avancada. Consumir livros, artigos e noticias sem dicionario.</p>
@@ -276,7 +283,7 @@
           <article class="skill-card animate-on-scroll animate-scale stagger-4">
             <div class="skill-card-glow"></div>
             <div class="skill-card-icon">
-              <img src="assets/writing.png" alt="Writing" width="64" height="64" loading="lazy">
+              <img src="assets/writing.avif" alt="Writing" width="64" height="64" loading="lazy" decoding="async">
             </div>
             <h3 class="skill-card-title">Writing</h3>
             <p class="skill-card-desc">Escrita estruturada. Emails, textos e redacoes com clareza e naturalidade.</p>
@@ -284,7 +291,7 @@
           <article class="skill-card animate-on-scroll animate-scale stagger-5">
             <div class="skill-card-glow"></div>
             <div class="skill-card-icon">
-              <img src="assets/pronunciation.png" alt="Pronuncia" width="64" height="64" loading="lazy">
+              <img src="assets/pronunciation.avif" alt="Pronuncia" width="64" height="64" loading="lazy" decoding="async">
             </div>
             <h3 class="skill-card-title">Pronuncia</h3>
             <p class="skill-card-desc">Sotaque treinado com tecnicas reais. 1.400 frases de pratica no curso.</p>
@@ -292,7 +299,7 @@
           <article class="skill-card animate-on-scroll animate-scale stagger-6">
             <div class="skill-card-glow"></div>
             <div class="skill-card-icon">
-              <img src="assets/vocabulary.png" alt="Vocabulario" width="64" height="64" loading="lazy">
+              <img src="assets/vocabulary.avif" alt="Vocabulario" width="64" height="64" loading="lazy" decoding="async">
             </div>
             <h3 class="skill-card-title">Vocabulario</h3>
             <p class="skill-card-desc">Expressoes naturais do dia a dia. Vocabulario que nativos realmente usam.</p>
@@ -486,7 +493,7 @@
             </div>
             <blockquote class="testimonial-quote">"Com certeza e o melhor e mais completo curso online para aprender ingles. Pela qualidade do curso achei o preco excelente, outro diferencial e o contato semanal que o professor tem com os alunos, fazendo um acompanhamento personalizado."</blockquote>
             <footer class="testimonial-author">
-              <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="Gilmar" loading="lazy"></div>
+              <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="Gilmar" loading="lazy" decoding="async"></div>
               <div>
                 <cite class="testimonial-name">Gilmar</cite>
                 <span class="testimonial-date">Junho 2021</span>
@@ -503,7 +510,7 @@
             </div>
             <blockquote class="testimonial-quote">"O maior diferencial que encontrei no curso do Rodger e o acompanhamento que ele faz com todos os alunos. Cara isso e DEMAIS!!! O professor manda msg para vc cobrando os exercicios."</blockquote>
             <footer class="testimonial-author">
-              <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" alt="Joao" loading="lazy"></div>
+              <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" alt="Joao" loading="lazy" decoding="async"></div>
               <div>
                 <cite class="testimonial-name">Joao</cite>
                 <span class="testimonial-date">Marco 2021</span>
@@ -520,7 +527,7 @@
             </div>
             <blockquote class="testimonial-quote">"Amei o metodo agora sei que posso aprender ingles"</blockquote>
             <footer class="testimonial-author">
-              <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" alt="Tania" loading="lazy"></div>
+              <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" alt="Tania" loading="lazy" decoding="async"></div>
               <div>
                 <cite class="testimonial-name">Tania</cite>
                 <span class="testimonial-date">Marco 2021</span>
@@ -537,7 +544,7 @@
             </div>
             <blockquote class="testimonial-quote">"Recomendo demais pra quem quer aprender ingles de verdade com um professor que se importa com o progresso de cada aluno."</blockquote>
             <footer class="testimonial-author">
-              <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face" alt="Murilo" loading="lazy"></div>
+              <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face" alt="Murilo" loading="lazy" decoding="async"></div>
               <div>
                 <cite class="testimonial-name">Murilo</cite>
                 <span class="testimonial-date">Marco 2021</span>
@@ -745,7 +752,7 @@
       </button>
       <div class="exit-hero-wrapper">
         <div class="exit-hero-glow"></div>
-        <img src="assets/exitpopupintent.png" alt="Rodger Koller oferecendo presente" class="exit-hero-img" width="220" height="240">
+        <img src="assets/exitpopupintent.avif" alt="Rodger Koller oferecendo presente" class="exit-hero-img" width="220" height="240">
       </div>
       <h3 id="exit-title">Espera! Tenho um presente pra voce</h3>
       <p class="exit-desc">Baixe gratis o ebook com as 7 tecnicas do Metodo Koller pra destravar seu ingles em 30 dias.</p>

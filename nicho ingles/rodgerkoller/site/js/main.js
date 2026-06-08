@@ -402,6 +402,30 @@
     update();
   }
 
+  // Video Facade — load iframe on click
+  function initVideoFacade() {
+    const facades = document.querySelectorAll('.video-facade[data-video-src]');
+    facades.forEach(facade => {
+      const activate = () => {
+        const src = facade.dataset.videoSrc;
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.allow = 'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.title = 'Rodger Koller falando sobre suas aulas';
+        iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:inherit;';
+        facade.textContent = '';
+        facade.appendChild(iframe);
+        facade.classList.remove('video-facade');
+        facade.removeAttribute('role');
+        facade.removeAttribute('tabindex');
+        facade.style.cursor = '';
+      };
+      facade.addEventListener('click', activate, { once: true });
+      facade.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } }, { once: true });
+    });
+  }
+
   // Preloader
   function initPreloader() {
     window.addEventListener('load', () => {
@@ -428,6 +452,7 @@
     initExitIntent();
     initTestimonials();
     initVideoExpansion();
+    initVideoFacade();
   });
 
   initPreloader();
