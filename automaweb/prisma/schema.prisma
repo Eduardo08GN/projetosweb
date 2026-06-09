@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      Role     @default(TENANT)
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  logo      String?
+  phone     String?
+  email     String?
+  status    TenantStatus @default(PROSPECT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users          User[]
+  carrosseis     Carrossel[]
+  agendaPosts    AgendaPost[]
+  automacoes     AutomacaoDM[]
+  interacoes     InteracaoDM[]
+  sites          Site[]
+  metaConnection MetaConnection?
+}
+
+model MetaConnection {
+  id             String               @id @default(cuid())
+  tenantId       String               @unique
+  tenant         Tenant               @relation(fields: [tenantId], references: [id])
+  igUserId       String?
+  igUsername      String?
+  igProfilePic   String?
+  pageId         String?
+  pageName       String?
+  accessToken    String?
+  tokenExpiresAt DateTime?
+  connectedAt    DateTime?
+  status         MetaConnectionStatus @default(DESCONECTADO)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+}
+
+model Carrossel {
+  id          String          @id @default(cuid())
+  tenantId    String
+  tenant      Tenant          @relation(fields: [tenantId], references: [id])
+  titulo      String
+  status      PipelineStatus  @default(BACKLOG)
+  angulo      String?
+  slides      Json?
+  legendaBody String?
+  hashtags    String?
+  operador    String?
+  agendadoPara DateTime?
+  publicadoEm  DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  agendaPost  AgendaPost?
+
+  @@index([tenantId])
+  @@index([status])
+}
+
+model AgendaPost {
+  id           String   @id @default(cuid())
+  tenantId     String
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  carrosselId  String?  @unique
+  carrossel    Carrossel? @relation(fields: [carrosselId], references: [id])
+  plataforma   String
+  agendadoPara DateTime
+  publicadoEm  DateTime?
+  status       AgendaStatus @default(AGENDADO)
+  createdAt    DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([agendadoPara])
+}
+
+model AutomacaoDM {
+  id          String   @id @default(cuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  keyword     String
+  resposta    String
+  ativo       Boolean  @default(true)
+  disparos    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, keyword])
+  @@index([tenantId])
+}
+
+model InteracaoDM {
+  id          String   @id @default(cuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  igUserId    String
+  igUsername  String?
+  keyword     String
+  respondido  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([createdAt])
+}
+
+model Site {
+  id        String     @id @default(cuid())
+  tenantId  String
+  tenant    Tenant     @relation(fields: [tenantId], references: [id])
+  dominio   String?
+  urlPreview String?
+  fase      SiteFase   @default(PRE_FECHAMENTO)
+  status    SiteStatus @default(RASCUNHO)
+  stack     String?
+  notas     String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([tenantId])
+  @@index([fase])
+}
+
+enum Role {
+  MASTER
+  TENANT
+}
+
+enum TenantStatus {
+  PROSPECT
+  ATIVO
+  PAUSADO
+  CANCELADO
+}
+
+enum PipelineStatus {
+  BACKLOG
+  EM_PRODUCAO
+  REVISAO_INTERNA
+  AGUARDANDO_CLIENTE
+  APROVADO
+  AGENDADO
+  PUBLICADO
+  AJUSTE_PEDIDO
+}
+
+enum AgendaStatus {
+  AGENDADO
+  PUBLICADO
+  FALHOU
+  CANCELADO
+}
+
+enum SiteFase {
+  PRE_FECHAMENTO
+  POS_FECHAMENTO
+}
+
+enum SiteStatus {
+  RASCUNHO
+  EM_DESENVOLVIMENTO
+  REVISAO
+  PUBLICADO
+  ARQUIVADO
+}
+
+enum MetaConnectionStatus {
+  DESCONECTADO
+  CONECTADO
+  TOKEN_EXPIRADO
+  ERRO
+}
