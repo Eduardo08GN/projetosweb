@@ -12,6 +12,7 @@ import {
 } from "@dnd-kit/core";
 import { KanbanColumn } from "./kanban-column";
 import { KanbanCard, type KanbanItem } from "./kanban-card";
+import { ScheduleSheet } from "./schedule-sheet";
 import { moveCarrossel } from "@/app/actions/carrossel-actions";
 
 const COLUMN_ORDER = [
@@ -32,6 +33,8 @@ type Props = {
 export function KanbanBoard({ data }: Props) {
   const [columns, setColumns] = useState(data);
   const [activeItem, setActiveItem] = useState<KanbanItem | null>(null);
+  const [scheduleItem, setScheduleItem] = useState<KanbanItem | null>(null);
+  const [scheduleOpen, setScheduleOpen] = useState(false);
   const [, startTransition] = useTransition();
 
   const sensors = useSensors(
@@ -84,24 +87,40 @@ export function KanbanBoard({ data }: Props) {
     });
   }
 
+  function handleCardClick(item: KanbanItem, status: string) {
+    if (status === "APROVADO") {
+      setScheduleItem(item);
+      setScheduleOpen(true);
+    }
+  }
+
   return (
-    <DndContext
-      sensors={sensors}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-    >
-      <div className="flex gap-5 overflow-x-auto pb-4">
-        {COLUMN_ORDER.map((status) => (
-          <KanbanColumn
-            key={status}
-            status={status}
-            items={columns[status] ?? []}
-          />
-        ))}
-      </div>
-      <DragOverlay>
-        {activeItem ? <KanbanCard item={activeItem} isDragOverlay /> : null}
-      </DragOverlay>
-    </DndContext>
+    <>
+      <DndContext
+        sensors={sensors}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="flex gap-5 overflow-x-auto pb-4">
+          {COLUMN_ORDER.map((status) => (
+            <KanbanColumn
+              key={status}
+              status={status}
+              items={columns[status] ?? []}
+              onCardClick={(item) => handleCardClick(item, status)}
+            />
+          ))}
+        </div>
+        <DragOverlay>
+          {activeItem ? <KanbanCard item={activeItem} isDragOverlay /> : null}
+        </DragOverlay>
+      </DndContext>
+
+      <ScheduleSheet
+        item={scheduleItem}
+        open={scheduleOpen}
+        onOpenChange={setScheduleOpen}
+      />
+    </>
   );
 }

@@ -66,9 +66,10 @@ model Carrossel {
   status      PipelineStatus  @default(BACKLOG)
   angulo      String?
   slides      Json?
-  legendaBody String?
-  hashtags    String?
-  operador    String?
+  legendaBody     String?
+  hashtags        String?
+  operador        String?
+  feedbackCliente String?
   agendadoPara DateTime?
   publicadoEm  DateTime?
   createdAt   DateTime        @default(now())

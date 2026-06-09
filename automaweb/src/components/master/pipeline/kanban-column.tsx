@@ -30,9 +30,11 @@ const columnLabels: Record<string, string> = {
 export function KanbanColumn({
   status,
   items,
+  onCardClick,
 }: {
   status: string;
   items: KanbanItem[];
+  onCardClick?: (item: KanbanItem) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: status });
   const colors = columnColors[status] ?? columnColors.BACKLOG;
@@ -60,7 +62,11 @@ export function KanbanColumn({
         variants={variants.staggerContainer}
       >
         {items.map((item) => (
-          <KanbanCard key={item.id} item={item} />
+          <KanbanCard
+            key={item.id}
+            item={item}
+            onClick={onCardClick ? () => onCardClick(item) : undefined}
+          />
         ))}
         {items.length === 0 && (
           <div

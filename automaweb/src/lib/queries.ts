@@ -110,6 +110,8 @@ export async function getKanbanData() {
     tenant: string;
     operador: string;
     dias: number;
+    feedbackCliente: string | null;
+    angulo: string | null;
   }>> = {};
 
   for (const c of carrosseis) {
@@ -124,6 +126,8 @@ export async function getKanbanData() {
       tenant: c.tenant.name,
       operador: c.operador ?? "Equipe",
       dias,
+      feedbackCliente: c.feedbackCliente,
+      angulo: c.angulo,
     });
   }
 

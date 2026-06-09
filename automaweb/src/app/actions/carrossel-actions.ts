@@ -73,3 +73,38 @@ export async function moveCarrossel(
   revalidatePath("/master");
   return { success: true };
 }
+
+export async function scheduleCarrossel(
+  carrosselId: string,
+  dateTime: string
+): Promise<{ error?: string; success?: boolean }> {
+  const agendadoPara = new Date(dateTime);
+  if (isNaN(agendadoPara.getTime())) {
+    return { error: "Data invalida" };
+  }
+
+  if (agendadoPara.getTime() < Date.now()) {
+    return { error: "A data precisa ser no futuro" };
+  }
+
+  const carrossel = await db.carrossel.findUnique({
+    where: { id: carrosselId },
+  });
+  if (!carrossel) {
+    return { error: "Carrossel nao encontrado" };
+  }
+
+  if (carrossel.status !== "APROVADO") {
+    return { error: "Somente carrosseis aprovados podem ser agendados" };
+  }
+
+  await db.carrossel.update({
+    where: { id: carrosselId },
+    data: { status: "AGENDADO", agendadoPara },
+  });
+
+  revalidatePath("/master/pipeline");
+  revalidatePath("/master");
+  revalidatePath("/tenant/carrossel");
+  return { success: true };
+}
