@@ -112,6 +112,9 @@ export async function getKanbanData() {
     dias: number;
     feedbackCliente: string | null;
     angulo: string | null;
+    slides: string[];
+    legendaBody: string;
+    hashtags: string;
   }>> = {};
 
   for (const c of carrosseis) {
@@ -128,6 +131,9 @@ export async function getKanbanData() {
       dias,
       feedbackCliente: c.feedbackCliente,
       angulo: c.angulo,
+      slides: (c.slides as string[] | null) ?? [],
+      legendaBody: c.legendaBody ?? "",
+      hashtags: c.hashtags ?? "",
     });
   }
 

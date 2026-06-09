@@ -13,6 +13,9 @@ export type KanbanItem = {
   dias: number;
   feedbackCliente: string | null;
   angulo: string | null;
+  slides: string[];
+  legendaBody: string;
+  hashtags: string;
 };
 
 export function KanbanCard({

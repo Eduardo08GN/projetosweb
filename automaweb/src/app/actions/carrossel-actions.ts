@@ -74,6 +74,40 @@ export async function moveCarrossel(
   return { success: true };
 }
 
+export async function updateCarrosselContent(
+  carrosselId: string,
+  data: {
+    titulo?: string;
+    angulo?: string;
+    slides?: string[];
+    legendaBody?: string;
+    hashtags?: string;
+  }
+): Promise<{ error?: string; success?: boolean }> {
+  const carrossel = await db.carrossel.findUnique({
+    where: { id: carrosselId },
+  });
+  if (!carrossel) {
+    return { error: "Carrossel nao encontrado" };
+  }
+
+  await db.carrossel.update({
+    where: { id: carrosselId },
+    data: {
+      titulo: data.titulo?.trim() || carrossel.titulo,
+      angulo: data.angulo?.trim() || carrossel.angulo,
+      slides: data.slides && data.slides.length > 0 ? data.slides : undefined,
+      legendaBody: data.legendaBody !== undefined ? data.legendaBody.trim() || null : carrossel.legendaBody,
+      hashtags: data.hashtags !== undefined ? data.hashtags.trim() || null : carrossel.hashtags,
+    },
+  });
+
+  revalidatePath("/master/pipeline");
+  revalidatePath("/master");
+  revalidatePath("/tenant/carrossel");
+  return { success: true };
+}
+
 export async function scheduleCarrossel(
   carrosselId: string,
   dateTime: string

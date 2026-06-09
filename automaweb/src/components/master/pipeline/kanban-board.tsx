@@ -12,7 +12,7 @@ import {
 } from "@dnd-kit/core";
 import { KanbanColumn } from "./kanban-column";
 import { KanbanCard, type KanbanItem } from "./kanban-card";
-import { ScheduleSheet } from "./schedule-sheet";
+import { CarrosselDetailSheet } from "./carrossel-detail-sheet";
 import { moveCarrossel } from "@/app/actions/carrossel-actions";
 
 const COLUMN_ORDER = [
@@ -33,8 +33,9 @@ type Props = {
 export function KanbanBoard({ data }: Props) {
   const [columns, setColumns] = useState(data);
   const [activeItem, setActiveItem] = useState<KanbanItem | null>(null);
-  const [scheduleItem, setScheduleItem] = useState<KanbanItem | null>(null);
-  const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [detailItem, setDetailItem] = useState<KanbanItem | null>(null);
+  const [detailStatus, setDetailStatus] = useState("");
+  const [detailOpen, setDetailOpen] = useState(false);
   const [, startTransition] = useTransition();
 
   const sensors = useSensors(
@@ -88,10 +89,9 @@ export function KanbanBoard({ data }: Props) {
   }
 
   function handleCardClick(item: KanbanItem, status: string) {
-    if (status === "APROVADO") {
-      setScheduleItem(item);
-      setScheduleOpen(true);
-    }
+    setDetailItem(item);
+    setDetailStatus(status);
+    setDetailOpen(true);
   }
 
   return (
@@ -116,10 +116,11 @@ export function KanbanBoard({ data }: Props) {
         </DragOverlay>
       </DndContext>
 
-      <ScheduleSheet
-        item={scheduleItem}
-        open={scheduleOpen}
-        onOpenChange={setScheduleOpen}
+      <CarrosselDetailSheet
+        item={detailItem}
+        status={detailStatus}
+        open={detailOpen}
+        onOpenChange={setDetailOpen}
       />
     </>
   );
