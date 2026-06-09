@@ -34,7 +34,7 @@ const statusConfig: Record<
     icon: CheckCircle2,
   },
   TOKEN_EXPIRADO: {
-    label: "Token expirado",
+    label: "Acesso expirado",
     color: "text-[#854D0E]",
     bg: "bg-[#FEF9C3]",
     icon: AlertTriangle,
@@ -142,7 +142,7 @@ export function MetaConnectionCard({
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="h-1 w-1 rounded-full bg-[#A1A1AA]" />
-                      Acompanhar o status de cada post
+                      Acompanhar a situacao de cada post
                     </li>
                   </ul>
                 </div>
@@ -195,7 +195,7 @@ export function MetaConnectionCard({
                 </div>
                 <div className="rounded-lg bg-[#FAFAFA] px-4 py-3">
                   <p className="text-[11px] font-medium uppercase tracking-[0.05em] text-[#A1A1AA]">
-                    Token expira em
+                    Acesso expira em
                   </p>
                   <p className="mt-1 text-sm text-[#09090B]">
                     {connection.tokenExpiresAt &&
@@ -209,7 +209,7 @@ export function MetaConnectionCard({
                   onClick={handleReconnect}
                   className="gap-2 rounded-lg bg-[#18181B] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A]"
                 >
-                  Renovar token
+                  Renovar acesso
                 </Button>
                 <button
                   onClick={handleDisconnect}
@@ -232,7 +232,7 @@ export function MetaConnectionCard({
             >
               <div className="rounded-lg bg-[#FEF9C3] px-4 py-3">
                 <p className="text-sm text-[#854D0E]">
-                  O token de acesso expirou. Reconecte para continuar publicando.
+                  O acesso expirou. Reconecte para continuar publicando.
                 </p>
               </div>
               <Button

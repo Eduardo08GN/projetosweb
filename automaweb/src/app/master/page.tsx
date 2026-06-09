@@ -13,7 +13,7 @@ export default async function MasterDashboard() {
 
   return (
     <div>
-      <PageHeader title="Dashboard" description="Visao geral da operacao" />
+      <PageHeader title="Inicio" description="Visao geral da operacao" />
       <MasterMetrics data={metrics} />
       <div className="mt-8 grid grid-cols-1 gap-5 xl:grid-cols-3">
         <div className="xl:col-span-2">

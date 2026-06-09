@@ -130,6 +130,15 @@ export async function getKanbanData() {
   return grouped;
 }
 
+export async function getActiveTenants() {
+  const tenants = await db.tenant.findMany({
+    where: { status: "ATIVO" },
+    orderBy: { name: "asc" },
+    select: { id: true, name: true },
+  });
+  return tenants;
+}
+
 // ── TENANT ──
 
 export async function getTenantMetrics(tenantId: string) {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useDroppable } from "@dnd-kit/core";
 import { motion } from "framer-motion";
 import { variants } from "@/lib/animations";
 import { KanbanCard, type KanbanItem } from "./kanban-card";
@@ -16,9 +17,9 @@ const columnColors: Record<string, { badge: string; badgeText: string }> = {
 };
 
 const columnLabels: Record<string, string> = {
-  BACKLOG: "Backlog",
-  EM_PRODUCAO: "Em produção",
-  REVISAO_INTERNA: "Revisão interna",
+  BACKLOG: "A fazer",
+  EM_PRODUCAO: "Em producao",
+  REVISAO_INTERNA: "Revisao interna",
   AGUARDANDO_CLIENTE: "Aguardando cliente",
   APROVADO: "Aprovado",
   AGENDADO: "Agendado",
@@ -33,6 +34,7 @@ export function KanbanColumn({
   status: string;
   items: KanbanItem[];
 }) {
+  const { setNodeRef, isOver } = useDroppable({ id: status });
   const colors = columnColors[status] ?? columnColors.BACKLOG;
   const label = columnLabels[status] ?? status;
 
@@ -49,7 +51,10 @@ export function KanbanColumn({
         </span>
       </div>
       <motion.div
-        className="flex flex-1 flex-col gap-2.5"
+        ref={setNodeRef}
+        className={`flex flex-1 flex-col gap-2.5 rounded-xl p-1.5 transition-colors duration-150 ${
+          isOver ? "bg-[#F4F4F5]" : ""
+        }`}
         initial="hidden"
         animate="visible"
         variants={variants.staggerContainer}
@@ -58,8 +63,14 @@ export function KanbanColumn({
           <KanbanCard key={item.id} item={item} />
         ))}
         {items.length === 0 && (
-          <div className="flex h-20 items-center justify-center rounded-xl border border-dashed border-[#E4E4E7]">
-            <span className="text-xs text-[#A1A1AA]">Vazio</span>
+          <div
+            className={`flex h-20 items-center justify-center rounded-xl border border-dashed ${
+              isOver ? "border-[#18181B] bg-[#F4F4F5]" : "border-[#E4E4E7]"
+            }`}
+          >
+            <span className="text-xs text-[#A1A1AA]">
+              {isOver ? "Soltar aqui" : "Vazio"}
+            </span>
           </div>
         )}
       </motion.div>

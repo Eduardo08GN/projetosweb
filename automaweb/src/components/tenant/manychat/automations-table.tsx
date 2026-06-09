@@ -54,7 +54,7 @@ export function AutomationsTable({ items }: { items: Automation[] }) {
                 Envios
               </th>
               <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A]">
-                Status
+                Situacao
               </th>
             </tr>
           </thead>

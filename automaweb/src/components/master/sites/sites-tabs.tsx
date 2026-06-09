@@ -85,13 +85,13 @@ function SiteTable({ data }: { data: SiteRow[] }) {
               Domínio
             </th>
             <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A]">
-              Preview
+              Previa
             </th>
             <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A]">
-              Status
+              Situacao
             </th>
             <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A]">
-              Stack
+              Tecnologia
             </th>
             <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A]">
               Notas

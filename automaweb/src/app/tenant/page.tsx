@@ -32,7 +32,7 @@ export default async function TenantDashboard() {
   return (
     <PageShell>
       <PageHeader
-        title="Dashboard"
+        title="Inicio"
         description="Acompanhe o que esta acontecendo"
       />
       <div className="space-y-6">

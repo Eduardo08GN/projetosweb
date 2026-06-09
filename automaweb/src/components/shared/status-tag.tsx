@@ -12,9 +12,9 @@ const statusStyles: Record<string, { bg: string; text: string }> = {
 };
 
 const statusLabels: Record<string, string> = {
-  BACKLOG: "Backlog",
-  EM_PRODUCAO: "Em produção",
-  REVISAO_INTERNA: "Revisão interna",
+  BACKLOG: "A fazer",
+  EM_PRODUCAO: "Em producao",
+  REVISAO_INTERNA: "Revisao interna",
   AGUARDANDO_CLIENTE: "Aguardando cliente",
   APROVADO: "Aprovado",
   AGENDADO: "Agendado",

@@ -35,7 +35,7 @@ export function ClientesTable({ items }: { items: ClienteRow[] }) {
                 Contato
               </th>
               <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A]">
-                Status
+                Situacao
               </th>
               <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A]">
                 Carrosseis
@@ -55,7 +55,6 @@ export function ClientesTable({ items }: { items: ClienteRow[] }) {
                   <p className="text-sm font-medium text-[#09090B]">
                     {c.name}
                   </p>
-                  <p className="mt-0.5 text-xs text-[#A1A1AA]">{c.slug}</p>
                 </td>
                 <td className="px-5 py-3.5">
                   <p className="text-sm text-[#09090B]">{c.email}</p>
