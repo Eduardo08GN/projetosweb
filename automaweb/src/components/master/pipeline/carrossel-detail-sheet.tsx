@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useEffect, useTransition } from "react";
 import {
   Save,
   CalendarCheck,
@@ -122,22 +122,19 @@ export function CarrosselDetailSheet({
   const [savePending, startSaveTransition] = useTransition();
   const [schedulePending, startScheduleTransition] = useTransition();
 
-  function syncFromItem(it: KanbanItem) {
-    setTitulo(it.titulo);
-    setAngulo(it.angulo ?? "");
-    setSlides([...it.slides]);
-    setLegendaBody(it.legendaBody);
-    setHashtags(it.hashtags);
-    setScheduleDate("");
-    setScheduleTime("10:00");
-    setError("");
-    setSaved(false);
-  }
-
-  function handleOpenChange(next: boolean) {
-    if (next && item) syncFromItem(item);
-    onOpenChange(next);
-  }
+  useEffect(() => {
+    if (open && item) {
+      setTitulo(item.titulo);
+      setAngulo(item.angulo ?? "");
+      setSlides([...item.slides]);
+      setLegendaBody(item.legendaBody);
+      setHashtags(item.hashtags);
+      setScheduleDate("");
+      setScheduleTime("10:00");
+      setError("");
+      setSaved(false);
+    }
+  }, [open, item]);
 
   function handleSave() {
     if (!item) return;
@@ -177,7 +174,7 @@ export function CarrosselDetailSheet({
   if (!item) return null;
 
   return (
-    <Sheet open={open} onOpenChange={handleOpenChange}>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="sm:max-w-lg overflow-y-auto">
         <SheetHeader>
           <div className="flex items-center gap-3">

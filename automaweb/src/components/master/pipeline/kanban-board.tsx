@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useEffect, useTransition } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -34,6 +34,10 @@ export function KanbanBoard({ data }: Props) {
   const [columns, setColumns] = useState(data);
   const [activeItem, setActiveItem] = useState<KanbanItem | null>(null);
   const [detailItem, setDetailItem] = useState<KanbanItem | null>(null);
+
+  useEffect(() => {
+    setColumns(data);
+  }, [data]);
   const [detailStatus, setDetailStatus] = useState("");
   const [detailOpen, setDetailOpen] = useState(false);
   const [, startTransition] = useTransition();
