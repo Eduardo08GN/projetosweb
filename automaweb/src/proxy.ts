@@ -5,7 +5,7 @@ const SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET ?? "automaweb-dev-secret-change-in-production"
 );
 
-const PUBLIC_PATHS = ["/login", "/api/meta/callback"];
+const PUBLIC_PATHS = ["/login", "/api/meta/callback", "/api/auth/google"];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
