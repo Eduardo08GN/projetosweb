@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { LogOut } from "lucide-react";
+import { logout } from "@/app/actions/auth-actions";
 import type { LucideIcon } from "lucide-react";
 
 export type NavItem = {
@@ -60,6 +62,16 @@ export function AppSidebar({
           );
         })}
       </nav>
+
+      <div className="border-t border-[#E4E4E7] px-3 py-3">
+        <button
+          onClick={() => logout()}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-normal text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B]"
+        >
+          <LogOut size={18} strokeWidth={1.5} />
+          Sair
+        </button>
+      </div>
     </aside>
   );
 }
