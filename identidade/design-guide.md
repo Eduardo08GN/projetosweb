@@ -91,6 +91,25 @@
 
 ---
 
+## AutomaWeb — Regras de plataforma
+
+### Modais
+- **Todo modal deve ter overlay com blur.** Overlay `bg-black/40` + `backdrop-blur-sm`. Sem excecao.
+- Dialogs e Sheets seguem o mesmo padrao de overlay.
+- Animacao de entrada: fade-in + zoom-in-95. Saida: fade-out + zoom-out-95.
+
+### Tokens visuais
+- Fundo: `#FAFAFA`
+- Cards: `#FFFFFF` com border `#E4E4E7` e shadow `0_1px_2px_rgba(0,0,0,0.04)`
+- Texto principal: `#09090B`
+- Texto muted: `#71717A`
+- Accent/botoes: `#18181B` (solid, nunca outline como primario)
+- Tags: solid (nunca outline)
+- Fonte: Plus Jakarta Sans
+- Tema: light only
+
+---
+
 ## Observacoes adicionais
 
 - Sempre gerar imagens via prompt descrevendo o avatar (ver scripts/gerar-imagem-cf.js)
