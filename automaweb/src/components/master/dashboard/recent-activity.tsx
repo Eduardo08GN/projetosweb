@@ -13,50 +13,7 @@ type ActivityItem = {
   updatedAt: string;
 };
 
-const mockActivity: ActivityItem[] = [
-  {
-    id: "1",
-    titulo: "Sotaque americano vs britânico",
-    tenant: "Prof. Rodger",
-    status: "PUBLICADO",
-    operador: "Eduardo",
-    updatedAt: "Hoje",
-  },
-  {
-    id: "2",
-    titulo: "5 erros no present perfect",
-    tenant: "Prof. Rodger",
-    status: "AGUARDANDO_CLIENTE",
-    operador: "Lucas",
-    updatedAt: "Ontem",
-  },
-  {
-    id: "3",
-    titulo: "Clareamento x facetas",
-    tenant: "Dra. Camila",
-    status: "EM_PRODUCAO",
-    operador: "Eduardo",
-    updatedAt: "Ontem",
-  },
-  {
-    id: "4",
-    titulo: "Rotina de skincare noturna",
-    tenant: "Studio Bella",
-    status: "REVISAO_INTERNA",
-    operador: "Lucas",
-    updatedAt: "3 dias",
-  },
-  {
-    id: "5",
-    titulo: "Marketing local para restaurantes",
-    tenant: "Chef Paulo",
-    status: "BACKLOG",
-    operador: "Eduardo",
-    updatedAt: "5 dias",
-  },
-];
-
-export function RecentActivity() {
+export function RecentActivity({ items }: { items: ActivityItem[] }) {
   return (
     <motion.div
       className="rounded-xl border border-[#E4E4E7] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
@@ -69,7 +26,7 @@ export function RecentActivity() {
         </h3>
       </div>
       <div className="divide-y divide-[#E4E4E7]">
-        {mockActivity.map((item) => (
+        {items.map((item) => (
           <div
             key={item.id}
             className="flex items-center justify-between px-5 py-3.5 transition-colors duration-150 hover:bg-[#FAFAFA]"
@@ -90,6 +47,11 @@ export function RecentActivity() {
             </div>
           </div>
         ))}
+        {items.length === 0 && (
+          <div className="px-5 py-8 text-center text-sm text-[#A1A1AA]">
+            Nenhuma atividade recente
+          </div>
+        )}
       </div>
     </motion.div>
   );

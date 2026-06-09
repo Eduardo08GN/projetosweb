@@ -4,25 +4,33 @@ import { motion } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
 import { MessageCircle, Zap, TrendingUp } from "lucide-react";
 
-const stats = [
-  {
-    label: "Automações ativas",
-    value: "3",
-    icon: Zap,
-  },
-  {
-    label: "DMs respondidas",
-    value: "147",
-    icon: MessageCircle,
-  },
-  {
-    label: "Taxa de resposta",
-    value: "94%",
-    icon: TrendingUp,
-  },
-];
+type Props = {
+  data: {
+    automacoesAtivas: number;
+    totalDms: number;
+    taxa: string;
+  };
+};
 
-export function DmStats() {
+export function DmStats({ data }: Props) {
+  const stats = [
+    {
+      label: "Automacoes ativas",
+      value: String(data.automacoesAtivas),
+      icon: Zap,
+    },
+    {
+      label: "DMs respondidas",
+      value: String(data.totalDms),
+      icon: MessageCircle,
+    },
+    {
+      label: "Taxa de resposta",
+      value: data.taxa,
+      icon: TrendingUp,
+    },
+  ];
+
   return (
     <motion.div
       className="rounded-xl border border-[#E4E4E7] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
@@ -33,7 +41,7 @@ export function DmStats() {
     >
       <div className="border-b border-[#E4E4E7] px-5 py-4">
         <h3 className="text-sm font-semibold text-[#09090B]">
-          Automação de DMs
+          Automacao de DMs
         </h3>
       </div>
       <div className="divide-y divide-[#E4E4E7]">

@@ -3,34 +3,7 @@
 import bcrypt from "bcryptjs";
 import { createSession, deleteSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
-
-const DEMO_USERS = [
-  {
-    id: "master-1",
-    email: "admin@automaweb.com.br",
-    name: "Eduardo",
-    password: bcrypt.hashSync("admin123", 10),
-    role: "MASTER" as const,
-  },
-  {
-    id: "tenant-1",
-    email: "rodger@profrodger.com.br",
-    name: "Prof. Rodger Koller",
-    password: bcrypt.hashSync("rodger123", 10),
-    role: "TENANT" as const,
-    tenantId: "tenant-profrodger",
-    tenantSlug: "prof-rodger",
-  },
-  {
-    id: "tenant-2",
-    email: "camila@dracamilaodonto.com.br",
-    name: "Dra. Camila",
-    password: bcrypt.hashSync("camila123", 10),
-    role: "TENANT" as const,
-    tenantId: "tenant-dracamila",
-    tenantSlug: "dra-camila",
-  },
-];
+import { db } from "@/lib/db";
 
 export type LoginState = {
   error?: string;
@@ -47,7 +20,11 @@ export async function login(
     return { error: "Preencha todos os campos" };
   }
 
-  const user = DEMO_USERS.find((u) => u.email === email);
+  const user = await db.user.findUnique({
+    where: { email },
+    include: { tenant: true },
+  });
+
   if (!user) {
     return { error: "Email ou senha incorretos" };
   }
@@ -62,8 +39,8 @@ export async function login(
     email: user.email,
     name: user.name,
     role: user.role,
-    tenantId: user.tenantId,
-    tenantSlug: user.tenantSlug,
+    tenantId: user.tenantId ?? undefined,
+    tenantSlug: user.tenant?.slug,
   });
 
   if (user.role === "MASTER") {

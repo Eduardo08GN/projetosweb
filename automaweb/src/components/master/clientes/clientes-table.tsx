@@ -15,60 +15,7 @@ type ClienteRow = {
   createdAt: string;
 };
 
-const mockClientes: ClienteRow[] = [
-  {
-    id: "1",
-    name: "Prof. Rodger",
-    slug: "prof-rodger",
-    email: "rodger@email.com",
-    phone: "(11) 99999-0001",
-    status: "ATIVO",
-    carrosseis: 12,
-    createdAt: "Mai 2026",
-  },
-  {
-    id: "2",
-    name: "Dra. Camila",
-    slug: "dra-camila",
-    email: "camila@email.com",
-    phone: "(11) 99999-0002",
-    status: "ATIVO",
-    carrosseis: 6,
-    createdAt: "Mai 2026",
-  },
-  {
-    id: "3",
-    name: "Studio Bella",
-    slug: "studio-bella",
-    email: "bella@email.com",
-    phone: "(11) 99999-0003",
-    status: "ATIVO",
-    carrosseis: 4,
-    createdAt: "Jun 2026",
-  },
-  {
-    id: "4",
-    name: "Chef Paulo",
-    slug: "chef-paulo",
-    email: "paulo@email.com",
-    phone: "(11) 99999-0004",
-    status: "PROSPECT",
-    carrosseis: 0,
-    createdAt: "Jun 2026",
-  },
-  {
-    id: "5",
-    name: "Fit Academy",
-    slug: "fit-academy",
-    email: "fit@email.com",
-    phone: "(11) 99999-0005",
-    status: "PROSPECT",
-    carrosseis: 0,
-    createdAt: "Jun 2026",
-  },
-];
-
-export function ClientesTable() {
+export function ClientesTable({ items }: { items: ClienteRow[] }) {
   return (
     <motion.div
       className="rounded-xl border border-[#E4E4E7] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
@@ -91,7 +38,7 @@ export function ClientesTable() {
                 Status
               </th>
               <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A]">
-                Carrosséis
+                Carrosseis
               </th>
               <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A]">
                 Desde
@@ -99,7 +46,7 @@ export function ClientesTable() {
             </tr>
           </thead>
           <tbody className="divide-y divide-[#E4E4E7]">
-            {mockClientes.map((c) => (
+            {items.map((c) => (
               <tr
                 key={c.id}
                 className="transition-colors duration-150 hover:bg-[#FAFAFA]"

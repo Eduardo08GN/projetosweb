@@ -5,7 +5,17 @@ import { variants } from "@/lib/animations";
 import { MetricCard } from "@/components/master/dashboard/metric-card";
 import { MessageCircle, Zap, UserPlus, TrendingUp } from "lucide-react";
 
-export function DmMetrics() {
+type Props = {
+  data: {
+    totalMensagens: number;
+    totalRespondidas: number;
+    taxa: string;
+    contatos: number;
+    automacoesAtivas: number;
+  };
+};
+
+export function DmMetrics({ data }: Props) {
   return (
     <motion.div
       className="grid grid-cols-4 gap-4"
@@ -15,28 +25,23 @@ export function DmMetrics() {
     >
       <MetricCard
         label="Total de mensagens"
-        value={303}
+        value={data.totalMensagens}
         icon={MessageCircle}
-        trend="up"
-        trendLabel="+24 hoje"
       />
       <MetricCard
         label="Respostas enviadas"
-        value={289}
+        value={data.totalRespondidas}
         icon={Zap}
-        trend="up"
-        trendLabel="95%"
+        trendLabel={data.taxa}
       />
       <MetricCard
         label="Contatos captados"
-        value={147}
+        value={data.contatos}
         icon={UserPlus}
-        trend="up"
-        trendLabel="+12 esta semana"
       />
       <MetricCard
-        label="Automações ativas"
-        value={3}
+        label="Automacoes ativas"
+        value={data.automacoesAtivas}
         icon={TrendingUp}
       />
     </motion.div>

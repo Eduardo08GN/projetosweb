@@ -13,34 +13,7 @@ type UpcomingPost = {
   hora: string;
 };
 
-const mockPosts: UpcomingPost[] = [
-  {
-    id: "1",
-    titulo: "Sotaque americano vs britânico",
-    tenant: "Prof. Rodger",
-    plataforma: "Instagram",
-    data: "10 jun",
-    hora: "18:00",
-  },
-  {
-    id: "2",
-    titulo: "Clareamento x facetas",
-    tenant: "Dra. Camila",
-    plataforma: "Instagram",
-    data: "11 jun",
-    hora: "12:00",
-  },
-  {
-    id: "3",
-    titulo: "Rotina de skincare noturna",
-    tenant: "Studio Bella",
-    plataforma: "Instagram",
-    data: "12 jun",
-    hora: "19:00",
-  },
-];
-
-export function UpcomingPosts() {
+export function UpcomingPosts({ items }: { items: UpcomingPost[] }) {
   return (
     <motion.div
       className="rounded-xl border border-[#E4E4E7] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
@@ -49,11 +22,11 @@ export function UpcomingPosts() {
     >
       <div className="border-b border-[#E4E4E7] px-5 py-4">
         <h3 className="text-base font-semibold tracking-tight text-[#09090B]">
-          Próximas publicações
+          Proximas publicacoes
         </h3>
       </div>
       <div className="divide-y divide-[#E4E4E7]">
-        {mockPosts.map((post) => (
+        {items.map((post) => (
           <div
             key={post.id}
             className="flex items-center gap-4 px-5 py-3.5 transition-colors duration-150 hover:bg-[#FAFAFA]"
@@ -75,6 +48,11 @@ export function UpcomingPosts() {
             </div>
           </div>
         ))}
+        {items.length === 0 && (
+          <div className="px-5 py-8 text-center text-sm text-[#A1A1AA]">
+            Nenhuma publicacao agendada
+          </div>
+        )}
       </div>
     </motion.div>
   );

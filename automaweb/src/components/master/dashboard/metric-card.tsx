@@ -21,12 +21,17 @@ export function MetricCard({
   trend?: "up" | "down";
   trendLabel?: string;
 }) {
-  const [displayed, setDisplayed] = useState(0);
-  const counted = useRef(false);
+  const [displayed, setDisplayed] = useState(value);
+  const prevValue = useRef(value);
 
   useEffect(() => {
-    if (counted.current) return;
-    counted.current = true;
+    if (value === 0) {
+      setDisplayed(0);
+      return;
+    }
+
+    const from = prevValue.current === value ? 0 : prevValue.current;
+    prevValue.current = value;
 
     const duration = 600;
     const steps = 30;
@@ -35,7 +40,7 @@ export function MetricCard({
     const timer = setInterval(() => {
       step++;
       const eased = 1 - Math.pow(1 - step / steps, 3);
-      setDisplayed(Math.round(eased * value));
+      setDisplayed(Math.round(from + eased * (value - from)));
       if (step >= steps) clearInterval(timer);
     }, duration / steps);
 

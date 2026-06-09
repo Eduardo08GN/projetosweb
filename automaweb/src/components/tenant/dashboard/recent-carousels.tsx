@@ -12,45 +12,7 @@ type CarouselItem = {
   updatedAt: string;
 };
 
-const mockCarousels: CarouselItem[] = [
-  {
-    id: "1",
-    titulo: "5 erros de pronúncia",
-    status: "PUBLICADO",
-    operador: "Ana",
-    updatedAt: "Hoje, 14:30",
-  },
-  {
-    id: "2",
-    titulo: "Phrasal verbs do dia a dia",
-    status: "AGENDADO",
-    operador: "Ana",
-    updatedAt: "Hoje, 10:15",
-  },
-  {
-    id: "3",
-    titulo: "Sotaque americano vs britânico",
-    status: "APROVADO",
-    operador: "Carlos",
-    updatedAt: "Ontem, 18:00",
-  },
-  {
-    id: "4",
-    titulo: "Present perfect simplificado",
-    status: "AGUARDANDO_CLIENTE",
-    operador: "Ana",
-    updatedAt: "Ontem, 09:45",
-  },
-  {
-    id: "5",
-    titulo: "Gírias americanas 2026",
-    status: "EM_PRODUCAO",
-    operador: "Carlos",
-    updatedAt: "05 jun, 16:20",
-  },
-];
-
-export function RecentCarousels() {
+export function RecentCarousels({ items }: { items: CarouselItem[] }) {
   return (
     <motion.div
       className="rounded-xl border border-[#E4E4E7] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
@@ -61,11 +23,11 @@ export function RecentCarousels() {
     >
       <div className="border-b border-[#E4E4E7] px-5 py-4">
         <h3 className="text-sm font-semibold text-[#09090B]">
-          Carrosséis recentes
+          Carrosseis recentes
         </h3>
       </div>
       <div className="divide-y divide-[#E4E4E7]">
-        {mockCarousels.map((item) => (
+        {items.map((item) => (
           <div
             key={item.id}
             className="flex items-center justify-between px-5 py-3.5 transition-colors duration-150 hover:bg-[#FAFAFA]"
@@ -88,6 +50,11 @@ export function RecentCarousels() {
             </div>
           </div>
         ))}
+        {items.length === 0 && (
+          <div className="px-5 py-8 text-center text-sm text-[#A1A1AA]">
+            Nenhum carrossel ainda
+          </div>
+        )}
       </div>
     </motion.div>
   );

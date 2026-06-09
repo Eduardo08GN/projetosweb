@@ -13,39 +13,8 @@ type Automation = {
   disparos: number;
 };
 
-const mockAutomations: Automation[] = [
-  {
-    id: "1",
-    keyword: "EBOOK",
-    resposta: "Opa! Aqui está o link do seu e-book gratuito: https://link.com/ebook",
-    ativo: true,
-    disparos: 87,
-  },
-  {
-    id: "2",
-    keyword: "AULA",
-    resposta: "Que bom que você quer participar! Acesse a aula gratuita aqui: https://link.com/aula",
-    ativo: true,
-    disparos: 42,
-  },
-  {
-    id: "3",
-    keyword: "PREÇO",
-    resposta: "Vou te mandar todos os detalhes por aqui. Qual curso te interessa mais?",
-    ativo: true,
-    disparos: 18,
-  },
-  {
-    id: "4",
-    keyword: "LISTA",
-    resposta: "Pronto! Você está na lista VIP. Vou te avisar em primeira mão quando abrir as vagas.",
-    ativo: false,
-    disparos: 156,
-  },
-];
-
-export function AutomationsTable() {
-  const [automations, setAutomations] = useState(mockAutomations);
+export function AutomationsTable({ items }: { items: Automation[] }) {
+  const [automations, setAutomations] = useState(items);
 
   function toggleAutomation(id: string) {
     setAutomations((prev) =>
@@ -63,10 +32,10 @@ export function AutomationsTable() {
     >
       <div className="border-b border-[#E4E4E7] px-5 py-4">
         <h3 className="text-sm font-semibold text-[#09090B]">
-          Respostas automáticas
+          Respostas automaticas
         </h3>
         <p className="mt-0.5 text-xs text-[#71717A]">
-          Quando alguém enviar a palavra-chave no seu Direct, a resposta é
+          Quando alguem enviar a palavra-chave no seu Direct, a resposta e
           enviada automaticamente
         </p>
       </div>
@@ -100,7 +69,7 @@ export function AutomationsTable() {
                     {a.keyword}
                   </span>
                 </td>
-                <td className="max-w-[360px] px-5 py-3.5 text-sm text-[#71717A] truncate">
+                <td className="max-w-[360px] truncate px-5 py-3.5 text-sm text-[#71717A]">
                   {a.resposta}
                 </td>
                 <td

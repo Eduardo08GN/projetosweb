@@ -47,15 +47,7 @@ const statusConfig: Record<
   },
 };
 
-const MOCK_CONNECTED: MetaConnectionData = {
-  status: "CONECTADO",
-  igUsername: "prof.rodger",
-  pageName: "Prof. Rodger Koller",
-  connectedAt: "2026-05-20T14:30:00Z",
-  tokenExpiresAt: "2026-07-19T14:30:00Z",
-};
-
-const MOCK_DISCONNECTED: MetaConnectionData = {
+const DEFAULT_DISCONNECTED: MetaConnectionData = {
   status: "DESCONECTADO",
 };
 
@@ -72,31 +64,27 @@ function daysUntil(iso: string) {
   return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 }
 
-export function MetaConnectionCard() {
-  const [connection, setConnection] = useState<MetaConnectionData>(MOCK_DISCONNECTED);
-  const [loading, setLoading] = useState(false);
-
+export function MetaConnectionCard({
+  initialData,
+}: {
+  initialData: MetaConnectionData | null;
+}) {
+  const [connection, setConnection] = useState<MetaConnectionData>(
+    initialData ?? DEFAULT_DISCONNECTED
+  );
   const config = statusConfig[connection.status];
   const StatusIcon = config.icon;
 
   function handleConnect() {
-    setLoading(true);
-    setTimeout(() => {
-      setConnection(MOCK_CONNECTED);
-      setLoading(false);
-    }, 1500);
+    window.location.href = "/api/meta/auth";
   }
 
   function handleDisconnect() {
-    setConnection(MOCK_DISCONNECTED);
+    setConnection(DEFAULT_DISCONNECTED);
   }
 
   function handleReconnect() {
-    setLoading(true);
-    setTimeout(() => {
-      setConnection(MOCK_CONNECTED);
-      setLoading(false);
-    }, 1500);
+    window.location.href = "/api/meta/auth";
   }
 
   return (
@@ -162,19 +150,10 @@ export function MetaConnectionCard() {
 
               <Button
                 onClick={handleConnect}
-                disabled={loading}
-                className="gap-2 rounded-lg bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A] disabled:opacity-50"
+                className="gap-2 rounded-lg bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A]"
               >
-                {loading ? (
-                  <motion.div
-                    className="h-4 w-4 rounded-full border-2 border-[#FAFAFA] border-t-transparent"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                  />
-                ) : (
-                  <Camera size={16} strokeWidth={2} />
-                )}
-                {loading ? "Conectando..." : "Conectar Instagram"}
+                <Camera size={16} strokeWidth={2} />
+                Conectar Instagram
               </Button>
 
               <p className="text-[11px] text-[#A1A1AA]">
@@ -228,10 +207,9 @@ export function MetaConnectionCard() {
               <div className="flex items-center gap-3">
                 <Button
                   onClick={handleReconnect}
-                  disabled={loading}
-                  className="gap-2 rounded-lg bg-[#18181B] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A] disabled:opacity-50"
+                  className="gap-2 rounded-lg bg-[#18181B] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A]"
                 >
-                  {loading ? "Renovando..." : "Renovar token"}
+                  Renovar token
                 </Button>
                 <button
                   onClick={handleDisconnect}
@@ -259,10 +237,9 @@ export function MetaConnectionCard() {
               </div>
               <Button
                 onClick={handleReconnect}
-                disabled={loading}
-                className="gap-2 rounded-lg bg-[#18181B] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A] disabled:opacity-50"
+                className="gap-2 rounded-lg bg-[#18181B] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A]"
               >
-                {loading ? "Reconectando..." : "Reconectar Instagram"}
+                Reconectar Instagram
               </Button>
             </motion.div>
           )}
@@ -278,15 +255,14 @@ export function MetaConnectionCard() {
             >
               <div className="rounded-lg bg-[#FEE2E2] px-4 py-3">
                 <p className="text-sm text-[#991B1B]">
-                  Não foi possível manter a conexão. Tente reconectar.
+                  Nao foi possivel manter a conexao. Tente reconectar.
                 </p>
               </div>
               <Button
                 onClick={handleReconnect}
-                disabled={loading}
-                className="gap-2 rounded-lg bg-[#18181B] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A] disabled:opacity-50"
+                className="gap-2 rounded-lg bg-[#18181B] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A]"
               >
-                {loading ? "Reconectando..." : "Reconectar Instagram"}
+                Reconectar Instagram
               </Button>
             </motion.div>
           )}

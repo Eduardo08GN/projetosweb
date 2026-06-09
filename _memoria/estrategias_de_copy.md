@@ -21,11 +21,15 @@ precisa de voce.
 
 ---
 
-## Arquitetura de 3 camadas
+## Arquitetura de 4 camadas
 
-O processamento de copy opera em 3 camadas, de cima pra baixo:
+O processamento de copy opera em 4 camadas, de cima pra baixo:
 
 ```
+CAMADA 4 — Pesquisa de lastro (web research)
+  Busca dado externo que ancora o argumento em fato
+  Decide COM QUE PROVA o carrossel se sustenta
+
 CAMADA 3 — Estrategia (Benson/RMBC)
   Define angulo de abertura, narrativa macro, loops
   Decide O QUE comunicar e POR QUE
@@ -38,6 +42,60 @@ CAMADA 1 — Micro-copy (Makepeace/Edwards)
   Refina cada frase com formulas de bullet/fascination
   Decide COMO cada frase soa
 ```
+
+---
+
+## Pesquisa de lastro (Camada 4)
+
+Antes de escrever qualquer copy, pesquisar na web 1-3 dados externos
+que ancoram o argumento central em fato. O objetivo nao e transformar
+o carrossel em artigo cientifico. E ter UM dado matador que transforma
+opiniao em fato e elimina ceticismo.
+
+### O que buscar
+
+| Tipo | Exemplo | Onde usar |
+|------|---------|-----------|
+| Estudo/pesquisa academica | "University of X descobriu que..." | Slide 4 (mecanismo) ou Slide 5 (prova) |
+| Estatistica especifica | "73% dos brasileiros que..." | Slide 2 (problema) ou Slide 5 (prova) |
+| Dado de mercado | "O mercado de X cresceu 40% em..." | Slide 2 (agitacao) ou Slide 6 (beneficio) |
+| Citacao de autoridade | "Segundo [especialista reconhecido]..." | Slide 3 (virada) ou Slide 4 (mecanismo) |
+| Caso documentado | "Em 2024, [empresa/pessoa] conseguiu..." | Slide 5 (prova) |
+
+### Como pesquisar
+
+1. Identificar o TEMA CENTRAL do carrossel
+2. Pesquisar na web por: "[tema] study", "[tema] research", "[tema] statistics"
+3. Filtrar por fontes confiaveis (universidades, institutos, publicacoes reconhecidas)
+4. Selecionar 1-3 dados relevantes
+5. Anotar fonte completa (autor, publicacao, ano)
+
+### Como usar no carrossel
+
+O dado serve a copy, nunca o contrario. Nao existe formato fixo. O lastro
+se adapta ao tom, ao angulo e ao ritmo de cada carrossel. Exemplos de
+como o mesmo dado pode entrar de formas completamente diferentes:
+
+- **Fato bruto:** "73% desistem antes do terceiro mes"
+- **Embutido na narrativa:** "seu cerebro leva 21 dias pra criar o padrao novo. Nao e achismo"
+- **Quebra de crenca:** "os jogos que voce jogava quando crianca literalmente reconfiguraram seu cerebro"
+- **Autoridade invisivel:** o dado esta no slide, a fonte so aparece na legenda
+- **Provocacao:** "um estudo testou 200 pessoas. So 12 conseguiram. O motivo e constrangedor"
+- **Numero solto como impacto visual:** slide NUMERO com "207" gigante + contexto embaixo
+
+**PROIBIDO:** formulas engessadas tipo "pesquisadores descobriram que...",
+"segundo estudo de...", "conforme pesquisa da...". Isso e linguagem de
+TCC, nao de carrossel. O dado entra digerido, no tom do publico.
+
+- **Na legenda:** fontes completas no final (autor, titulo, publicacao)
+  - Isso gera autoridade sem poluir o visual do carrossel
+- **Regra:** no maximo 1 dado por slide. Dados demais viram aula
+
+### Quando pular
+
+- Quando o cliente fornece dados proprios suficientes (depoimentos, resultados)
+- Quando o carrossel e puramente emocional/narrativo e dado externo quebraria o tom
+- Nesse caso, registrar "lastro: dados proprios do cliente" e seguir
 
 ---
 
@@ -93,6 +151,7 @@ Nunca duplicar funcao: cada slide tem uma e somente uma funcao.
 - NUNCA ensina o metodo completo
 - So o conceito: o suficiente pra gerar desejo pelo resto
 - Se a pessoa conseguir resolver so com esse slide, voce falhou
+- Se houver dado de lastro sobre mecanismo, usar aqui ("pesquisadores descobriram que...")
 
 ### Slide 5 — PROVA
 
@@ -101,6 +160,7 @@ Nunca duplicar funcao: cada slide tem uma e somente uma funcao.
 - Screenshots, depoimentos, dados concretos
 - Elimina o ceticismo natural
 - Mix de resultado proprio + resultado de terceiros
+- Dado de lastro externo entra aqui como reforco (estatistica, estudo, caso documentado)
 
 ### Slide 6 — BENEFICIO
 
@@ -271,13 +331,15 @@ Ao receber dados brutos (transcript, briefing, rascunho):
 1. Identificar a **PERSONA** (quem e o publico do cliente)
 2. Identificar a **DOR** principal (o que a persona sofre)
 3. Identificar a **SOLUCAO/OFERTA** (o que o cliente vende/oferece)
-4. Escolher **ANGULO** de abertura (dos 12 listados)
-5. Distribuir nos **7 slides** seguindo as funcoes
-6. Aplicar **formulas de bullet** na copy de cada slide
-7. Criar **loops** entre slides
-8. Gerar **7 variacoes do hook**, selecionar a melhor
-9. Definir **PALAVRA-CHAVE** do CTA (curta, facil, memoravel)
-10. Passar resultado para **preferencias.md** (tom, voz, filtro anti-slop)
+4. **PESQUISAR LASTRO** — buscar na web 1-3 dados externos (estudo, estatistica, caso) que ancoram o argumento central. Anotar fonte completa
+5. Escolher **ANGULO** de abertura (dos 12 listados)
+6. Distribuir nos **7 slides** seguindo as funcoes, encaixando dados de lastro nos slides 2, 4 ou 5
+7. Aplicar **formulas de bullet** na copy de cada slide
+8. Criar **loops** entre slides
+9. Gerar **7 variacoes do hook**, selecionar a melhor
+10. Definir **PALAVRA-CHAVE** do CTA (curta, facil, memoravel)
+11. Incluir **fontes na legenda** (autor, publicacao, ano) quando houver lastro externo
+12. Passar resultado para **preferencias.md** (tom, voz, filtro anti-slop)
 
 ---
 
