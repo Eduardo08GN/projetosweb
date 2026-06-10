@@ -228,8 +228,10 @@ Sair da reunião com no máximo 3 combinados:
    Cloudflare pra tirar o site da URL provisória
 
 Depois da reunião:
-- [ ] Preencher `_memoria/` do tenant com o que ele falou (receita, preço,
-      prioridade, alunos ativos)
+- [ ] **Alimentar o Claude com a transcrição da call** (a reunião é
+      gravada). O Claude cruza a transcrição com o checklist do Ato 1 e:
+      extrai receita, ticket, prioridade e combinados; preenche a memória
+      do tenant; atualiza a proposta usando as palavras do próprio Rodger
 - [ ] Atualizar a proposta comercial com o ticket e a prioridade declarada
 - [ ] Conectar o Instagram dele na plataforma (1 clique, quando o app
       Meta for aprovado — Lucas está cuidando da verificação)
