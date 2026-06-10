@@ -152,9 +152,16 @@ conteúdo."*
 | Entrega | Status |
 |---------|--------|
 | Site Fly to Fluency completo (identidade navy + red UK, Space Grotesk) | NO AR no nosso servidor, HTTPS, otimizado (AVIF, lazy loading) |
-| Carrossel "O sequestro do Alfredo" (storytelling dele virou conteúdo) | Pronto, 7 slides, aguardando aprovação na plataforma |
+| Carrossel "Seu sotaque te entrega na primeira frase" (7 slides, identidade dele, CTA "comenta SOTAQUE") | **DEMO PRINCIPAL** — aguardando aprovação na plataforma |
+| Carrossel "O sequestro do Alfredo" (storytelling dele virou conteúdo) | Segundo na fila de aprovação — mostra que é esteira, não peça única |
 | Identidade visual documentada (design guide próprio) | Pronta |
 | Plataforma AutomaWeb (painel onde ele aprova conteúdo pelo celular) | No ar — mostrar o painel dele |
+
+**Detalhe que amarra a proposta:** o CTA do carrossel do sotaque é
+"comenta SOTAQUE que te mando no DM" — ou seja, o próprio conteúdo
+demonstra a automação de DM da Camada 2. Quando ele perguntar "e quem
+responde esses comentários?", a resposta é "o sistema. É o próximo
+módulo que ativamos".
 
 Esse é o momento Emmanuel Diaz do caso: ele esperava proposta de site,
 recebe sistema funcionando com o nome dele.
@@ -212,8 +219,9 @@ recebe sistema funcionando com o nome dele.
 
 Sair da reunião com no máximo 3 combinados:
 
-1. **Aprovação do carrossel "O sequestro do Alfredo"** no painel (ele
-   experimenta o fluxo na hora, pelo celular)
+1. **Aprovação do carrossel "Seu sotaque te entrega na primeira frase"**
+   no painel (ele experimenta o fluxo na hora, pelo celular; o do Alfredo
+   fica como segundo da fila)
 2. **Resposta sobre o Hotmart** (reativar lá ou migrar pra checkout
    próprio) — define o plano do mês 1
 3. **Domínio**: registrar/apontar o domínio do Fly to Fluency no
@@ -236,5 +244,7 @@ Depois da reunião:
 - Tese estratégica (sistema > site): `_analises/ninguem-quer-um-site-tyler-moore-emmanuel-diaz.md`
 - Site construído: app `rodgerkoller-site` no Coolify (HTTPS via sslip.io,
   aguardando domínio próprio)
-- Carrossel pronto: "O sequestro do Alfredo" em APROVACAO na plataforma
-  (7 slides no R2)
+- Carrosséis prontos em APROVACAO na plataforma (7 slides cada, no R2):
+  "Seu sotaque te entrega na primeira frase" (demo principal, de
+  `marketing/conteudo/carrossel-sotaque-2026-06-08/angulo-2/`) e
+  "O sequestro do Alfredo"
