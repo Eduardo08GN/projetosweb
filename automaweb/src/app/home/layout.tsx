@@ -3,15 +3,15 @@ import { LandingShell } from "@/components/landing/landing-shell";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://automaweb.pro"),
-  title: "AutomaWeb | Sites premium, conteúdo com IA e sistemas para o seu negócio",
+  title: "AutomaWeb | Site, conteúdo toda semana e sistemas pro seu negócio",
   description:
-    "A AutomaWeb constrói sites premium, automatiza seu conteúdo com IA e entrega sistemas sob medida para o seu negócio crescer no piloto automático.",
+    "A AutomaWeb coloca seu negócio no Google, abastece seu Instagram toda semana e constrói sistemas sob medida pra você crescer no piloto automático.",
   keywords: [
     "automação digital",
-    "sites premium",
-    "conteúdo automatizado",
-    "carrossel instagram",
-    "CRM para negócios",
+    "site profissional",
+    "google meu negócio",
+    "conteúdo para instagram",
+    "sistema para negócio local",
     "landing page profissional",
   ],
   alternates: { canonical: "/home" },
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AutomaWeb | Automação digital para negócios",
     description:
-      "Sites premium, conteúdo automatizado com IA e sistemas sob medida. Assinatura mensal, sem contrato anual.",
+      "Site profissional, conteúdo toda semana e sistemas sob medida. Assinatura mensal, sem contrato anual.",
     url: "https://automaweb.pro/home",
     siteName: "AutomaWeb",
     locale: "pt_BR",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AutomaWeb | Automação digital para negócios",
     description:
-      "Sites premium, conteúdo automatizado com IA e sistemas sob medida.",
+      "Site profissional, conteúdo toda semana e sistemas sob medida.",
   },
   robots: { index: true, follow: true },
 };

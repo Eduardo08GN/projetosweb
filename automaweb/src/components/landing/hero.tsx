@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDown, LayoutGrid, Sparkles, Wand2 } from "lucide-react";
-import { siInstagram, siYoutube } from "simple-icons";
+import { ArrowDown, Check, Handshake, Lightbulb, PenTool } from "lucide-react";
+import { siInstagram } from "simple-icons";
 import { Counter } from "./counter";
 import { WHATSAPP_URL } from "./landing-config";
 
@@ -16,20 +16,20 @@ function BrandIcon({ path, className }: { path: string } & IconProps) {
   );
 }
 
-function YoutubeIcon({ className }: IconProps) {
-  return <BrandIcon path={siYoutube.path} className={className} />;
-}
-
 function InstagramIcon({ className }: IconProps) {
   return <BrandIcon path={siInstagram.path} className={className} />;
 }
 
-function IaIcon({ className }: IconProps) {
-  return <Wand2 className={className} strokeWidth={1.5} />;
+function KnowledgeIcon({ className }: IconProps) {
+  return <Lightbulb className={className} strokeWidth={1.5} />;
 }
 
-function GridIcon({ className }: IconProps) {
-  return <LayoutGrid className={className} strokeWidth={1.5} />;
+function ProductionIcon({ className }: IconProps) {
+  return <PenTool className={className} strokeWidth={1.5} />;
+}
+
+function ApproveIcon({ className }: IconProps) {
+  return <Check className={className} strokeWidth={1.5} />;
 }
 
 const enter = (delay: number) => ({
@@ -44,9 +44,9 @@ const enter = (delay: number) => ({
 });
 
 const FLOW_STEPS = [
-  { icon: YoutubeIcon, label: "Vídeo do YouTube" },
-  { icon: IaIcon, label: "IA escreve e desenha" },
-  { icon: GridIcon, label: "14 carrosséis" },
+  { icon: KnowledgeIcon, label: "Seu conhecimento" },
+  { icon: ProductionIcon, label: "Nossa produção" },
+  { icon: ApproveIcon, label: "Você aprova" },
   { icon: InstagramIcon, label: "Publicado sozinho" },
 ];
 
@@ -101,8 +101,8 @@ export function Hero() {
             {...enter(0.2)}
             className="inline-flex items-center gap-2 rounded-full border border-[#E4E4E7] bg-[#F4F4F5] px-3.5 py-1.5 text-[13px] font-medium text-[#71717A]"
           >
-            <Sparkles className="h-3.5 w-3.5 text-[#09090B]" strokeWidth={1.5} />
-            Automação com IA
+            <Handshake className="h-3.5 w-3.5 text-[#09090B]" strokeWidth={1.5} />
+            Construído e operado pra você
           </motion.span>
 
           <motion.h1
@@ -120,8 +120,8 @@ export function Hero() {
             {...enter(0.5)}
             className="mt-5 max-w-[600px] text-base leading-relaxed text-[#71717A] md:text-lg"
           >
-            Sites premium, conteúdo automatizado com IA e sistemas sob medida
-            para o seu negócio. Assinatura mensal, sem contrato anual.
+            Site premium, conteúdo toda semana e sistemas sob medida. A gente
+            constrói, a gente opera. Você só aprova.
           </motion.p>
 
           <motion.div
@@ -158,17 +158,21 @@ export function Hero() {
             {[
               {
                 value: <Counter value={14} className="tabular-nums" />,
-                label: "carrosséis em 2 horas",
-              },
-              {
-                value: <span>R$ 0</span>,
-                label: "custo de geração de imagem",
+                label: "posts prontos de uma vez pra você aprovar",
               },
               {
                 value: (
-                  <Counter value={250} prefix="R$ " className="tabular-nums" />
+                  <Counter
+                    value={10}
+                    suffix=" dias"
+                    className="tabular-nums"
+                  />
                 ),
-                label: "assinatura média mensal",
+                label: "do primeiro papo ao site no ar",
+              },
+              {
+                value: <span>1 clique</span>,
+                label: "pra conectar seu Instagram",
               },
             ].map((stat, i) => (
               <motion.div

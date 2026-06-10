@@ -37,7 +37,7 @@ const STEPS: Step[] = [
     icon: Bot,
     title: "Automação",
     description:
-      "Ativamos a esteira de conteúdo e os fluxos de retenção. Seu Instagram posta sozinho. Seu sistema lembra o cliente de voltar.",
+      "Seu Instagram passa a postar sozinho e seu sistema lembra o cliente de voltar. Tudo no automático, sem você tocar em nada.",
     time: "Contínuo",
   },
   {
@@ -85,8 +85,8 @@ export function HowItWorks() {
             Do primeiro papo ao piloto automático.
           </h2>
           <p className="mt-4 max-w-[560px] text-base leading-relaxed text-[#71717A]">
-            Quatro etapas, zero esforço técnico do seu lado. Você aprova pelo
-            celular, o sistema faz o resto.
+            Quatro etapas, zero esforço técnico do seu lado. Você aprova, o
+            sistema faz o resto.
           </p>
         </motion.div>
 

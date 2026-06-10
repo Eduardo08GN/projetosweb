@@ -2,9 +2,9 @@ import Image from "next/image";
 import { CONTACT_EMAIL, WHATSAPP_URL } from "./landing-config";
 
 const SOLUTION_LINKS = [
-  { label: "Sites Premium", href: "#solucoes" },
-  { label: "Conteúdo Automatizado", href: "#solucoes" },
-  { label: "Sistemas sob Medida", href: "#solucoes" },
+  { label: "Sites", href: "#solucoes" },
+  { label: "Conteúdo Toda Semana", href: "#solucoes" },
+  { label: "Painel do Negócio", href: "#solucoes" },
   { label: "Preços", href: "#precos" },
 ];
 

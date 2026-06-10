@@ -5,10 +5,10 @@ import { landingViewport } from "@/lib/animations";
 import { Counter } from "./counter";
 
 const METRICS = [
-  { display: <Counter value={14} />, label: "carrosséis por sessão de produção" },
-  { display: <Counter value={2} suffix="h" />, label: "do vídeo bruto ao conteúdo pronto" },
-  { display: <span>R$ 0</span>, label: "de custo na geração de imagens" },
-  { display: <Counter value={7} suffix="h" />, label: "economizadas por semana" },
+  { display: <Counter value={14} />, label: "posts entregues de uma vez" },
+  { display: <Counter value={7} suffix="h" />, label: "devolvidas pra sua semana" },
+  { display: <Counter value={10} suffix=" dias" />, label: "pro seu site estar no ar" },
+  { display: <span>1 clique</span>, label: "pra conectar seu Instagram" },
 ];
 
 export function Results() {
@@ -29,11 +29,10 @@ export function Results() {
               letterSpacing: "-0.02em",
             }}
           >
-            Números do nosso próprio pipeline.
+            O que isso significa na prática.
           </h2>
           <p className="mt-4 max-w-[560px] text-base leading-relaxed text-[#71717A]">
-            Nada inventado. É o que a nossa operação entrega hoje, medido em
-            produção.
+            Nada inventado. É o que a nossa operação entrega hoje.
           </p>
         </motion.div>
 

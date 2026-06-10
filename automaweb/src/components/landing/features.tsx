@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Cpu, Globe, Zap, type LucideIcon } from "lucide-react";
+import { LayoutDashboard, MapPin, Zap, type LucideIcon } from "lucide-react";
 import { landingViewport } from "@/lib/animations";
 
 type Pillar = {
@@ -14,17 +14,17 @@ type Pillar = {
 const SECONDARY: Pillar[] = [
   {
     icon: Zap,
-    title: "Conteúdo Automatizado",
+    title: "Conteúdo Toda Semana",
     description:
-      "14 carrosséis de Instagram em 2 horas. A IA transforma um único vídeo do YouTube em imagens, copy e legendas originais. Custo de imagem: zero.",
-    tags: ["IA generativa", "FLUX", "Custo zero"],
+      "Seu Instagram abastecido com posts na identidade da sua marca, produzidos a partir do que você já sabe: uma gravação sua, um áudio, as dúvidas que seus clientes mais repetem. Você aprova e o post sai no horário.",
+    tags: ["Na identidade da sua marca", "Você aprova", "Sai no horário"],
   },
   {
-    icon: Cpu,
-    title: "Sistemas sob Medida",
+    icon: LayoutDashboard,
+    title: "Um Painel Só Seu",
     description:
-      "CRM, agendamento, retenção automática e dashboards com a cara da sua marca. Um sistema que faz exatamente o que seu negócio precisa, no lugar de cinco ferramentas genéricas.",
-    tags: ["Sua marca", "Assinatura mensal", "Sob medida"],
+      "Cada negócio trava num lugar diferente. Por isso a gente não vende sistema de prateleira: entende onde o seu perde tempo ou perde cliente e constrói um painel com a sua marca que resolve exatamente isso. Pra uns é a agenda, pra outros é o cliente que some, pra outros é não saber os números do mês. O seu, a gente descobre juntos.",
+    tags: ["Feito pro seu negócio", "Sua marca", "Cresce com você"],
   },
 ];
 
@@ -116,8 +116,8 @@ export function Features() {
             Três pilares. Uma plataforma.
           </h2>
           <p className="mt-4 max-w-[560px] text-base leading-relaxed text-[#71717A]">
-            Tudo que o seu negócio precisa para ter presença digital e operação
-            automática, num lugar só.
+            Quem não aparece no Google é invisível. A gente coloca seu negócio
+            na frente de quem procura, e faz a operação rodar sozinha.
           </p>
         </motion.div>
 
@@ -137,18 +137,23 @@ export function Features() {
           >
             <div className="grid gap-8 lg:grid-cols-2">
               <div>
-                <IconTile icon={Globe} />
+                <IconTile icon={MapPin} />
                 <h3 className="mt-5 text-xl font-semibold tracking-[-0.01em] text-[#09090B] md:text-2xl">
-                  Sites Premium
+                  Sites que Colocam Você no Mapa
                 </h3>
                 <p className="mt-3 leading-relaxed text-[#71717A]">
-                  Landing pages com cara de dez mil dólares por uma fração do
-                  custo. Processo próprio de sete níveis contra design
-                  genérico. O resultado: seu negócio com presença digital de
-                  empresa grande.
+                  Quando alguém procura seu serviço no Google e não te acha,
+                  escolhe o concorrente. A gente resolve isso: site
+                  profissional sem cara de template e seu perfil do Google
+                  arrumado e bem posicionado, aparecendo pra quem procura na
+                  sua região.
                 </p>
                 <Tags
-                  tags={["Protocolo 7 Níveis", "Design autoral", "Feito pra celular"]}
+                  tags={[
+                    "Encontrado no Google",
+                    "Sem cara de template",
+                    "Pronto em até 10 dias",
+                  ]}
                 />
               </div>
               <SitePreview />

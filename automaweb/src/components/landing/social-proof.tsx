@@ -2,29 +2,25 @@
 
 import {
   siCloudflare,
-  siCoolify,
+  siGoogle,
   siInstagram,
   siMeta,
-  siNextdotjs,
-  siPrisma,
-  siTailwindcss,
+  siWhatsapp,
   siYoutube,
 } from "simple-icons";
 
 type Brand = { title: string; path: string };
 
 const ROW_A: Brand[] = [
-  { title: "Cloudflare", path: siCloudflare.path },
   { title: "Instagram", path: siInstagram.path },
   { title: "YouTube", path: siYoutube.path },
   { title: "Meta", path: siMeta.path },
 ];
 
 const ROW_B: Brand[] = [
-  { title: "Next.js", path: siNextdotjs.path },
-  { title: "Prisma", path: siPrisma.path },
-  { title: "Tailwind CSS", path: siTailwindcss.path },
-  { title: "Coolify", path: siCoolify.path },
+  { title: "WhatsApp", path: siWhatsapp.path },
+  { title: "Google", path: siGoogle.path },
+  { title: "Cloudflare", path: siCloudflare.path },
 ];
 
 function BrandMark({ brand }: { brand: Brand }) {
@@ -78,7 +74,7 @@ export function SocialProof() {
     <section className="relative bg-[#F4F4F5] pb-20 md:pb-28" aria-label="Ferramentas integradas">
       <div className="mx-auto max-w-6xl px-6">
         <p className="text-center text-sm text-[#71717A]">
-          Construído sobre as ferramentas que o mercado já confia
+          Conectado com as plataformas onde seus clientes já estão
         </p>
         <div className="mt-8">
           <MarqueeRow brands={ROW_A} direction="left" />

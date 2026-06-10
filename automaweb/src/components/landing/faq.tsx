@@ -11,8 +11,20 @@ const QUESTIONS = [
     a: "Não. Nós cuidamos de toda a parte técnica. Você só precisa nos contar sobre o seu negócio e aprovar o que construímos.",
   },
   {
+    q: "Meu negócio não aparece no Google. Vocês resolvem?",
+    a: "Sim. Arrumamos seu perfil do Google (fotos, horários, avaliações respondidas), colocamos seu site no ar e deixamos seu negócio visível pra quem procura na sua região. Quem não aparece, não é escolhido.",
+  },
+  {
     q: "Quanto tempo leva para ter tudo funcionando?",
-    a: "O site fica pronto em 5 a 10 dias. A esteira de conteúdo entra no ar em 2 semanas. Sistemas sob medida levam de 3 a 4 semanas, dependendo da complexidade.",
+    a: "O site fica pronto em 5 a 10 dias. O conteúdo começa a sair em 2 semanas. O painel sob medida leva de 3 a 4 semanas, dependendo do que seu negócio precisar.",
+  },
+  {
+    q: "Como funciona o conteúdo toda semana?",
+    a: "A gente parte do que você já tem: uma gravação, um áudio, os temas que seus clientes mais perguntam. Nossa operação produz os posts com a sua identidade, você aprova e a publicação sai agendada.",
+  },
+  {
+    q: "É tudo feito por IA?",
+    a: "Não. A IA é ferramenta da nossa produção, como a câmera é ferramenta do fotógrafo. Direção, curadoria e estratégia são nossas, e a aprovação final é sempre sua. Nada vai pro ar sem o seu ok.",
   },
   {
     q: "E se eu quiser cancelar?",
@@ -25,10 +37,6 @@ const QUESTIONS = [
   {
     q: "O que diferencia vocês de uma agência comum?",
     a: "Agências vendem sites bonitos. Nós construímos sistemas que geram resultado: mais clientes, mais retenção, menos trabalho manual. O sistema trabalha por você o dia inteiro, em vez de entregar um arquivo e sumir.",
-  },
-  {
-    q: "Como funciona a esteira de conteúdo automatizado?",
-    a: "Você grava um vídeo ou manda um link do YouTube. Nossa IA transcreve e gera 14 carrosséis com copy e imagens originais em 2 horas. Você aprova pelo celular e a publicação é agendada sozinha.",
   },
 ];
 
