@@ -229,6 +229,8 @@ Antes de qualquer decisao de design ou implementacao, o Architect e o Executor d
 
 2. **Frontend Design Skills** — Qualquer skill de frontend instalada no ambiente deve ser ativada e consultada durante a formulacao dos prompts e durante a implementacao.
 
+3. **taste-skill** (`github.com/Leonxlnx/taste-skill`) — Framework anti-slop de frontend com 40k+ stars. Banco de regras contra tells visuais de IA: tipografia, cor, layout, copy, shape consistency, pre-flight checklist. As regras da taste-skill estao incorporadas diretamente nas secoes "Regra de Ouro Anti-Slop" e "Pre-Flight Checklist" deste protocolo. Consultar o repositorio original para atualizacoes.
+
 **Regra: nenhum site sai da producao sem ter sido validado contra as regras dessas skills.**
 
 ---
@@ -312,15 +314,89 @@ Se algum desses arquivos estiver preenchido, o conteudo do site deve estar 100% 
 
 Recursos terminantemente **PROIBIDOS** em qualquer site produzido por este protocolo:
 
+### Bloco 1 — Regras fundacionais
+
 1. **Emojis** — Nunca. Em nenhum lugar. A menos que o nicho do cliente exija expressamente.
 2. **Hifens** — Proibidos em qualquer copy de site. Nem como separador visual, nem como recurso de design, nem como pontuacao em textos. Substituir por ponto final, virgula ou reestruturar a frase.
-3. **Jargao tecnico verborragico** — Copy limpa e direta. Sem encher linguica com termos tecnicos que o publico-alvo nao usa.
-4. **Caixas delineadoras neon** — Caixas com borda neon + fundo neon transparente sao TERMINANTEMENTE PROIBIDAS. Zero tolerancia. Isso inclui badges, pills, tags e qualquer elemento com `background: rgba(COR, 0.1)` + `border: 1px solid rgba(COR, 0.2)` + `color: COR` — esse padrao e a assinatura visual do AI Slop. Badges e pills devem usar `background: var(--bg-elevated)` + `border: var(--border)` + `color: var(--text-primary)`. Cores semanticas vao nos icones, nao no container.
-5. **Fontes genericas** — Inter, Roboto, Open Sans e similares estao banidas. Tipografia sempre premium e com personalidade.
-6. **Icones inferiores** — Lucide React e o piso minimo. Nada abaixo disso. Nunca emoji como icone.
-7. **AOS fade-up generico** — Animacoes de entrada genericas (fade-up, fade-in basico) sem personalidade sao AI Slop.
+3. **Em-dash (—)** — Proibido em todo texto visivel. IAs usam em-dash compulsivamente. Substituir por ponto final, virgula, dois pontos ou reestruturar a frase. Sem excecao.
+4. **Jargao tecnico verborragico** — Copy limpa e direta. Sem encher linguica com termos tecnicos que o publico-alvo nao usa.
+5. **Caixas delineadoras neon** — Caixas com borda neon + fundo neon transparente sao TERMINANTEMENTE PROIBIDAS. Zero tolerancia. Isso inclui badges, pills, tags e qualquer elemento com `background: rgba(COR, 0.1)` + `border: 1px solid rgba(COR, 0.2)` + `color: COR` — esse padrao e a assinatura visual do AI Slop. Badges e pills devem usar `background: var(--bg-elevated)` + `border: var(--border)` + `color: var(--text-primary)`. Cores semanticas vao nos icones, nao no container.
+6. **Fontes genericas** — Inter, Roboto, Open Sans e similares estao banidas. Tipografia sempre premium e com personalidade.
+7. **Icones inferiores** — Lucide React e o piso minimo. Nada abaixo disso. Nunca emoji como icone.
+8. **AOS fade-up generico** — Animacoes de entrada genericas (fade-up, fade-in basico) sem personalidade sao AI Slop.
+
+### Bloco 2 — Tells tipograficos (taste-skill)
+
+9. **Serif sem justificativa** — Fraunces e Instrument Serif sao tells de IA (aparecem em 80%+ dos sites gerados). Serif so entra com justificativa explicita de marca ou direcao de arte aprovada. Na duvida, sans-serif premium.
+10. **Split-header** — Titulo com metade em cor X e metade em cor Y (ex: "Transform Your" preto + "Business" azul) e tell de IA. Proibido. Usar cor unica no titulo inteiro ou, no maximo, destacar UMA palavra com accent.
+
+### Bloco 3 — Tells de cor e forma (taste-skill)
+
+11. **AI-purple** — Qualquer roxo (#7C3AED e familia) como accent de "inovacao" ou "tecnologia" e tell de IA. Roxo so com justificativa de marca real.
+12. **Paleta premium-consumer** — Beige (#F5F0EB familia) + brass/gold (#C9A96E familia) + oxblood (#6B1D1D familia) combinados = paleta padrao de IA para "premium". Proibido usar essa combinacao. Cada cor isolada pode funcionar se justificada pelo nicho.
+13. **Preto e branco puros** — Nunca usar `#000000` ou `#FFFFFF` puros. Usar off-blacks (slate-900, zinc-900) e off-whites (slate-50, zinc-50). Preto e branco puros sao tells de preguica.
+14. **Accent descontrolado** — Maximo 1 cor de accent por pagina. Se tem azul como accent, azul e o unico accent. Sem segundo accent "pra variar". Consistencia de cor e assinatura de design intencional.
+15. **Radius inconsistente** — Definir UMA escala de border-radius pro projeto inteiro (ex: 8px/12px/16px) e seguir. Misturar `rounded-md` com `rounded-2xl` com `rounded-full` no mesmo projeto e tell.
+
+### Bloco 4 — Tells de copy (taste-skill)
+
+16. **Verbos filler** — "Elevate", "Seamless", "Unleash", "Empower", "Supercharge", "Craft", "Revolutionize", "Harness" sao proibidos em copy. IAs usam esses verbos compulsivamente. Usar verbos concretos e especificos ao nicho.
+17. **Micro-meta-sentences** — Frases como "Here's what you need to know", "Let's dive in", "Everything you need", "It's that simple" sao filler de IA. Proibido. Se a frase pode ser removida sem perder informacao, remover.
+18. **Dados falsos** — "Jane Doe", "John Smith", "Acme Corp", "99.7%", numeros fake-precise ("$2,847/mo", "143% growth") sao tells de IA. So usar dados reais do cliente ou omitir a secao inteira. Depoimento inventado e pior que nenhum depoimento.
+
+### Bloco 5 — Tells de layout e producao (taste-skill)
+
+19. **Eyebrow excess** — Maximo 1 eyebrow (texto menor acima do titulo de secao) a cada 3 secoes. Mais que isso e tell de IA. A maioria das secoes nao precisa de eyebrow.
+20. **Numeracao de secoes** — Prefixar secoes com "01. / 02. / 03." e tell de IA. Proibido. A hierarquia deve ser comunicada por tipografia e espacamento, nao por numeracao.
+21. **Pills sobre imagens** — Badges/pills flutuando sobre hero images ou fotos e tell de IA. Proibido. Se precisa de label, integrar no layout da secao.
+22. **Photo-credit decorativo** — Creditos de foto com tratamento visual elaborado (background, pill, icon de camera) sao tell. Se credito for necessario, texto simples no footer ou alt text.
+23. **Middle-dot/pipe excess** — Separadores `·` ou `|` entre metadados so se forem genuinamente necessarios (ex: data de publicacao em blog). Em landing pages, raramente sao.
 
 **Se qualquer um desses elementos aparecer no codigo, e defeito — corrigir antes do deploy.**
+
+---
+
+## Pre-Flight Checklist (taste-skill)
+
+Validacao final obrigatoria antes do deploy. O Executor roda esse checklist no ultimo gomo. Se qualquer item falhar, corrigir antes de entregar.
+
+### Tipografia
+- [ ] Nenhuma instancia de Inter, Roboto, Open Sans, Fraunces ou Instrument Serif
+- [ ] Par tipografico definido com intencao (nao defaultado pelo framework)
+- [ ] Escala tipografica consistente em todas as secoes
+- [ ] Pesos usados com hierarquia clara (700 titulo, 400 corpo, 500 labels)
+
+### Cor
+- [ ] Maximo 1 cor de accent em toda a pagina
+- [ ] Nenhum `#000000` ou `#FFFFFF` puro no codigo
+- [ ] Nenhuma instancia de AI-purple (#7C3AED familia) sem justificativa
+- [ ] Nenhuma combinacao beige+brass+oxblood (paleta premium-consumer)
+- [ ] Cores semanticas nos icones, nao nos containers (zero neon boxes)
+
+### Layout e forma
+- [ ] Border-radius segue uma unica escala definida no projeto
+- [ ] Maximo 1 eyebrow a cada 3 secoes
+- [ ] Nenhuma secao numerada ("01. / 02.")
+- [ ] Nenhum pill/badge flutuando sobre imagem
+- [ ] Transicoes entre secoes variadas (min 2 tecnicas diferentes)
+
+### Copy
+- [ ] Zero em-dash (—) em texto visivel
+- [ ] Zero hifens em copy
+- [ ] Zero verbos filler (Elevate, Seamless, Unleash, Empower, Craft)
+- [ ] Zero micro-meta-sentences (Here's what you need to know, Let's dive in)
+- [ ] Zero split-headers (titulo bicolor)
+- [ ] Dados e depoimentos sao reais (nenhum Jane Doe, Acme Corp, numero inventado)
+- [ ] Zero emojis
+
+### Producao
+- [ ] Todas as imagens reais (Unsplash CDN ou assets do cliente, zero placeholders)
+- [ ] Animacoes com spring physics ou equivalente premium (zero AOS generico)
+- [ ] Mobile testado como layout independente (nao desktop encolhido)
+- [ ] Contraste WCAG AA em todos os textos
+- [ ] Load < 2s
+- [ ] HTML semantico + meta tags reais
+- [ ] Ortografia 100% (acentos corretos em todo texto visivel)
 
 ---
 
