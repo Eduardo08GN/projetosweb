@@ -5,7 +5,12 @@ const SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET ?? "automaweb-dev-secret-change-in-production"
 );
 
-const PUBLIC_PATHS = ["/login", "/api/meta/callback", "/api/auth/google"];
+const PUBLIC_PATHS = [
+  "/home",
+  "/login",
+  "/api/meta/callback",
+  "/api/auth/google",
+];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -22,7 +27,9 @@ export async function proxy(request: NextRequest) {
   const token = request.cookies.get("automaweb-session")?.value;
 
   if (!token) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    // Visitante sem sessão: raiz leva pra landing, resto pro login
+    const dest = pathname === "/" ? "/home" : "/login";
+    return NextResponse.redirect(new URL(dest, request.url));
   }
 
   try {
