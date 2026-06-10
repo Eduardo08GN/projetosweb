@@ -128,3 +128,61 @@
     @apply font-sans;
   }
 }
+
+/* ===== Landing page (/home) ===== */
+
+:root {
+  --landing-hero-bg: #fafafa;
+  --landing-hero-text: #09090b;
+  --landing-hero-muted: #71717a;
+  --landing-section-alt: #f4f4f5;
+  --landing-section-elevated: #ffffff;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.landing-dot-grid {
+  background-image: radial-gradient(
+    circle,
+    rgba(212, 212, 216, 0.55) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+@keyframes landing-marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes landing-marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.landing-marquee-left {
+  animation: landing-marquee-left 48s linear infinite;
+}
+
+.landing-marquee-right {
+  animation: landing-marquee-right 48s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-marquee-left,
+  .landing-marquee-right {
+    animation: none;
+  }
+}

@@ -32,3 +32,47 @@ export const variants = {
     },
   },
 };
+
+// Variants da landing page (/home) — entradas mais largas que as do painel
+export const landingVariants = {
+  fadeUp: {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring" as const, stiffness: 300, damping: 30 },
+    },
+  },
+  fadeUpSmall: {
+    hidden: { opacity: 0, y: 12 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring" as const, stiffness: 300, damping: 30 },
+    },
+  },
+  scaleIn: {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { type: "spring" as const, stiffness: 400, damping: 25 },
+    },
+  },
+  slideLeft: {
+    hidden: { opacity: 0, x: -24 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { type: "spring" as const, stiffness: 300, damping: 30 },
+    },
+  },
+  stagger: {
+    hidden: {},
+    visible: {
+      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+    },
+  },
+};
+
+export const landingViewport = { once: true, margin: "-80px" } as const;

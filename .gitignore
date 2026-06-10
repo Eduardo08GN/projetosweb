@@ -63,6 +63,7 @@ login-*.png
 sites-*.png
 integracoes-*.png
 carrossel-detail-*.png
+landing-*.png
 
 # MCP config
 .mcp.json
