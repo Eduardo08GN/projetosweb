@@ -61,6 +61,14 @@ So prosseguir pra Etapa 0 depois de ter lido TODOS.
 **Se algum arquivo estiver vazio:** registrar e continuar.
 **Nao perguntar ao usuario se deve ler. Ler e ponto.**
 
+### Cache por sessao
+
+Se os 9 arquivos ja foram lidos nesta conversa (ex: segundo carrossel na mesma sessao),
+NAO reler. Usar o contexto ja carregado. So reler se:
+- O usuario pedir explicitamente
+- Algum arquivo foi alterado durante a sessao
+- O tenant mudou (reler apenas o design-guide do novo tenant)
+
 ---
 
 ## Dependencias tecnicas

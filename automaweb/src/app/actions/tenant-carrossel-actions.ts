@@ -16,13 +16,13 @@ export async function approveCarrossel(carrosselId: string) {
     return { error: "Carrossel nao encontrado" };
   }
 
-  if (carrossel.status !== "AGUARDANDO_CLIENTE") {
+  if (carrossel.status !== "APROVACAO") {
     return { error: "Este carrossel nao esta aguardando aprovacao" };
   }
 
   await db.carrossel.update({
     where: { id: carrosselId },
-    data: { status: "APROVADO", feedbackCliente: null },
+    data: { status: "APROVADO", feedbackCliente: null, ajustePedido: false },
   });
 
   revalidatePath("/tenant/carrossel");
@@ -50,13 +50,13 @@ export async function requestAdjustment(
     return { error: "Carrossel nao encontrado" };
   }
 
-  if (carrossel.status !== "AGUARDANDO_CLIENTE") {
+  if (carrossel.status !== "APROVACAO") {
     return { error: "Este carrossel nao esta aguardando aprovacao" };
   }
 
   await db.carrossel.update({
     where: { id: carrosselId },
-    data: { status: "AJUSTE_PEDIDO", feedbackCliente: trimmed },
+    data: { status: "PRODUZIR", ajustePedido: true, feedbackCliente: trimmed },
   });
 
   revalidatePath("/tenant/carrossel");

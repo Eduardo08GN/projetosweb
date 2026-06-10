@@ -6,25 +6,19 @@ import { variants } from "@/lib/animations";
 import { KanbanCard, type KanbanItem } from "./kanban-card";
 
 const columnColors: Record<string, { badge: string; badgeText: string }> = {
-  BACKLOG: { badge: "bg-[#F4F4F5]", badgeText: "text-[#52525B]" },
-  EM_PRODUCAO: { badge: "bg-[#DBEAFE]", badgeText: "text-[#1E40AF]" },
-  REVISAO_INTERNA: { badge: "bg-[#E0E7FF]", badgeText: "text-[#3730A3]" },
-  AGUARDANDO_CLIENTE: { badge: "bg-[#FEF9C3]", badgeText: "text-[#854D0E]" },
+  PRODUZIR: { badge: "bg-[#DBEAFE]", badgeText: "text-[#1E40AF]" },
+  APROVACAO: { badge: "bg-[#FEF9C3]", badgeText: "text-[#854D0E]" },
   APROVADO: { badge: "bg-[#DCFCE7]", badgeText: "text-[#166534]" },
   AGENDADO: { badge: "bg-[#F0F9FF]", badgeText: "text-[#075985]" },
   PUBLICADO: { badge: "bg-[#F0FDF4]", badgeText: "text-[#16A34A]" },
-  AJUSTE_PEDIDO: { badge: "bg-[#FEF2F2]", badgeText: "text-[#991B1B]" },
 };
 
 const columnLabels: Record<string, string> = {
-  BACKLOG: "A fazer",
-  EM_PRODUCAO: "Em producao",
-  REVISAO_INTERNA: "Revisao interna",
-  AGUARDANDO_CLIENTE: "Aguardando cliente",
+  PRODUZIR: "Produzir",
+  APROVACAO: "Com o cliente",
   APROVADO: "Aprovado",
   AGENDADO: "Agendado",
   PUBLICADO: "Publicado",
-  AJUSTE_PEDIDO: "Ajuste pedido",
 };
 
 export function KanbanColumn({
@@ -37,7 +31,7 @@ export function KanbanColumn({
   onCardClick?: (item: KanbanItem) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: status });
-  const colors = columnColors[status] ?? columnColors.BACKLOG;
+  const colors = columnColors[status] ?? columnColors.PRODUZIR;
   const label = columnLabels[status] ?? status;
 
   return (

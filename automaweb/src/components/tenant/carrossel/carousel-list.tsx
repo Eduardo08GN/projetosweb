@@ -28,13 +28,11 @@ type CarouselItem = {
 function filterCarousels(items: CarouselItem[], key: FilterKey) {
   if (key === "all") return items;
   if (key === "action")
-    return items.filter(
-      (c) => c.status === "AGUARDANDO_CLIENTE" || c.status === "REVISAO_INTERNA"
-    );
+    return items.filter((c) => c.status === "APROVACAO");
   if (key === "production")
     return items.filter(
       (c) =>
-        c.status === "EM_PRODUCAO" ||
+        c.status === "PRODUZIR" ||
         c.status === "APROVADO" ||
         c.status === "AGENDADO"
     );

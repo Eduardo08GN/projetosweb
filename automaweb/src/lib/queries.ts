@@ -20,7 +20,7 @@ export async function getMasterMetrics() {
     await Promise.all([
       db.tenant.count({ where: { status: "ATIVO" } }),
       db.carrossel.count({
-        where: { status: { in: ["EM_PRODUCAO", "REVISAO_INTERNA", "BACKLOG"] } },
+        where: { status: "PRODUZIR" },
       }),
       db.carrossel.count({ where: { status: "AGENDADO" } }),
       db.automacaoDM.count({ where: { ativo: true } }),
@@ -156,10 +156,7 @@ export async function getTenantMetrics(tenantId: string) {
     db.carrossel.count({ where: { tenantId } }),
     db.carrossel.count({ where: { tenantId, status: "PUBLICADO" } }),
     db.carrossel.count({
-      where: {
-        tenantId,
-        status: { in: ["EM_PRODUCAO", "REVISAO_INTERNA", "BACKLOG"] },
-      },
+      where: { tenantId, status: "PRODUZIR" },
     }),
     db.carrossel.count({
       where: { tenantId, status: { in: ["AGENDADO", "APROVADO"] } },
@@ -211,16 +208,13 @@ export async function getTenantNextPost(tenantId: string) {
 
   if (!next) return null;
 
-  const totalSteps = 8;
+  const totalSteps = 5;
   const stepMap: Record<string, number> = {
-    BACKLOG: 1,
-    EM_PRODUCAO: 2,
-    REVISAO_INTERNA: 3,
-    AGUARDANDO_CLIENTE: 4,
-    APROVADO: 5,
-    AGENDADO: 6,
-    PUBLICADO: 7,
-    AJUSTE_PEDIDO: 3,
+    PRODUZIR: 1,
+    APROVACAO: 2,
+    APROVADO: 3,
+    AGENDADO: 4,
+    PUBLICADO: 5,
   };
   const progress = Math.round(
     ((stepMap[next.status] ?? 1) / totalSteps) * 100

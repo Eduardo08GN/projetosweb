@@ -16,14 +16,11 @@ import { CarrosselDetailSheet } from "./carrossel-detail-sheet";
 import { moveCarrossel } from "@/app/actions/carrossel-actions";
 
 const COLUMN_ORDER = [
-  "BACKLOG",
-  "EM_PRODUCAO",
-  "REVISAO_INTERNA",
-  "AGUARDANDO_CLIENTE",
+  "PRODUZIR",
+  "APROVACAO",
   "APROVADO",
   "AGENDADO",
   "PUBLICADO",
-  "AJUSTE_PEDIDO",
 ];
 
 type Props = {

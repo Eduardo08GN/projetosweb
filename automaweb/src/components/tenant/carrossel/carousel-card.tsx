@@ -37,9 +37,11 @@ type CarouselData = {
 function SlidePreview({ slides }: { slides: string[] }) {
   const [current, setCurrent] = useState(0);
 
+  const isImage = slides[current]?.startsWith("http");
+
   return (
     <div className="relative">
-      <div className="h-40 w-full overflow-hidden rounded-lg bg-[#F4F4F5]">
+      <div className="h-64 w-full overflow-hidden rounded-lg bg-[#F4F4F5]">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -47,11 +49,20 @@ function SlidePreview({ slides }: { slides: string[] }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="flex h-full items-center justify-center p-6"
+            className="flex h-full items-center justify-center"
           >
-            <p className="text-center text-sm text-[#71717A]">
-              {slides[current]}
-            </p>
+            {isImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={slides[current]}
+                alt={`Slide ${current + 1}`}
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              <p className="p-6 text-center text-sm text-[#71717A]">
+                {slides[current]}
+              </p>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -155,7 +166,7 @@ function AdjustmentSheet({
 }
 
 export function CarouselCard({ data }: { data: CarouselData }) {
-  const needsAction = data.status === "AGUARDANDO_CLIENTE";
+  const needsAction = data.status === "APROVACAO";
   const [sheetOpen, setSheetOpen] = useState(false);
   const [pending, startTransition] = useTransition();
 

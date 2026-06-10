@@ -116,21 +116,21 @@ async function main() {
     {
       tenantId: profRodger.id,
       titulo: "Como pensar em ingles",
-      status: "REVISAO_INTERNA" as const,
+      status: "PRODUZIR" as const,
       angulo: "Mentalidade",
       operador: "Eduardo",
     },
     {
       tenantId: profRodger.id,
       titulo: "Listening: serie vs podcast",
-      status: "EM_PRODUCAO" as const,
+      status: "PRODUZIR" as const,
       angulo: "Comparativo",
       operador: "Eduardo",
     },
     {
       tenantId: profRodger.id,
       titulo: "Pronuncia que brasileiros erram",
-      status: "BACKLOG" as const,
+      status: "PRODUZIR" as const,
       angulo: "Pronuncia",
       operador: "Eduardo",
     },
@@ -161,7 +161,7 @@ async function main() {
     {
       tenantId: draCamila.id,
       titulo: "Lentes de contato dental",
-      status: "EM_PRODUCAO" as const,
+      status: "PRODUZIR" as const,
       angulo: "Procedimento",
       operador: "Eduardo",
     },

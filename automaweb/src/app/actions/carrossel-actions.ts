@@ -29,7 +29,7 @@ export async function createCarrossel(
       tenantId,
       titulo,
       angulo: angulo || null,
-      status: "BACKLOG",
+      status: "PRODUZIR",
     },
   });
 
@@ -43,14 +43,11 @@ export async function moveCarrossel(
   newStatus: string
 ): Promise<{ error?: string; success?: boolean }> {
   const validStatuses = [
-    "BACKLOG",
-    "EM_PRODUCAO",
-    "REVISAO_INTERNA",
-    "AGUARDANDO_CLIENTE",
+    "PRODUZIR",
+    "APROVACAO",
     "APROVADO",
     "AGENDADO",
     "PUBLICADO",
-    "AJUSTE_PEDIDO",
   ];
 
   if (!validStatuses.includes(newStatus)) {
@@ -66,7 +63,13 @@ export async function moveCarrossel(
 
   await db.carrossel.update({
     where: { id: carrosselId },
-    data: { status: newStatus as typeof carrossel.status },
+    data: {
+      status: newStatus as typeof carrossel.status,
+      // voltou pra producao depois de um pedido de ajuste? limpa a flag
+      ...(carrossel.ajustePedido && newStatus === "APROVACAO"
+        ? { ajustePedido: false, feedbackCliente: null }
+        : {}),
+    },
   });
 
   revalidatePath("/master/pipeline");

@@ -1,19 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
+import { jwtVerify } from "jose";
+import { db } from "@/lib/db";
 
 const META_APP_ID = process.env.META_APP_ID!;
 const META_APP_SECRET = process.env.META_APP_SECRET!;
-const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/meta/callback`;
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXT_PUBLIC_URL!;
+const REDIRECT_URI = `${APP_URL}/api/meta/callback`;
+const GRAPH = "https://graph.facebook.com/v21.0";
+
+const STATE_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET ?? "automaweb-dev-secret-change-in-production"
+);
+
+function fail(reason: string) {
+  return NextResponse.redirect(
+    `${APP_URL}/tenant/integracoes?error=${reason}`
+  );
+}
+
+type FacebookPage = {
+  id: string;
+  name: string;
+  access_token: string;
+  instagram_business_account?: { id: string };
+};
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
+  const state = request.nextUrl.searchParams.get("state");
 
-  if (!code) {
-    return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_URL}/tenant/integracoes?error=denied`
-    );
+  if (!code) return fail("denied");
+  if (!state) return fail("state");
+
+  let tenantId: string;
+  try {
+    const { payload } = await jwtVerify(state, STATE_SECRET);
+    tenantId = payload.tenantId as string;
+    if (!tenantId) return fail("state");
+  } catch {
+    return fail("state");
   }
 
-  const tokenUrl = new URL("https://graph.facebook.com/v21.0/oauth/access_token");
+  // Troca o code por um token de curta duracao
+  const tokenUrl = new URL(`${GRAPH}/oauth/access_token`);
   tokenUrl.searchParams.set("client_id", META_APP_ID);
   tokenUrl.searchParams.set("client_secret", META_APP_SECRET);
   tokenUrl.searchParams.set("redirect_uri", REDIRECT_URI);
@@ -21,14 +50,10 @@ export async function GET(request: NextRequest) {
 
   const tokenRes = await fetch(tokenUrl.toString());
   const tokenData = await tokenRes.json();
+  if (!tokenData.access_token) return fail("token");
 
-  if (!tokenData.access_token) {
-    return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_URL}/tenant/integracoes?error=token`
-    );
-  }
-
-  const longLivedUrl = new URL("https://graph.facebook.com/v21.0/oauth/access_token");
+  // Estende pra token de longa duracao (~60 dias)
+  const longLivedUrl = new URL(`${GRAPH}/oauth/access_token`);
   longLivedUrl.searchParams.set("grant_type", "fb_exchange_token");
   longLivedUrl.searchParams.set("client_id", META_APP_ID);
   longLivedUrl.searchParams.set("client_secret", META_APP_SECRET);
@@ -40,64 +65,44 @@ export async function GET(request: NextRequest) {
   const accessToken = longLivedData.access_token ?? tokenData.access_token;
   const expiresIn = longLivedData.expires_in ?? 5184000;
 
+  // Busca TODAS as paginas e acha a que tem Instagram Business conectado
   const pagesRes = await fetch(
-    `https://graph.facebook.com/v21.0/me/accounts?access_token=${accessToken}`
+    `${GRAPH}/me/accounts?fields=id,name,access_token,instagram_business_account&limit=100&access_token=${accessToken}`
   );
   const pagesData = await pagesRes.json();
-  const page = pagesData.data?.[0];
+  const pages: FacebookPage[] = pagesData.data ?? [];
 
-  if (!page) {
-    return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_URL}/tenant/integracoes?error=no_page`
-    );
-  }
+  if (pages.length === 0) return fail("no_page");
 
-  const igRes = await fetch(
-    `https://graph.facebook.com/v21.0/${page.id}?fields=instagram_business_account&access_token=${page.access_token}`
-  );
-  const igData = await igRes.json();
-  const igUserId = igData.instagram_business_account?.id;
+  const page = pages.find((p) => p.instagram_business_account) ?? null;
+  if (!page?.instagram_business_account) return fail("no_ig");
 
-  if (!igUserId) {
-    return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_URL}/tenant/integracoes?error=no_ig`
-    );
-  }
+  const igUserId = page.instagram_business_account.id;
 
   const igProfileRes = await fetch(
-    `https://graph.facebook.com/v21.0/${igUserId}?fields=username,profile_picture_url&access_token=${page.access_token}`
+    `${GRAPH}/${igUserId}?fields=username,profile_picture_url&access_token=${page.access_token}`
   );
   const igProfile = await igProfileRes.json();
 
-  // TODO: save to database via Prisma
-  // await db.metaConnection.upsert({
-  //   where: { tenantId },
-  //   create: {
-  //     tenantId,
-  //     igUserId,
-  //     igUsername: igProfile.username,
-  //     igProfilePic: igProfile.profile_picture_url,
-  //     pageId: page.id,
-  //     pageName: page.name,
-  //     accessToken: page.access_token,
-  //     tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
-  //     connectedAt: new Date(),
-  //     status: "CONECTADO",
-  //   },
-  //   update: {
-  //     igUserId,
-  //     igUsername: igProfile.username,
-  //     igProfilePic: igProfile.profile_picture_url,
-  //     pageId: page.id,
-  //     pageName: page.name,
-  //     accessToken: page.access_token,
-  //     tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
-  //     connectedAt: new Date(),
-  //     status: "CONECTADO",
-  //   },
-  // });
+  const connectionData = {
+    igUserId,
+    igUsername: igProfile.username ?? null,
+    igProfilePic: igProfile.profile_picture_url ?? null,
+    pageId: page.id,
+    pageName: page.name,
+    accessToken: page.access_token,
+    tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
+    connectedAt: new Date(),
+    status: "CONECTADO" as const,
+  };
+
+  await db.metaConnection.upsert({
+    where: { tenantId },
+    create: { tenantId, ...connectionData },
+    update: connectionData,
+  });
 
   return NextResponse.redirect(
-    `${process.env.NEXT_PUBLIC_APP_URL}/tenant/integracoes?connected=true`
+    `${APP_URL}/tenant/integracoes?connected=true`
   );
 }

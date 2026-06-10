@@ -63,15 +63,19 @@ model Carrossel {
   tenantId    String
   tenant      Tenant          @relation(fields: [tenantId], references: [id])
   titulo      String
-  status      PipelineStatus  @default(BACKLOG)
+  status      PipelineStatus  @default(PRODUZIR)
   angulo      String?
   slides      Json?
   legendaBody     String?
   hashtags        String?
   operador        String?
   feedbackCliente String?
+  ajustePedido    Boolean      @default(false)
   agendadoPara DateTime?
   publicadoEm  DateTime?
+  postId       String?
+  erroPublicacao       String?
+  tentativasPublicacao Int     @default(0)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
@@ -156,14 +160,11 @@ enum TenantStatus {
 }
 
 enum PipelineStatus {
-  BACKLOG
-  EM_PRODUCAO
-  REVISAO_INTERNA
-  AGUARDANDO_CLIENTE
+  PRODUZIR
+  APROVACAO
   APROVADO
   AGENDADO
   PUBLICADO
-  AJUSTE_PEDIDO
 }
 
 enum AgendaStatus {

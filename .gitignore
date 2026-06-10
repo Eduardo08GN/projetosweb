@@ -56,6 +56,13 @@ v5-*.png
 kultivi-*.png
 fluencypass-*.png
 fullenglish-*.png
+automaweb-*.png
+tenant-*.png
+master-*.png
+login-*.png
+sites-*.png
+integracoes-*.png
+carrossel-detail-*.png
 
 # MCP config
 .mcp.json
