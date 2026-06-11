@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { variants, transitions } from "@/lib/animations";
-import { CheckCircle2, CalendarClock } from "lucide-react";
+import { CheckCircle2, CalendarClock, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { requestPlanChange } from "@/app/actions/account-actions";
 import {
   Sheet,
   SheetContent,
@@ -47,6 +49,20 @@ const planosDisponiveis = [
 
 export function PlanCard({ data }: { data: PlanData }) {
   const [planosOpen, setPlanosOpen] = useState(false);
+  const [pedido, setPedido] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  function pedirPlano(nome: string) {
+    startTransition(async () => {
+      const result = await requestPlanChange(nome);
+      if (result.error) {
+        toast(result.error);
+      } else {
+        setPedido(nome);
+        toast("Recebemos seu interesse. A gente entra em contato");
+      }
+    });
+  }
 
   return (
     <motion.div
@@ -156,6 +172,22 @@ export function PlanCard({ data }: { data: PlanData }) {
                 <p className="mt-3 text-xs leading-relaxed text-[#71717A]">
                   {plano.descricao}
                 </p>
+                <button
+                  onClick={() => pedirPlano(plano.nome)}
+                  disabled={pending || pedido === plano.nome}
+                  className={`mt-4 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition-colors duration-150 disabled:opacity-60 ${
+                    plano.destaque
+                      ? "bg-[#18181B] text-[#FAFAFA] hover:bg-[#27272A]"
+                      : "border border-[#E4E4E7] bg-white text-[#09090B] hover:bg-[#F4F4F5]"
+                  }`}
+                >
+                  {pending && pedido !== plano.nome && (
+                    <Loader2 size={12} className="animate-spin" />
+                  )}
+                  {pedido === plano.nome
+                    ? "Interesse registrado"
+                    : "Tenho interesse"}
+                </button>
               </div>
             ))}
 

@@ -4,6 +4,9 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { notifyMasters } from "@/lib/email";
+import { emailInterno } from "@/lib/email-templates";
 
 export type AccountActionState = { error?: string; success?: boolean } | undefined;
 
@@ -66,6 +69,45 @@ export async function changePassword(
     where: { id: session.userId },
     data: { password: await bcrypt.hash(nova, 10) },
   });
+
+  return { success: true };
+}
+
+/**
+ * Rota de upgrade: o cliente manifesta interesse num plano e a equipe
+ * recebe o aviso na hora pra fechar por contato direto. Quando houver
+ * cobranca online, este e o ponto que vira checkout.
+ */
+export async function requestPlanChange(
+  planoDesejado: string
+): Promise<{ error?: string; success?: boolean }> {
+  const session = await getSession();
+  if (!session?.tenantId) return { error: "Nao autorizado" };
+
+  const planosValidos = ["Conteudo", "Conteudo + Mensagens"];
+  if (!planosValidos.includes(planoDesejado)) {
+    return { error: "Plano invalido" };
+  }
+
+  const tenant = await db.tenant.findUnique({
+    where: { id: session.tenantId },
+    select: { name: true, email: true, phone: true, plano: true },
+  });
+  if (!tenant) return { error: "Nao autorizado" };
+
+  const aviso = emailInterno({
+    assunto: `${tenant.name} tem interesse no plano ${planoDesejado}`,
+    titulo: "Pedido de mudanca de plano",
+    resumo:
+      "O cliente clicou em um plano de continuidade no painel. Entrar em contato pra fechar.",
+    linhas: [
+      ["Cliente", tenant.name],
+      ["Plano atual", tenant.plano ?? "A definir"],
+      ["Plano desejado", planoDesejado],
+      ["Contato", [tenant.email, tenant.phone].filter(Boolean).join(" / ") || "Sem contato cadastrado"],
+    ],
+  });
+  after(() => notifyMasters(aviso.subject, aviso.html));
 
   return { success: true };
 }
