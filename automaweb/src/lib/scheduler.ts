@@ -1,4 +1,6 @@
 import cron from "node-cron";
+import { Queue, Worker } from "bullmq";
+import IORedis from "ioredis";
 import { db } from "./db";
 import { publishToInstagram } from "./instagram";
 import { r2Delete, r2KeyFromUrl } from "./r2";
@@ -194,13 +196,70 @@ async function vigiarTokens() {
   }
 }
 
-export function startScheduler() {
-  const globalRef = globalThis as unknown as { __schedulerStarted?: boolean };
+/* ── Orquestracao ──
+   Com REDIS_URL (producao): BullMQ com jobs repetiveis. O agendamento
+   vive no Redis, entao com 2+ replicas do app cada disparo roda UMA vez
+   (quem pega o job e um worker so), sem post duplicado.
+   Sem REDIS_URL (dev local): node-cron no proprio processo. */
+
+async function rodarJob(nome: string) {
+  if (nome === "publicar") await publicarAgendados();
+  else if (nome === "vigiar-tokens") await vigiarTokens();
+}
+
+export async function startScheduler() {
+  const globalRef = globalThis as unknown as {
+    __schedulerStarted?: boolean;
+    __schedulerQueue?: Queue;
+    __schedulerWorker?: Worker;
+  };
   if (globalRef.__schedulerStarted) return;
   globalRef.__schedulerStarted = true;
 
-  cron.schedule("* * * * *", publicarAgendados);
-  cron.schedule("0 * * * *", vigiarTokens);
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) {
+    cron.schedule("* * * * *", publicarAgendados);
+    cron.schedule("0 * * * *", vigiarTokens);
+    console.log(
+      "[robo] Scheduler ligado (cron local): publicar (1min) + vigiar tokens (1h)"
+    );
+    return;
+  }
 
-  console.log("[robo] Scheduler ligado: publicar (1min) + vigiar tokens (1h)");
+  try {
+    const connection = new IORedis(redisUrl, { maxRetriesPerRequest: null });
+    const queue = new Queue("robo", { connection });
+
+    await queue.upsertJobScheduler(
+      "publicar",
+      { pattern: "* * * * *" },
+      { name: "publicar" }
+    );
+    await queue.upsertJobScheduler(
+      "vigiar-tokens",
+      { pattern: "0 * * * *" },
+      { name: "vigiar-tokens" }
+    );
+
+    const worker = new Worker("robo", async (job) => rodarJob(job.name), {
+      connection,
+    });
+    worker.on("failed", (job, err) => {
+      console.error(`[robo] Job ${job?.name} falhou:`, err.message);
+    });
+
+    globalRef.__schedulerQueue = queue;
+    globalRef.__schedulerWorker = worker;
+    console.log(
+      "[robo] Scheduler ligado (BullMQ/Redis): publicar (1min) + vigiar tokens (1h)"
+    );
+  } catch (err) {
+    // Redis fora do ar nao pode derrubar a plataforma: cai pro cron local
+    console.error(
+      "[robo] BullMQ indisponivel, caindo pro cron local:",
+      err instanceof Error ? err.message : err
+    );
+    cron.schedule("* * * * *", publicarAgendados);
+    cron.schedule("0 * * * *", vigiarTokens);
+  }
 }
