@@ -84,10 +84,10 @@ export async function requestPlanChange(
   const session = await getSession();
   if (!session?.tenantId) return { error: "Nao autorizado" };
 
-  const planosValidos = ["Conteudo", "Conteudo + Mensagens"];
-  if (!planosValidos.includes(planoDesejado)) {
-    return { error: "Plano invalido" };
-  }
+  const planoCatalogo = await db.planoCatalogo.findFirst({
+    where: { nome: planoDesejado, ativo: true },
+  });
+  if (!planoCatalogo) return { error: "Plano invalido" };
 
   const tenant = await db.tenant.findUnique({
     where: { id: session.tenantId },

@@ -29,25 +29,21 @@ type PlanData = {
   mensalidade: number | null;
 };
 
-/* ── Planos de continuidade ──
-   Exibidos na sheet "Ver planos". Valores de referencia da recorrencia
-   que comeca quando o periodo incluso no pacote termina. */
-const planosDisponiveis = [
-  {
-    nome: "Conteudo",
-    valor: 120,
-    descricao: "4 carrosseis por semana, publicados direto no seu Instagram",
-  },
-  {
-    nome: "Conteudo + Mensagens",
-    valor: 215,
-    descricao:
-      "Tudo do plano Conteudo, mais respostas automaticas no seu Direct",
-    destaque: true,
-  },
-];
+type PlanoDisponivel = {
+  id: string;
+  nome: string;
+  valor: number;
+  descricao: string;
+  destaque: boolean;
+};
 
-export function PlanCard({ data }: { data: PlanData }) {
+export function PlanCard({
+  data,
+  planos,
+}: {
+  data: PlanData;
+  planos: PlanoDisponivel[];
+}) {
   const [planosOpen, setPlanosOpen] = useState(false);
   const [pedido, setPedido] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -142,7 +138,7 @@ export function PlanCard({ data }: { data: PlanData }) {
           </SheetHeader>
 
           <div className="flex flex-col gap-4 px-4 pb-6">
-            {planosDisponiveis.map((plano) => (
+            {planos.map((plano) => (
               <div
                 key={plano.nome}
                 className={`rounded-xl border p-5 ${

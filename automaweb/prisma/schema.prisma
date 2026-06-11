@@ -34,6 +34,8 @@ model Tenant {
   planoInicio      DateTime?
   planoValidoAte   DateTime?
   planoMensalidade Int?
+  // faixa (7, 3, 1 dia ou 0 = vencido) do ultimo aviso de plano enviado
+  planoAvisoDias   Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -44,6 +46,19 @@ model Tenant {
   interacoes     InteracaoDM[]
   sites          Site[]
   metaConnection MetaConnection?
+}
+
+// Planos de continuidade exibidos ao cliente. Editavel pelo master.
+model PlanoCatalogo {
+  id        String   @id @default(cuid())
+  nome      String   @unique
+  valor     Int
+  descricao String
+  destaque  Boolean  @default(false)
+  ordem     Int      @default(0)
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model MetaConnection {

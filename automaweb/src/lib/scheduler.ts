@@ -8,7 +8,10 @@ import { notifyMasters, notifyTenant } from "./email";
 import {
   emailConexaoVencendo,
   emailConexaoVencida,
+  emailContaPausada,
   emailInterno,
+  emailPlanoVencendo,
+  emailPlanoVencido,
   emailPostPublicado,
 } from "./email-templates";
 
@@ -30,6 +33,8 @@ async function publicarAgendados() {
         status: "AGENDADO",
         agendadoPara: { lte: new Date() },
         tentativasPublicacao: { lt: MAX_TENTATIVAS },
+        // conta pausada ou cancelada nao publica
+        tenant: { status: "ATIVO" },
       },
       include: { tenant: { include: { metaConnection: true } } },
     });
@@ -196,6 +201,108 @@ async function vigiarTokens() {
   }
 }
 
+const CARENCIA_DIAS = 5;
+
+/**
+ * Rotina PLANOS — roda uma vez por dia.
+ * Avisa o cliente em 7, 3 e 1 dia antes do plano vencer, avisa no dia
+ * do vencimento e pausa a conta automaticamente apos a carencia.
+ * Nenhum passo depende de olho humano; o master so e avisado.
+ */
+async function vigiarPlanos() {
+  const agora = new Date();
+  const em7dias = new Date(agora.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const limiteCarencia = new Date(
+    agora.getTime() - CARENCIA_DIAS * 24 * 60 * 60 * 1000
+  );
+
+  // 1. perto de vencer: faixas 7, 3 e 1 dia, sem repetir
+  const vencendo = await db.tenant.findMany({
+    where: {
+      status: "ATIVO",
+      planoValidoAte: { gt: agora, lte: em7dias },
+    },
+    select: { id: true, name: true, planoValidoAte: true, planoAvisoDias: true },
+  });
+  for (const tenant of vencendo) {
+    const dias = Math.ceil(
+      (tenant.planoValidoAte!.getTime() - agora.getTime()) / (24 * 60 * 60 * 1000)
+    );
+    const faixa = dias <= 1 ? 1 : dias <= 3 ? 3 : 7;
+    if (tenant.planoAvisoDias !== null && tenant.planoAvisoDias <= faixa) continue;
+
+    console.log(`[robo] Plano do ${tenant.name} vence em ${dias} dia(s). Avisando`);
+    const aviso = emailPlanoVencendo({ dias });
+    await notifyTenant(tenant.id, aviso.subject, aviso.html);
+    await db.tenant.update({
+      where: { id: tenant.id },
+      data: { planoAvisoDias: faixa },
+    });
+  }
+
+  // 2. venceu, dentro da carencia: um unico aviso de vencido
+  const vencidos = await db.tenant.findMany({
+    where: {
+      status: "ATIVO",
+      planoValidoAte: { lte: agora, gt: limiteCarencia },
+    },
+    select: { id: true, name: true, planoAvisoDias: true },
+  });
+  for (const tenant of vencidos) {
+    if (tenant.planoAvisoDias !== null && tenant.planoAvisoDias <= 0) continue;
+
+    console.warn(`[robo] Plano do ${tenant.name} venceu. Carencia de ${CARENCIA_DIAS} dias`);
+    const aviso = emailPlanoVencido();
+    await notifyTenant(tenant.id, aviso.subject, aviso.html);
+    await db.tenant.update({
+      where: { id: tenant.id },
+      data: { planoAvisoDias: 0 },
+    });
+
+    const interno = emailInterno({
+      assunto: `Plano vencido: ${tenant.name}`,
+      titulo: "Plano de cliente venceu",
+      resumo: `A carencia de ${CARENCIA_DIAS} dias comecou. Sem renovacao, a conta pausa sozinha.`,
+      linhas: [
+        ["Cliente", tenant.name],
+        ["Carencia", `${CARENCIA_DIAS} dias`],
+      ],
+    });
+    await notifyMasters(interno.subject, interno.html);
+  }
+
+  // 3. passou da carencia: pausa automatica
+  const esgotados = await db.tenant.findMany({
+    where: {
+      status: "ATIVO",
+      planoValidoAte: { lte: limiteCarencia },
+    },
+    select: { id: true, name: true },
+  });
+  for (const tenant of esgotados) {
+    console.warn(`[robo] Pausando ${tenant.name}: plano vencido alem da carencia`);
+    await db.tenant.update({
+      where: { id: tenant.id },
+      data: { status: "PAUSADO" },
+    });
+
+    const aviso = emailContaPausada();
+    await notifyTenant(tenant.id, aviso.subject, aviso.html);
+
+    const interno = emailInterno({
+      assunto: `Conta pausada: ${tenant.name}`,
+      titulo: "Conta pausada por vencimento",
+      resumo:
+        "Plano vencido alem da carencia. Publicacoes pausadas e acesso limitado ate regularizar.",
+      linhas: [
+        ["Cliente", tenant.name],
+        ["Acao", "Reativar pela tabela de clientes ao confirmar pagamento"],
+      ],
+    });
+    await notifyMasters(interno.subject, interno.html);
+  }
+}
+
 /* ── Orquestracao ──
    Com REDIS_URL (producao): BullMQ com jobs repetiveis. O agendamento
    vive no Redis, entao com 2+ replicas do app cada disparo roda UMA vez
@@ -205,6 +312,7 @@ async function vigiarTokens() {
 async function rodarJob(nome: string) {
   if (nome === "publicar") await publicarAgendados();
   else if (nome === "vigiar-tokens") await vigiarTokens();
+  else if (nome === "vigiar-planos") await vigiarPlanos();
 }
 
 export async function startScheduler() {
@@ -220,8 +328,9 @@ export async function startScheduler() {
   if (!redisUrl) {
     cron.schedule("* * * * *", publicarAgendados);
     cron.schedule("0 * * * *", vigiarTokens);
+    cron.schedule("0 12 * * *", vigiarPlanos);
     console.log(
-      "[robo] Scheduler ligado (cron local): publicar (1min) + vigiar tokens (1h)"
+      "[robo] Scheduler ligado (cron local): publicar (1min) + vigiar tokens (1h) + vigiar planos (1d)"
     );
     return;
   }
@@ -240,6 +349,12 @@ export async function startScheduler() {
       { pattern: "0 * * * *" },
       { name: "vigiar-tokens" }
     );
+    // 12:00 UTC = 09:00 em Brasilia
+    await queue.upsertJobScheduler(
+      "vigiar-planos",
+      { pattern: "0 12 * * *" },
+      { name: "vigiar-planos" }
+    );
 
     const worker = new Worker("robo", async (job) => rodarJob(job.name), {
       connection,
@@ -251,7 +366,7 @@ export async function startScheduler() {
     globalRef.__schedulerQueue = queue;
     globalRef.__schedulerWorker = worker;
     console.log(
-      "[robo] Scheduler ligado (BullMQ/Redis): publicar (1min) + vigiar tokens (1h)"
+      "[robo] Scheduler ligado (BullMQ/Redis): publicar (1min) + vigiar tokens (1h) + vigiar planos (1d)"
     );
   } catch (err) {
     // Redis fora do ar nao pode derrubar a plataforma: cai pro cron local
@@ -261,5 +376,6 @@ export async function startScheduler() {
     );
     cron.schedule("* * * * *", publicarAgendados);
     cron.schedule("0 * * * *", vigiarTokens);
+    cron.schedule("0 12 * * *", vigiarPlanos);
   }
 }

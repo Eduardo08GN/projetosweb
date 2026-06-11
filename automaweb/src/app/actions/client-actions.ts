@@ -45,10 +45,15 @@ export async function createClient(
     return { error: "Ja existe um usuario com esse email" };
   }
 
-  // primeiros clientes: pacote Completo com 6 meses de carrosseis inclusos
+  // primeiros clientes: pacote Completo com 6 meses de carrosseis inclusos.
+  // A mensalidade sugerida vem do plano em destaque do catalogo.
   const inicio = new Date();
   const validoAte = new Date(inicio);
   validoAte.setMonth(validoAte.getMonth() + 6);
+
+  const planoDestaque = await db.planoCatalogo.findFirst({
+    where: { destaque: true, ativo: true },
+  });
 
   const tenant = await db.tenant.create({
     data: {
@@ -60,7 +65,7 @@ export async function createClient(
       plano: "Completo",
       planoInicio: inicio,
       planoValidoAte: validoAte,
-      planoMensalidade: 215,
+      planoMensalidade: planoDestaque?.valor ?? 215,
     },
   });
 
@@ -111,6 +116,12 @@ export async function updateClientField(
       const date = new Date(value + "T12:00:00");
       if (isNaN(date.getTime())) return { error: "Data invalida" };
       data = { planoValidoAte: date };
+      // validade estendida pro futuro = renovacao: zera a regua de avisos
+      // e reativa a conta se estava pausada por vencimento
+      if (date.getTime() > Date.now()) {
+        data.planoAvisoDias = null;
+        if (tenant.status === "PAUSADO") data.status = "ATIVO";
+      }
     }
   } else if (field === "planoMensalidade") {
     if (!value) {

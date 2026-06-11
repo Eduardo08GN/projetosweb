@@ -390,6 +390,20 @@ export async function getTenantDmMetrics(tenantId: string) {
   };
 }
 
+export async function getPlanosCatalogo() {
+  return db.planoCatalogo.findMany({
+    where: { ativo: true },
+    orderBy: { ordem: "asc" },
+    select: {
+      id: true,
+      nome: true,
+      valor: true,
+      descricao: true,
+      destaque: true,
+    },
+  });
+}
+
 export async function getTenantPlan(tenantId: string) {
   const tenant = await db.tenant.findUnique({
     where: { id: tenantId },

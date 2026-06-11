@@ -1,6 +1,6 @@
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { getTenantPlan, getTenantProfile } from "@/lib/queries";
+import { getPlanosCatalogo, getTenantPlan, getTenantProfile } from "@/lib/queries";
 import { PageHeader } from "@/components/shared/page-header";
 import { ProfileCard } from "@/components/tenant/conta/profile-card";
 import { PlanCard } from "@/components/tenant/conta/plan-card";
@@ -10,9 +10,10 @@ export default async function ContaPage() {
   const session = await getSession();
   if (!session?.tenantId) redirect("/login");
 
-  const [profile, plan] = await Promise.all([
+  const [profile, plan, planos] = await Promise.all([
     getTenantProfile(session.userId),
     getTenantPlan(session.tenantId),
+    getPlanosCatalogo(),
   ]);
   if (!profile || !plan) redirect("/login");
 
@@ -25,7 +26,7 @@ export default async function ContaPage() {
           <SecurityCard />
         </div>
         <div>
-          <PlanCard data={plan} />
+          <PlanCard data={plan} planos={planos} />
         </div>
       </div>
     </div>

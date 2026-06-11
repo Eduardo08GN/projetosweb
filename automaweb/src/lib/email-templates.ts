@@ -254,6 +254,70 @@ export function emailConexaoVencida(): EmailPronto {
   };
 }
 
+export function emailPlanoVencendo({ dias }: { dias: number }): EmailPronto {
+  const prazo = dias <= 1 ? "amanha" : `em ${dias} dias`;
+  return {
+    subject: `Seu plano vence ${prazo}`,
+    html: layout({
+      preheader: "Renove e suas publicacoes seguem sem pausa.",
+      eyebrow: "Seu plano",
+      titulo: "Seu periodo incluso esta chegando ao fim",
+      corpo:
+        paragrafo(
+          `O periodo incluso no seu pacote vence ${prazo}. Depois dessa data, as publicacoes automaticas entram em espera.`
+        ) +
+        paragrafo(
+          "Pra seguir sem pausa, escolha um plano de continuidade no seu painel ou fale com a gente. Leva um minuto."
+        ),
+      cta: { label: "Ver planos no painel", url: `${SITE}/tenant/conta` },
+      motivo: "Voce recebeu este aviso porque seu plano na AutomaWeb esta perto de vencer.",
+    }),
+  };
+}
+
+export function emailPlanoVencido(): EmailPronto {
+  return {
+    subject: "Seu plano venceu, suas publicacoes vao pausar",
+    html: layout({
+      preheader: "Regularize em poucos dias e nada para.",
+      eyebrow: "Acao necessaria",
+      titulo: "Seu periodo incluso terminou",
+      corpo:
+        paragrafo(
+          "O periodo incluso no seu pacote venceu. Suas publicacoes seguem por mais alguns dias e depois entram em espera automaticamente."
+        ) +
+        paragrafo(
+          "Escolha um plano de continuidade no seu painel ou fale com a gente pra manter tudo rodando."
+        ),
+      cta: { label: "Regularizar agora", url: `${SITE}/tenant/conta` },
+      motivo: "Voce recebeu este aviso porque seu plano na AutomaWeb venceu.",
+    }),
+  };
+}
+
+export function emailContaPausada(): EmailPronto {
+  return {
+    subject: "Sua conta esta em espera",
+    html: layout({
+      preheader: "Nada foi apagado. Regularize e tudo volta na hora.",
+      eyebrow: "Conta em espera",
+      titulo: "Suas publicacoes foram pausadas",
+      corpo:
+        paragrafo(
+          "Como o plano venceu e nao foi renovado, sua conta entrou em espera: as publicacoes automaticas pararam e o acesso ao painel ficou limitado."
+        ) +
+        paragrafo(
+          "Nada foi apagado. Assim que voce regularizar, tudo volta exatamente de onde parou."
+        ),
+      cta: {
+        label: "Falar com a gente",
+        url: "mailto:contato@automaweb.pro?subject=Quero reativar minha conta",
+      },
+      motivo: "Voce recebeu este aviso porque sua conta na AutomaWeb foi pausada por vencimento do plano.",
+    }),
+  };
+}
+
 /* ───────────────────────── Emails pra equipe ───────────────────────── */
 
 export function emailInterno({
