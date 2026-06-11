@@ -1,23 +1,23 @@
-// Remove os dados ficticios criados pelo seed de desenvolvimento que
-// ainda estavam no banco de producao. Tudo apagado por ID explicito;
-// conteudo real (criado pela fabrica de carrosseis) nao e tocado.
+// Remove os dados ficticios do seed de desenvolvimento que ainda
+// poluem o banco de producao. Tudo apagado por ID explicito.
+//
+// NAO toca nos registros da Dra. Camila: clareamento e lentes foram
+// produzidos de verdade (arte + legenda no R2) e a escova esta em
+// producao real. Os 5 do Rodger sao cascas vazias (0 slides, 0 legenda);
+// os reais dele ("O sequestro do Alfredo", "Seu sotaque te entrega")
+// usam UUID e ficam.
 //
 // Rodar de dentro de automaweb/: node ../scripts/limpar-seeds-ficticios.js
 
 require("dotenv").config();
 const { Client } = require("pg");
 
-// carrosseis inventados pelo seed (titulos como "5 erros que travam seu
-// ingles"); os reais usam UUID e ficam fora desta lista
-const SEED_CARROSSEIS = [
-  "cmq64pbxq0001i8ueiyn2l0z5", // 5 erros que travam seu ingles (PUBLICADO falso)
-  "cmq64pc1h0002i8ueh3s0nu7p", // Phrasal verbs do dia a dia (AGENDADO 15/06 — o robo ia tentar publicar)
-  "cmq64pc560003i8ueim89xyeo", // Como pensar em ingles
-  "cmq64pc9p0004i8uef4vxb84l", // Listening: serie vs podcast
-  "cmq64pcde0005i8ueg6831r8f", // Pronuncia que brasileiros erram
-  "cmq64pch30006i8uebio39hn2", // Clareamento dental: mitos e verdades (PUBLICADO falso)
-  "cmq64pckr0007i8ue8qkao70s", // Quando trocar a escova de dente (AGENDADO 16/06)
-  "cmq64pcof0008i8uerjkzrckh", // Lentes de contato dental (duplicado do real em APROVACAO)
+const SEED_CARROSSEIS_RODGER = [
+  "cmq64pbxq0001i8ueiyn2l0z5", // 5 erros que travam seu ingles (PUBLICADO falso, sem conteudo)
+  "cmq64pc1h0002i8ueh3s0nu7p", // Phrasal verbs do dia a dia (AGENDADO 15/06 sem slides — robo ia falhar)
+  "cmq64pc560003i8ueim89xyeo", // Como pensar em ingles (vazio)
+  "cmq64pc9p0004i8uef4vxb84l", // Listening: serie vs podcast (vazio)
+  "cmq64pcde0005i8ueg6831r8f", // Pronuncia que brasileiros erram (vazio)
 ];
 
 // automacoes de DM inventadas (EBOOK/AULA/PRECO com links que nao existem)
@@ -55,15 +55,19 @@ async function main() {
 
   const cars = await c.query(
     `DELETE FROM "Carrossel" WHERE id = ANY($1)`,
-    [SEED_CARROSSEIS]
+    [SEED_CARROSSEIS_RODGER]
   );
-  console.log(`Carrosseis de seed: ${cars.rowCount} removido(s)`);
+  console.log(`Carrosseis vazios do Rodger: ${cars.rowCount} removido(s)`);
 
   const restantes = await c.query(
-    `SELECT titulo, status FROM "Carrossel" ORDER BY "createdAt"`
+    `SELECT t.name AS cliente, c.titulo, c.status,
+       jsonb_array_length(COALESCE(c.slides,'[]'::jsonb)) AS nslides
+     FROM "Carrossel" c JOIN "Tenant" t ON t.id = c."tenantId"
+     ORDER BY t.name, c."createdAt"`
   );
-  console.log("Carrosseis que ficaram (reais):");
-  for (const r of restantes.rows) console.log(` - ${r.titulo} [${r.status}]`);
+  console.log("Carrosseis que ficaram:");
+  for (const r of restantes.rows)
+    console.log(` - [${r.cliente}] ${r.titulo} [${r.status}] (${r.nslides} slides)`);
 
   await c.end();
 }
