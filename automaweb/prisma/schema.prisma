@@ -36,6 +36,10 @@ model Tenant {
   planoMensalidade Int?
   // faixa (7, 3, 1 dia ou 0 = vencido) do ultimo aviso de plano enviado
   planoAvisoDias   Int?
+  // cobranca recorrente (Asaas)
+  documento           String?
+  asaasCustomerId     String? @unique
+  asaasSubscriptionId String? @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -46,6 +50,13 @@ model Tenant {
   interacoes     InteracaoDM[]
   sites          Site[]
   metaConnection MetaConnection?
+}
+
+// Eventos de webhook ja processados (idempotencia da cobranca)
+model AsaasEvento {
+  id          String   @id
+  evento      String
+  processadoEm DateTime @default(now())
 }
 
 // Planos de continuidade exibidos ao cliente. Editavel pelo master.

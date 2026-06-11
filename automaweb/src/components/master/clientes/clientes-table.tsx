@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { variants, transitions } from "@/lib/animations";
 import { TenantStatusTag } from "@/components/shared/tenant-status-tag";
 import { updateClientField } from "@/app/actions/client-actions";
-import { Pencil } from "lucide-react";
+import {
+  cancelarAssinatura,
+  criarAssinatura,
+  linkFaturaAssinatura,
+} from "@/app/actions/assinatura-actions";
+import { Check, Link2, Loader2, Pencil, Repeat, X } from "lucide-react";
 
 type ClienteRow = {
   id: string;
@@ -14,10 +19,12 @@ type ClienteRow = {
   slug: string;
   email: string;
   phone: string;
+  documento: string;
   status: string;
   plano: string;
   planoValidoAte: string; // yyyy-mm-dd ou ""
   planoMensalidade: number | null;
+  assinaturaAtiva: boolean;
   carrosseis: number;
 };
 
@@ -151,6 +158,112 @@ function SelectCell({
   );
 }
 
+/* ── Celula de recorrencia ──
+   Sem assinatura: botao gera no Asaas e copia o link da fatura.
+   Com assinatura: tag Ativa + copiar link + cancelar com confirmacao. */
+function RecorrenciaCell({ cliente }: { cliente: ClienteRow }) {
+  const [pending, startTransition] = useTransition();
+  const [confirmando, setConfirmando] = useState(false);
+
+  async function copiarLink(url: string | null | undefined) {
+    if (!url) return;
+    await navigator.clipboard.writeText(url).catch(() => {});
+  }
+
+  if (!cliente.assinaturaAtiva) {
+    return (
+      <button
+        disabled={pending}
+        onClick={() =>
+          startTransition(async () => {
+            const result = await criarAssinatura(cliente.id);
+            if (result.error) {
+              toast(result.error);
+            } else {
+              await copiarLink(result.linkFatura);
+              toast(
+                result.linkFatura
+                  ? "Assinatura criada. Link da fatura copiado"
+                  : "Assinatura criada"
+              );
+            }
+          })
+        }
+        className="inline-flex items-center gap-1.5 rounded-md border border-[#E4E4E7] bg-white px-2.5 py-1 text-xs font-medium text-[#09090B] transition-colors duration-150 hover:bg-[#F4F4F5] disabled:opacity-50"
+      >
+        {pending ? (
+          <Loader2 size={12} className="animate-spin" />
+        ) : (
+          <Repeat size={12} strokeWidth={1.5} />
+        )}
+        {pending ? "Gerando..." : "Gerar assinatura"}
+      </button>
+    );
+  }
+
+  return (
+    <div className="inline-flex items-center gap-1.5">
+      <span className="rounded-md bg-[#DCFCE7] px-2 py-1 text-xs font-semibold text-[#166534]">
+        Ativa
+      </span>
+      <button
+        disabled={pending}
+        title="Copiar link da fatura"
+        onClick={() =>
+          startTransition(async () => {
+            const result = await linkFaturaAssinatura(cliente.id);
+            if (result.error) toast(result.error);
+            else if (result.linkFatura) {
+              await copiarLink(result.linkFatura);
+              toast("Link da fatura copiado");
+            } else toast("Nenhuma fatura em aberto");
+          })
+        }
+        className="rounded-md p-1 text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B] disabled:opacity-50"
+      >
+        {pending ? (
+          <Loader2 size={13} className="animate-spin" />
+        ) : (
+          <Link2 size={13} strokeWidth={1.5} />
+        )}
+      </button>
+      {confirmando ? (
+        <span className="inline-flex items-center gap-1">
+          <button
+            disabled={pending}
+            title="Confirmar cancelamento"
+            onClick={() =>
+              startTransition(async () => {
+                const result = await cancelarAssinatura(cliente.id);
+                setConfirmando(false);
+                if (result.error) toast(result.error);
+                else toast("Assinatura cancelada");
+              })
+            }
+            className="rounded-md p-1 text-[#DC2626] transition-colors duration-150 hover:bg-[#FEF2F2]"
+          >
+            <Check size={13} strokeWidth={2} />
+          </button>
+          <button
+            onClick={() => setConfirmando(false)}
+            className="rounded-md p-1 text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5]"
+          >
+            <X size={13} strokeWidth={2} />
+          </button>
+        </span>
+      ) : (
+        <button
+          title="Cancelar assinatura"
+          onClick={() => setConfirmando(true)}
+          className="rounded-md p-1 text-[#A1A1AA] transition-colors duration-150 hover:bg-[#FEF2F2] hover:text-[#DC2626]"
+        >
+          <X size={13} strokeWidth={1.5} />
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function ClientesTable({ items }: { items: ClienteRow[] }) {
   const [rows, setRows] = useState(items);
 
@@ -196,13 +309,13 @@ export function ClientesTable({ items }: { items: ClienteRow[] }) {
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#E4E4E7] bg-[#F4F4F5]">
-              {["Cliente", "Contato", "Situacao", "Plano", "Mensalidade", "Valido ate", "Carrosseis"].map(
+              {["Cliente", "Contato", "Situacao", "Plano", "Mensalidade", "Valido ate", "Recorrencia"].map(
                 (h, i) => (
                   <th
                     key={h}
                     className={`px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A] ${
-                      i >= 4 ? "text-right" : "text-left"
-                    } ${h === "Carrosseis" ? "text-right" : ""}`}
+                      i >= 4 && h !== "Recorrencia" ? "text-right" : "text-left"
+                    }`}
                   >
                     {h}
                   </th>
@@ -231,6 +344,17 @@ export function ClientesTable({ items }: { items: ClienteRow[] }) {
                       </span>
                     }
                     onSave={(v) => save(c.id, "phone", v)}
+                  />
+                  <InlineEdit
+                    value={c.documento}
+                    display={
+                      <span
+                        className={`text-xs ${c.documento ? "text-[#A1A1AA]" : "text-[#D4D4D8]"}`}
+                      >
+                        {c.documento || "CPF ou CNPJ"}
+                      </span>
+                    }
+                    onSave={(v) => save(c.id, "documento", v)}
                   />
                 </td>
                 <td className="px-5 py-3.5">
@@ -301,11 +425,8 @@ export function ClientesTable({ items }: { items: ClienteRow[] }) {
                     onSave={(v) => save(c.id, "planoValidoAte", v)}
                   />
                 </td>
-                <td
-                  className="px-5 py-3.5 text-right text-sm font-medium text-[#09090B]"
-                  style={{ fontVariantNumeric: "tabular-nums" }}
-                >
-                  {c.carrosseis}
+                <td className="px-5 py-3.5">
+                  <RecorrenciaCell cliente={c} />
                 </td>
               </tr>
             ))}

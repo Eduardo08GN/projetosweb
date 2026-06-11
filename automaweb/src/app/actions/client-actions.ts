@@ -97,7 +97,7 @@ export async function updateClientField(
   field: string,
   value: string
 ): Promise<{ error?: string; success?: boolean }> {
-  const allowed = ["status", "phone", "plano", "planoValidoAte", "planoMensalidade"];
+  const allowed = ["status", "phone", "plano", "planoValidoAte", "planoMensalidade", "documento"];
   if (!allowed.includes(field)) return { error: "Campo nao permitido" };
 
   const tenant = await db.tenant.findUnique({ where: { id: tenantId } });

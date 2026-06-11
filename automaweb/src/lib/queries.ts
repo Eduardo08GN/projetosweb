@@ -89,12 +89,14 @@ export async function getClientes() {
     slug: t.slug,
     email: t.email ?? "",
     phone: t.phone ?? "",
+    documento: t.documento ?? "",
     status: t.status,
     plano: t.plano ?? "",
     planoValidoAte: t.planoValidoAte
       ? t.planoValidoAte.toISOString().slice(0, 10)
       : "",
     planoMensalidade: t.planoMensalidade,
+    assinaturaAtiva: !!t.asaasSubscriptionId,
     carrosseis: t._count.carrosseis,
   }));
 }
