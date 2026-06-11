@@ -1,6 +1,7 @@
 import cron from "node-cron";
 import { db } from "./db";
 import { publishToInstagram } from "./instagram";
+import { r2Delete, r2KeyFromUrl } from "./r2";
 
 const MAX_TENTATIVAS = 3;
 
@@ -25,6 +26,10 @@ async function publicarAgendados() {
     });
 
     for (const carrossel of vencidos) {
+      // Edicao do cliente ainda nao foi aplicada pela fabrica: segura a
+      // publicacao ate os slides serem re-renderizados.
+      if (carrossel.edicaoPendente !== null) continue;
+
       const conn = carrossel.tenant.metaConnection;
       const slides = ((carrossel.slides as string[] | null) ?? []).filter(
         (s) => typeof s === "string" && s.startsWith("http")
@@ -58,12 +63,28 @@ async function publicarAgendados() {
             publicadoEm: new Date(),
             postId,
             erroPublicacao: null,
+            slides: [],
           },
         });
 
         console.log(
           `[robo] Publicou "${carrossel.titulo}" no Instagram de ${carrossel.tenant.name}`
         );
+
+        // Publicou: os slides saem do R2 (o acervo fica no repositorio).
+        // Falha aqui nao desfaz a publicacao, so loga.
+        for (const url of slides) {
+          const key = r2KeyFromUrl(url);
+          if (!key) continue;
+          try {
+            await r2Delete(key);
+          } catch (err) {
+            console.error(
+              `[robo] Nao consegui apagar ${key} do R2:`,
+              err instanceof Error ? err.message : err
+            );
+          }
+        }
       } catch (err) {
         const mensagem = err instanceof Error ? err.message : "Erro desconhecido";
         await db.carrossel.update({

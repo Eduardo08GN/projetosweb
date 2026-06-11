@@ -71,6 +71,8 @@ model Carrossel {
   operador        String?
   feedbackCliente String?
   ajustePedido    Boolean      @default(false)
+  edicaoPendente     Json?
+  editadoPeloCliente Boolean   @default(false)
   agendadoPara DateTime?
   publicadoEm  DateTime?
   postId       String?

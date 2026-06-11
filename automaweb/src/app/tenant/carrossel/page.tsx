@@ -14,7 +14,7 @@ export default async function CarrosselPage() {
     <div>
       <PageHeader
         title="Carrosseis"
-        description="Acompanhe, aprove ou peca ajustes"
+        description="Veja seus posts, aprove, edite uma vez se precisar e baixe quando quiser"
       />
       <CarouselList items={carousels} />
     </div>

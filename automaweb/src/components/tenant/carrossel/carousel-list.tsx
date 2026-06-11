@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { variants } from "@/lib/animations";
-import { CarouselCard } from "./carousel-card";
+import { CarouselCard, type CarouselData } from "./carousel-card";
 
 const FILTERS = [
   { key: "all", label: "Todos" },
@@ -14,16 +14,7 @@ const FILTERS = [
 
 type FilterKey = (typeof FILTERS)[number]["key"];
 
-type CarouselItem = {
-  id: string;
-  titulo: string;
-  angulo: string;
-  status: string;
-  slides: string[];
-  legenda: string;
-  operador: string;
-  updatedAt: string;
-};
+type CarouselItem = CarouselData;
 
 function filterCarousels(items: CarouselItem[], key: FilterKey) {
   if (key === "all") return items;

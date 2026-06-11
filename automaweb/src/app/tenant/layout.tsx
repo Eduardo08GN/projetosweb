@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import { TenantSidebar } from "@/components/tenant/tenant-sidebar";
 
 export default function TenantLayout({
@@ -11,6 +12,17 @@ export default function TenantLayout({
       <main className="flex-1 overflow-y-auto bg-[#FAFAFA] px-10 py-8">
         {children}
       </main>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: "#18181B",
+            color: "#FAFAFA",
+            border: "none",
+            borderRadius: "10px",
+          },
+        }}
+      />
     </div>
   );
 }

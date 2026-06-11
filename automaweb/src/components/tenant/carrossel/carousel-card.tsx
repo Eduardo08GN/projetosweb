@@ -2,28 +2,44 @@
 
 import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { variants, transitions } from "@/lib/animations";
 import { StatusTag } from "@/components/shared/status-tag";
 import {
+  Calendar,
+  Check,
   ChevronLeft,
   ChevronRight,
-  Check,
-  MessageSquare,
+  Download,
+  Pencil,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
-import {
-  approveCarrossel,
-  requestAdjustment,
-} from "@/app/actions/tenant-carrossel-actions";
+import { siInstagram } from "simple-icons";
 
-type CarouselData = {
+function InstagramIcon({
+  size,
+  className,
+}: {
+  size: number;
+  className?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="currentColor"
+      className={className}
+      aria-hidden
+    >
+      <path d={siInstagram.path} />
+    </svg>
+  );
+}
+import { Button } from "@/components/ui/button";
+import { approveCarrossel } from "@/app/actions/tenant-carrossel-actions";
+import { EditSheet } from "./edit-sheet";
+
+export type CarouselData = {
   id: string;
   titulo: string;
   angulo: string;
@@ -32,11 +48,15 @@ type CarouselData = {
   legenda: string;
   operador: string;
   updatedAt: string;
+  agendadoParaLabel: string | null;
+  publicadoEmLabel: string | null;
+  editadoPeloCliente: boolean;
+  temEdicaoPendente: boolean;
+  conectado: boolean;
 };
 
 function SlidePreview({ slides }: { slides: string[] }) {
   const [current, setCurrent] = useState(0);
-
   const isImage = slides[current]?.startsWith("http");
 
   return (
@@ -72,6 +92,7 @@ function SlidePreview({ slides }: { slides: string[] }) {
           onClick={() => setCurrent(Math.max(0, current - 1))}
           disabled={current === 0}
           className="flex h-7 w-7 items-center justify-center rounded-md text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] disabled:opacity-30"
+          aria-label="Slide anterior"
         >
           <ChevronLeft size={14} strokeWidth={1.5} />
         </button>
@@ -82,6 +103,7 @@ function SlidePreview({ slides }: { slides: string[] }) {
           onClick={() => setCurrent(Math.min(slides.length - 1, current + 1))}
           disabled={current === slides.length - 1}
           className="flex h-7 w-7 items-center justify-center rounded-md text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] disabled:opacity-30"
+          aria-label="Proximo slide"
         >
           <ChevronRight size={14} strokeWidth={1.5} />
         </button>
@@ -90,89 +112,51 @@ function SlidePreview({ slides }: { slides: string[] }) {
   );
 }
 
-function AdjustmentSheet({
-  carrosselId,
-  open,
-  onOpenChange,
-}: {
-  carrosselId: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) {
-  const [feedback, setFeedback] = useState("");
-  const [error, setError] = useState("");
-  const [pending, startTransition] = useTransition();
-
-  function handleSubmit() {
-    setError("");
-    startTransition(async () => {
-      const result = await requestAdjustment(carrosselId, feedback);
-      if (result.error) {
-        setError(result.error);
-      } else {
-        setFeedback("");
-        onOpenChange(false);
-      }
-    });
+/** Linha que sempre diz quando o post vai (ou foi) pro Instagram. */
+function ScheduleLine({ data }: { data: CarouselData }) {
+  if (data.status === "PUBLICADO") {
+    return (
+      <div className="flex items-center gap-2 rounded-lg bg-[#F0FDF4] px-3.5 py-2.5">
+        <InstagramIcon size={14} className="text-[#16A34A]" />
+        <p className="text-xs font-medium text-[#166534]">
+          {data.publicadoEmLabel
+            ? `Publicado no seu Instagram em ${data.publicadoEmLabel}`
+            : "Publicado no seu Instagram"}
+        </p>
+      </div>
+    );
   }
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-md">
-        <SheetHeader>
-          <SheetTitle className="text-sm font-semibold text-[#09090B]">
-            Pedir ajuste
-          </SheetTitle>
-          <SheetDescription className="text-xs text-[#71717A]">
-            Descreva o que precisa ser alterado
-          </SheetDescription>
-        </SheetHeader>
-
-        <div className="flex flex-1 flex-col gap-4 px-4">
-          <textarea
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
-            placeholder="Ex: Trocar a foto do slide 3, ajustar o texto do CTA..."
-            rows={5}
-            className="w-full resize-none rounded-lg border border-[#E4E4E7] bg-white px-3.5 py-3 text-sm text-[#09090B] outline-none transition-colors duration-150 placeholder:text-[#D4D4D8] focus:border-[#18181B]"
-          />
-
-          {error && (
-            <p className="rounded-lg bg-[#FEE2E2] px-3.5 py-2.5 text-sm text-[#991B1B]">
-              {error}
-            </p>
-          )}
-
-          <div className="flex items-center gap-3">
-            <Button
-              onClick={handleSubmit}
-              disabled={pending || !feedback.trim()}
-              className="gap-2 rounded-lg bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A] disabled:opacity-50"
-            >
-              <MessageSquare size={14} strokeWidth={2} />
-              {pending ? "Enviando..." : "Enviar pedido"}
-            </Button>
-            <button
-              onClick={() => onOpenChange(false)}
-              className="rounded-lg px-4 py-2.5 text-sm font-medium text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B]"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+    <div className="flex items-center gap-2 rounded-lg bg-[#F4F4F5] px-3.5 py-2.5">
+      <Calendar size={14} strokeWidth={1.5} className="text-[#71717A]" />
+      <p className="text-xs font-medium text-[#52525B]">
+        {data.agendadoParaLabel
+          ? data.conectado
+            ? `Vai pro seu Instagram em ${data.agendadoParaLabel}`
+            : `Publicacao prevista pra ${data.agendadoParaLabel}`
+          : "Data de publicacao a combinar"}
+      </p>
+    </div>
   );
 }
 
 export function CarouselCard({ data }: { data: CarouselData }) {
   const needsAction = data.status === "APROVACAO";
+  const hasSlides = data.slides.some((s) => s.startsWith("http"));
   const [sheetOpen, setSheetOpen] = useState(false);
   const [pending, startTransition] = useTransition();
 
   function handleApprove() {
     startTransition(async () => {
-      await approveCarrossel(data.id);
+      const result = await approveCarrossel(data.id);
+      if ("error" in result && result.error) {
+        toast(result.error);
+      } else if ("agendado" in result && result.agendado) {
+        toast("Aprovado. Vai pro seu Instagram na data marcada");
+      } else {
+        toast("Aprovado. Baixe quando quiser publicar");
+      }
     });
   }
 
@@ -200,49 +184,105 @@ export function CarouselCard({ data }: { data: CarouselData }) {
           </div>
 
           <div className="mt-4">
-            <SlidePreview slides={data.slides} />
+            {hasSlides ? (
+              <SlidePreview slides={data.slides} />
+            ) : data.status === "PUBLICADO" ? (
+              <div className="flex h-32 flex-col items-center justify-center gap-2 rounded-lg bg-[#F4F4F5]">
+                <InstagramIcon size={20} className="text-[#A1A1AA]" />
+                <p className="text-xs text-[#A1A1AA]">
+                  Ja esta no seu Instagram
+                </p>
+              </div>
+            ) : (
+              <div className="flex h-32 items-center justify-center rounded-lg bg-[#F4F4F5]">
+                <p className="text-xs text-[#A1A1AA]">Em producao</p>
+              </div>
+            )}
           </div>
 
-          <div className="mt-4 rounded-lg bg-[#FAFAFA] px-3.5 py-3">
-            <p className="text-xs font-medium text-[#A1A1AA]">Legenda</p>
-            <p className="mt-1 text-xs leading-relaxed text-[#71717A]">
-              {data.legenda}
-            </p>
+          <div className="mt-4">
+            <ScheduleLine data={data} />
           </div>
+
+          {data.temEdicaoPendente && (
+            <div className="mt-2 rounded-lg bg-[#FEF9C3] px-3.5 py-2.5">
+              <p className="text-xs font-medium text-[#854D0E]">
+                Sua alteracao esta sendo aplicada. O preview atualiza aqui
+              </p>
+            </div>
+          )}
+
+          {data.legenda && (
+            <div className="mt-4 rounded-lg bg-[#FAFAFA] px-3.5 py-3">
+              <p className="text-xs font-medium text-[#A1A1AA]">Legenda</p>
+              <p className="mt-1 line-clamp-3 text-xs leading-relaxed text-[#71717A]">
+                {data.legenda}
+              </p>
+            </div>
+          )}
 
           <div className="mt-4 flex items-center justify-between">
             <p className="text-xs text-[#A1A1AA]">
               por {data.operador} &middot; {data.updatedAt}
             </p>
+            {data.editadoPeloCliente && (
+              <span className="rounded-md bg-[#F4F4F5] px-2 py-1 text-[10px] font-medium text-[#71717A]">
+                Editado por voce
+              </span>
+            )}
           </div>
 
-          {needsAction && (
-            <div className="mt-4 flex items-center gap-2 border-t border-[#E4E4E7] pt-4">
-              <Button
-                onClick={handleApprove}
-                disabled={pending}
-                className="gap-2 rounded-lg bg-[#18181B] px-4 py-2 text-xs font-medium text-[#FAFAFA] hover:bg-[#27272A] disabled:opacity-50"
-              >
-                <Check size={14} strokeWidth={2} />
-                {pending ? "Aprovando..." : "Aprovar"}
-              </Button>
-              <button
-                onClick={() => setSheetOpen(true)}
-                className="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-medium text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B]"
-              >
-                <MessageSquare size={14} strokeWidth={1.5} />
-                Pedir ajuste
-              </button>
+          {(needsAction || hasSlides) && (
+            <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-[#E4E4E7] pt-4">
+              {needsAction && (
+                <Button
+                  onClick={handleApprove}
+                  disabled={pending}
+                  className="gap-2 rounded-lg bg-[#18181B] px-4 py-2 text-xs font-medium text-[#FAFAFA] hover:bg-[#27272A] disabled:opacity-50"
+                >
+                  <Check size={14} strokeWidth={2} />
+                  {pending ? "Aprovando..." : "Aprovar"}
+                </Button>
+              )}
+
+              {needsAction && !data.editadoPeloCliente && (
+                <button
+                  onClick={(e) => {
+                    // impede que o base-ui leia este mesmo clique como
+                    // "clique fora" e feche o sheet na hora
+                    e.stopPropagation();
+                    e.nativeEvent.stopImmediatePropagation();
+                    setSheetOpen(true);
+                  }}
+                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-medium text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B]"
+                >
+                  <Pencil size={14} strokeWidth={1.5} />
+                  Editar antes de aprovar
+                </button>
+              )}
+
+              {hasSlides && (
+                <a
+                  href={`/api/tenant/carrossel/${data.id}/download`}
+                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-medium text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B]"
+                >
+                  <Download size={14} strokeWidth={1.5} />
+                  Baixar post
+                </a>
+              )}
             </div>
           )}
         </div>
       </motion.div>
 
-      <AdjustmentSheet
-        carrosselId={data.id}
-        open={sheetOpen}
-        onOpenChange={setSheetOpen}
-      />
+      {needsAction && !data.editadoPeloCliente && (
+        <EditSheet
+          carrosselId={data.id}
+          slides={data.slides}
+          open={sheetOpen}
+          onOpenChange={setSheetOpen}
+        />
+      )}
     </>
   );
 }

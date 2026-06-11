@@ -252,11 +252,26 @@ export async function getTenantDmStats(tenantId: string) {
   };
 }
 
+function formatDateTime(date: Date) {
+  return `${date.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+  })} as ${date.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}`;
+}
+
 export async function getTenantCarousels(tenantId: string) {
-  const carrosseis = await db.carrossel.findMany({
-    where: { tenantId },
-    orderBy: { updatedAt: "desc" },
-  });
+  const [carrosseis, conn] = await Promise.all([
+    db.carrossel.findMany({
+      where: { tenantId },
+      orderBy: { updatedAt: "desc" },
+    }),
+    db.metaConnection.findUnique({ where: { tenantId } }),
+  ]);
+
+  const conectado = conn?.status === "CONECTADO";
 
   return carrosseis.map((c) => ({
     id: c.id,
@@ -267,6 +282,11 @@ export async function getTenantCarousels(tenantId: string) {
     legenda: c.legendaBody ?? "",
     operador: c.operador ?? "Equipe",
     updatedAt: timeAgo(c.updatedAt),
+    agendadoParaLabel: c.agendadoPara ? formatDateTime(c.agendadoPara) : null,
+    publicadoEmLabel: c.publicadoEm ? formatDateTime(c.publicadoEm) : null,
+    editadoPeloCliente: c.editadoPeloCliente,
+    temEdicaoPendente: c.edicaoPendente !== null,
+    conectado,
   }));
 }
 

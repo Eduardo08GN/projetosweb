@@ -15,6 +15,17 @@
  *     Sem carrosselId, tenta casar a pasta com um carrossel em PRODUZIR
  *     e lista os candidatos se ficar em duvida.
  *
+ *   node scripts/automaweb-sync.js ajustes
+ *     Lista as edicoes que clientes fizeram (texto/fundo por slide) e que
+ *     a fabrica precisa aplicar. Processar = re-renderizar os slides
+ *     editados, re-subir pro MESMO prefixo do R2 (URLs nao mudam) e rodar
+ *     o comando ajustado.
+ *
+ *   node scripts/automaweb-sync.js ajustado <carrosselId>
+ *     Marca a edicao como aplicada: limpa edicaoPendente e, se o tenant
+ *     tem Instagram conectado e data marcada, move pra AGENDADO (o robo
+ *     da plataforma publica sozinho na data).
+ *
  * Env: le .env da raiz (Cloudflare/R2) e automaweb/.env (DATABASE_URL).
  */
 
@@ -269,6 +280,94 @@ async function entregar(pasta, carrosselId) {
   console.log(`Slides no R2: ${slideUrls.length}`);
 }
 
+// -- comando: ajustes --
+
+async function ajustes() {
+  const rows = await withDb((db) =>
+    db
+      .query(
+        `SELECT c.id, c.titulo, c.status, c.slides, c."edicaoPendente",
+                c."agendadoPara", t.name AS tenant, t.slug,
+                mc.status AS conexao
+           FROM "Carrossel" c
+           JOIN "Tenant" t ON t.id = c."tenantId"
+           LEFT JOIN "MetaConnection" mc ON mc."tenantId" = t.id
+          WHERE c."edicaoPendente" IS NOT NULL
+          ORDER BY c."updatedAt" ASC`
+      )
+      .then((r) => r.rows)
+  );
+
+  if (rows.length === 0) {
+    console.log("Nenhuma edicao de cliente pendente.");
+    return;
+  }
+
+  for (const row of rows) {
+    console.log(`\n${row.titulo} (${row.tenant}, id: ${row.id})`);
+    console.log(
+      `  agendado: ${row.agendadoPara ?? "sem data"} | conexao: ${row.conexao ?? "sem conexao"}`
+    );
+    const slides = row.slides ?? [];
+    for (const edit of row.edicaoPendente) {
+      console.log(`  slide ${edit.slide + 1}:`);
+      if (edit.texto) console.log(`    novo texto: "${edit.texto}"`);
+      if (edit.imagemUrl) console.log(`    novo fundo: ${edit.imagemUrl}`);
+      if (slides[edit.slide]) console.log(`    slide atual: ${slides[edit.slide]}`);
+    }
+  }
+  console.log(
+    `\n${rows.length} edicao(oes) pendente(s). Re-renderize os slides, re-suba pro MESMO prefixo do R2 e rode: node scripts/automaweb-sync.js ajustado <id>`
+  );
+}
+
+// -- comando: ajustado --
+
+async function ajustado(carrosselId) {
+  const row = await withDb(async (db) => {
+    const res = await db.query(
+      `SELECT c.id, c.titulo, c.status, c."agendadoPara", c."edicaoPendente",
+              t.name AS tenant, mc.status AS conexao
+         FROM "Carrossel" c
+         JOIN "Tenant" t ON t.id = c."tenantId"
+         LEFT JOIN "MetaConnection" mc ON mc."tenantId" = t.id
+        WHERE c.id = $1`,
+      [carrosselId]
+    );
+    return res.rows[0];
+  });
+
+  if (!row) {
+    console.error(`Carrossel ${carrosselId} nao encontrado.`);
+    process.exit(1);
+  }
+  if (!row.edicaoPendente) {
+    console.log(`"${row.titulo}" nao tem edicao pendente. Nada a fazer.`);
+    return;
+  }
+
+  const agendar =
+    row.conexao === "CONECTADO" && row.agendadoPara && row.status === "APROVADO";
+
+  await withDb((db) =>
+    db.query(
+      `UPDATE "Carrossel"
+          SET "edicaoPendente" = NULL,
+              status = $1,
+              "updatedAt" = NOW()
+        WHERE id = $2`,
+      [agendar ? "AGENDADO" : row.status, carrosselId]
+    )
+  );
+
+  console.log(
+    `Edicao de "${row.titulo}" (${row.tenant}) aplicada.` +
+      (agendar
+        ? ` Movido pra AGENDADO: o robo publica em ${row.agendadoPara}.`
+        : ` Status mantido em ${row.status} (sem conexao ou sem data).`)
+  );
+}
+
 // -- main --
 
 const [, , comando, ...args] = process.argv;
@@ -284,9 +383,17 @@ const [, , comando, ...args] = process.argv;
       process.exit(1);
     }
     await entregar(args[0], args[1]);
+  } else if (comando === "ajustes") {
+    await ajustes();
+  } else if (comando === "ajustado") {
+    if (!args[0]) {
+      console.error("Uso: node scripts/automaweb-sync.js ajustado <carrosselId>");
+      process.exit(1);
+    }
+    await ajustado(args[0]);
   } else {
     console.error(
-      "Uso:\n  node scripts/automaweb-sync.js fila\n  node scripts/automaweb-sync.js entregar <pasta> [carrosselId]"
+      "Uso:\n  node scripts/automaweb-sync.js fila\n  node scripts/automaweb-sync.js entregar <pasta> [carrosselId]\n  node scripts/automaweb-sync.js ajustes\n  node scripts/automaweb-sync.js ajustado <carrosselId>"
     );
     process.exit(1);
   }
