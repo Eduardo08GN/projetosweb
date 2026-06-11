@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { variants, transitions } from "@/lib/animations";
 import { Zap, ZapOff } from "lucide-react";
+import { toggleAutomacao } from "@/app/actions/automacao-actions";
 
 type Automation = {
   id: string;
@@ -16,10 +18,22 @@ type Automation = {
 export function AutomationsTable({ items }: { items: Automation[] }) {
   const [automations, setAutomations] = useState(items);
 
-  function toggleAutomation(id: string) {
+  async function toggleAutomation(id: string) {
+    const alvo = automations.find((a) => a.id === id);
+    if (!alvo) return;
+    const novoAtivo = !alvo.ativo;
+
+    // otimista: vira na hora, desfaz se o servidor recusar
     setAutomations((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, ativo: !a.ativo } : a))
+      prev.map((a) => (a.id === id ? { ...a, ativo: novoAtivo } : a))
     );
+    const result = await toggleAutomacao(id, novoAtivo);
+    if (result.error) {
+      setAutomations((prev) =>
+        prev.map((a) => (a.id === id ? { ...a, ativo: alvo.ativo } : a))
+      );
+      toast(result.error);
+    }
   }
 
   return (

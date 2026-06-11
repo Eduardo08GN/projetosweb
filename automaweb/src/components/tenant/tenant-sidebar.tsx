@@ -12,7 +12,7 @@ import { AppSidebar, type NavItem } from "@/components/shared/app-sidebar";
 const tenantNav: NavItem[] = [
   { label: "Inicio", href: "/tenant", icon: LayoutDashboard },
   { label: "Carrossel", href: "/tenant/carrossel", icon: Layers },
-  { label: "Manychat", href: "/tenant/manychat", icon: MessageCircle },
+  { label: "Mensagens", href: "/tenant/manychat", icon: MessageCircle, badge: "Em breve" },
   { label: "Integrações", href: "/tenant/integracoes", icon: Plug },
   { label: "Minha conta", href: "/tenant/conta", icon: UserCircle },
 ];

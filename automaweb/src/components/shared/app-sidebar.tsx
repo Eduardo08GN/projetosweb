@@ -12,6 +12,7 @@ export type NavItem = {
   label: string;
   href: string;
   icon: LucideIcon;
+  badge?: string;
 };
 
 export function AppSidebar({
@@ -58,6 +59,11 @@ export function AppSidebar({
             >
               <item.icon size={18} strokeWidth={1.5} />
               {item.label}
+              {item.badge && (
+                <span className="ml-auto rounded-md bg-[#FEF3C7] px-1.5 py-0.5 text-[10px] font-semibold text-[#92400E]">
+                  {item.badge}
+                </span>
+              )}
             </Link>
           );
         })}

@@ -29,6 +29,11 @@ model Tenant {
   phone     String?
   email     String?
   status    TenantStatus @default(PROSPECT)
+  // plano comercial exibido no painel do cliente
+  plano            String?
+  planoInicio      DateTime?
+  planoValidoAte   DateTime?
+  planoMensalidade Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

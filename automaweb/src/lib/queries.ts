@@ -90,16 +90,20 @@ export async function getClientes() {
     email: t.email ?? "",
     phone: t.phone ?? "",
     status: t.status,
+    plano: t.plano ?? "",
+    planoValidoAte: t.planoValidoAte
+      ? t.planoValidoAte.toISOString().slice(0, 10)
+      : "",
+    planoMensalidade: t.planoMensalidade,
     carrosseis: t._count.carrosseis,
-    createdAt: t.createdAt.toLocaleDateString("pt-BR", {
-      month: "short",
-      year: "numeric",
-    }),
   }));
 }
 
 export async function getKanbanData() {
   const carrosseis = await db.carrossel.findMany({
+    // publicado no Instagram do cliente (tem postId) ja cumpriu o ciclo:
+    // sai do kanban. O historico vive no painel do cliente e no calendario.
+    where: { OR: [{ status: { not: "PUBLICADO" } }, { postId: null }] },
     include: { tenant: { select: { name: true } } },
     orderBy: { createdAt: "desc" },
   });
@@ -383,6 +387,30 @@ export async function getTenantDmMetrics(tenantId: string) {
     taxa: `${taxa}%`,
     contatos,
     automacoesAtivas,
+  };
+}
+
+export async function getTenantPlan(tenantId: string) {
+  const tenant = await db.tenant.findUnique({
+    where: { id: tenantId },
+    select: {
+      plano: true,
+      planoInicio: true,
+      planoValidoAte: true,
+      planoMensalidade: true,
+      createdAt: true,
+    },
+  });
+  if (!tenant) return null;
+
+  const fmt = (d: Date) =>
+    d.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
+
+  return {
+    plano: tenant.plano,
+    inicioLabel: fmt(tenant.planoInicio ?? tenant.createdAt),
+    validoAteLabel: tenant.planoValidoAte ? fmt(tenant.planoValidoAte) : null,
+    mensalidade: tenant.planoMensalidade,
   };
 }
 

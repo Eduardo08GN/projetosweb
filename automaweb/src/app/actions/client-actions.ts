@@ -45,6 +45,11 @@ export async function createClient(
     return { error: "Ja existe um usuario com esse email" };
   }
 
+  // primeiros clientes: pacote Completo com 6 meses de carrosseis inclusos
+  const inicio = new Date();
+  const validoAte = new Date(inicio);
+  validoAte.setMonth(validoAte.getMonth() + 6);
+
   const tenant = await db.tenant.create({
     data: {
       name,
@@ -52,6 +57,10 @@ export async function createClient(
       email,
       phone: phone || null,
       status: "ATIVO",
+      plano: "Completo",
+      planoInicio: inicio,
+      planoValidoAte: validoAte,
+      planoMensalidade: 215,
     },
   });
 
@@ -74,5 +83,50 @@ export async function createClient(
 
   revalidatePath("/master/clientes");
   revalidatePath("/master");
+  return { success: true };
+}
+
+/** Edicao inline da tabela de clientes (campos comerciais). */
+export async function updateClientField(
+  tenantId: string,
+  field: string,
+  value: string
+): Promise<{ error?: string; success?: boolean }> {
+  const allowed = ["status", "phone", "plano", "planoValidoAte", "planoMensalidade"];
+  if (!allowed.includes(field)) return { error: "Campo nao permitido" };
+
+  const tenant = await db.tenant.findUnique({ where: { id: tenantId } });
+  if (!tenant) return { error: "Cliente nao encontrado" };
+
+  let data: Record<string, unknown>;
+  if (field === "status") {
+    if (!["PROSPECT", "ATIVO", "PAUSADO", "CANCELADO"].includes(value)) {
+      return { error: "Situacao invalida" };
+    }
+    data = { status: value };
+  } else if (field === "planoValidoAte") {
+    if (!value) {
+      data = { planoValidoAte: null };
+    } else {
+      const date = new Date(value + "T12:00:00");
+      if (isNaN(date.getTime())) return { error: "Data invalida" };
+      data = { planoValidoAte: date };
+    }
+  } else if (field === "planoMensalidade") {
+    if (!value) {
+      data = { planoMensalidade: null };
+    } else {
+      const num = parseInt(value, 10);
+      if (isNaN(num) || num < 0) return { error: "Valor invalido" };
+      data = { planoMensalidade: num };
+    }
+  } else {
+    data = { [field]: value || null };
+  }
+
+  await db.tenant.update({ where: { id: tenantId }, data });
+
+  revalidatePath("/master/clientes");
+  revalidatePath("/tenant/conta");
   return { success: true };
 }

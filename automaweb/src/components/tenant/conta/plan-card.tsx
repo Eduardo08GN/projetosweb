@@ -1,17 +1,53 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, CalendarClock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 
 const planFeatures = [
-  "Carrosséis ilimitados",
-  "Publicação automática no Instagram",
-  "Automação de DMs",
-  "Suporte prioritário",
+  "Carrosseis toda semana no seu Instagram",
+  "Publicacao automatica, sem voce mover um dedo",
+  "Aprovacao e edicao de cada post antes de ir ao ar",
+  "Suporte direto com a equipe",
 ];
 
-export function PlanCard() {
+type PlanData = {
+  plano: string | null;
+  inicioLabel: string;
+  validoAteLabel: string | null;
+  mensalidade: number | null;
+};
+
+/* ── Planos de continuidade ──
+   Exibidos na sheet "Ver planos". Valores de referencia da recorrencia
+   que comeca quando o periodo incluso no pacote termina. */
+const planosDisponiveis = [
+  {
+    nome: "Conteudo",
+    valor: 120,
+    descricao: "4 carrosseis por semana, publicados direto no seu Instagram",
+  },
+  {
+    nome: "Conteudo + Mensagens",
+    valor: 215,
+    descricao:
+      "Tudo do plano Conteudo, mais respostas automaticas no seu Direct",
+    destaque: true,
+  },
+];
+
+export function PlanCard({ data }: { data: PlanData }) {
+  const [planosOpen, setPlanosOpen] = useState(false);
+
   return (
     <motion.div
       className="rounded-xl border border-[#E4E4E7] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
@@ -28,19 +64,33 @@ export function PlanCard() {
         <div className="flex items-end justify-between">
           <div>
             <span className="inline-block rounded-md bg-[#18181B] px-3 py-1 text-xs font-semibold text-[#FAFAFA]">
-              Completo
+              {data.plano ?? "A definir"}
             </span>
             <p className="mt-2 text-xs text-[#71717A]">
-              Ativo desde 20 de maio de 2026
+              Ativo desde {data.inicioLabel}
             </p>
           </div>
-          <div className="text-right">
-            <p className="text-2xl font-bold tracking-tight text-[#09090B]">
-              R$ 497
-            </p>
-            <p className="text-xs text-[#71717A]">/mês</p>
-          </div>
+          {data.mensalidade !== null && (
+            <div className="text-right">
+              <p className="text-2xl font-bold tracking-tight text-[#09090B]">
+                R$ {data.mensalidade}
+              </p>
+              <p className="text-xs text-[#71717A]">/mes apos o periodo incluso</p>
+            </div>
+          )}
         </div>
+
+        {data.validoAteLabel && (
+          <div className="mt-4 flex items-center gap-2.5 rounded-lg border border-[#E4E4E7] bg-[#FAFAFA] px-3.5 py-2.5">
+            <CalendarClock size={14} strokeWidth={1.5} className="shrink-0 text-[#71717A]" />
+            <p className="text-xs text-[#52525B]">
+              Periodo incluso valido ate{" "}
+              <span className="font-semibold text-[#09090B]">
+                {data.validoAteLabel}
+              </span>
+            </p>
+          </div>
+        )}
 
         <div className="mt-5 space-y-2.5">
           {planFeatures.map((feature) => (
@@ -54,7 +104,73 @@ export function PlanCard() {
             </div>
           ))}
         </div>
+
+        <Button
+          onClick={() => setPlanosOpen(true)}
+          className="mt-6 w-full rounded-lg border border-[#E4E4E7] bg-white px-5 py-2.5 text-sm font-medium text-[#09090B] shadow-none hover:bg-[#F4F4F5]"
+        >
+          Ver planos
+        </Button>
       </div>
+
+      <Sheet open={planosOpen} onOpenChange={setPlanosOpen}>
+        <SheetContent side="right" className="overflow-y-auto bg-white sm:max-w-md">
+          <SheetHeader>
+            <SheetTitle className="text-sm font-semibold text-[#09090B]">
+              Planos de continuidade
+            </SheetTitle>
+            <SheetDescription className="text-xs leading-relaxed text-[#71717A]">
+              Quando o periodo incluso no seu pacote terminar, voce escolhe
+              como seguir. Sem fidelidade e sem surpresa.
+            </SheetDescription>
+          </SheetHeader>
+
+          <div className="flex flex-col gap-4 px-4 pb-6">
+            {planosDisponiveis.map((plano) => (
+              <div
+                key={plano.nome}
+                className={`rounded-xl border p-5 ${
+                  plano.destaque
+                    ? "border-[#18181B] bg-[#FAFAFA]"
+                    : "border-[#E4E4E7] bg-white"
+                }`}
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-[#09090B]">
+                      {plano.nome}
+                    </p>
+                    {plano.destaque && (
+                      <span className="mt-1 inline-block rounded-md bg-[#18181B] px-2 py-0.5 text-[10px] font-semibold text-[#FAFAFA]">
+                        Mais completo
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xl font-bold tracking-tight text-[#09090B]">
+                      R$ {plano.valor}
+                    </p>
+                    <p className="text-[11px] text-[#71717A]">/mes</p>
+                  </div>
+                </div>
+                <p className="mt-3 text-xs leading-relaxed text-[#71717A]">
+                  {plano.descricao}
+                </p>
+              </div>
+            ))}
+
+            <a
+              href="mailto:contato@automaweb.pro?subject=Quero saber mais sobre os planos"
+              className="mt-2 flex w-full items-center justify-center rounded-lg bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#FAFAFA] transition-colors duration-150 hover:bg-[#27272A]"
+            >
+              Falar com a gente
+            </a>
+            <p className="text-center text-[11px] text-[#A1A1AA]">
+              A gente responde rapido e sem compromisso.
+            </p>
+          </div>
+        </SheetContent>
+      </Sheet>
     </motion.div>
   );
 }

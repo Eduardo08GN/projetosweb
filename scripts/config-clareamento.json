@@ -1,0 +1,53 @@
+{
+  "carrosselId": "cmq64pch30006i8uebio39hn2",
+  "tenantSlug": "dra-camila-odonto",
+  "tema": "clareamento-mitos",
+  "slides": [
+    {
+      "kicker": "MITOS E VERDADES",
+      "titulo": "Clareamento dental:\no que e mito e o que e verdade",
+      "corpo": ""
+    },
+    {
+      "kicker": "MITO",
+      "titulo": "Clareamento estraga\no esmalte do dente",
+      "corpo": "Feito com acompanhamento profissional, o gel tem pH controlado e nao desgasta o esmalte. A sensibilidade que algumas pessoas sentem e temporaria e tem manejo."
+    },
+    {
+      "kicker": "VERDADE",
+      "titulo": "O resultado varia\nde pessoa pra pessoa",
+      "corpo": "A cor de origem do dente, a idade e os habitos de cada um influenciam. Por isso a avaliacao vem antes: ela mostra o que esperar no seu caso, sem promessa vazia."
+    },
+    {
+      "kicker": "MITO",
+      "titulo": "Pasta clareadora\nsubstitui o procedimento",
+      "corpo": "Pastas removem manchas superficiais por abrasao. Elas nao mudam a cor interna do dente. So o clareamento profissional age na estrutura que da o tom."
+    },
+    {
+      "kicker": "MITO",
+      "titulo": "Quem tem restauracao\nnao pode clarear",
+      "corpo": "Pode. O que acontece: resinas e porcelanas nao mudam de cor. O plano e clarear primeiro e ajustar as restauracoes ao novo tom depois."
+    },
+    {
+      "kicker": "VERDADE",
+      "titulo": "O resultado dura anos\ncom manutencao simples",
+      "corpo": "Cafe, vinho e cigarro aceleram o retorno da cor. Com retoques periodicos e higiene em dia, o sorriso claro se mantem por anos."
+    },
+    {
+      "kicker": "",
+      "titulo": "Quer saber se o clareamento\ne pra voce?",
+      "corpo": "COMENTA BRILHO"
+    }
+  ],
+  "legendaBody": "Clareamento estraga o dente? Pasta clareadora funciona? Quem tem restauracao pode clarear?\n\nSeparei os mitos das verdades nesse carrossel, sem enrolacao e com base no que a odontologia mostra na pratica.\n\nArrasta pro lado e descobre o que e verdade sobre o seu sorriso.\n\nComenta BRILHO que eu te explico como funciona a avaliacao.",
+  "hashtags": "#clareamentodental #sorrisobranco #odontologiaestetica #dentista #saudebucal #esteticadental #sorrisonovo #dracamila #odonto #autoestima #mitoseverdades #dicasdedentista #sorrisoperfeito",
+  "imagePrompts": [
+    "Close-up of a bright confident smile, soft natural studio lighting, clean dental aesthetic photography, warm cream and teal tones, editorial style, shallow depth of field, 4k",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}
