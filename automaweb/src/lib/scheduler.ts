@@ -280,11 +280,19 @@ async function vigiarPlanos() {
     select: { id: true, name: true },
   });
   for (const tenant of esgotados) {
-    console.warn(`[robo] Pausando ${tenant.name}: plano vencido alem da carencia`);
-    await db.tenant.update({
-      where: { id: tenant.id },
+    // re-checa na escrita: se um pagamento chegou entre a leitura e
+    // agora (webhook estendeu a validade), nao pausa
+    const pausou = await db.tenant.updateMany({
+      where: {
+        id: tenant.id,
+        status: "ATIVO",
+        planoValidoAte: { lte: limiteCarencia },
+      },
       data: { status: "PAUSADO" },
     });
+    if (pausou.count === 0) continue;
+
+    console.warn(`[robo] Pausando ${tenant.name}: plano vencido alem da carencia`);
 
     const aviso = emailContaPausada();
     await notifyTenant(tenant.id, aviso.subject, aviso.html);

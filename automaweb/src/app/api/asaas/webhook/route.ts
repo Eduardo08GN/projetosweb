@@ -62,6 +62,16 @@ export async function POST(request: NextRequest) {
     });
 
     if (tenant) {
+      // CONFIRMED e RECEIVED chegam pro MESMO pagamento: a renovacao
+      // so pode acontecer uma vez por pagamento, nao por evento
+      try {
+        await db.asaasEvento.create({
+          data: { id: `renova:${body.payment.id}`, evento: "RENOVACAO" },
+        });
+      } catch {
+        return NextResponse.json({ received: true, renovacaoJaFeita: true });
+      }
+
       // estende a partir do que for maior: hoje ou a validade atual
       const base =
         tenant.planoValidoAte && tenant.planoValidoAte > new Date()

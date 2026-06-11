@@ -55,10 +55,16 @@ export async function criarAssinatura(
       referencia: tenant.id,
     });
 
-    await db.tenant.update({
-      where: { id: tenantId },
+    // grava o vinculo so se ainda nao existe assinatura: dois cliques
+    // simultaneos nao podem criar duas cobrancas pro mesmo cliente
+    const vinculo = await db.tenant.updateMany({
+      where: { id: tenantId, asaasSubscriptionId: null },
       data: { asaasCustomerId: customerId, asaasSubscriptionId: subscriptionId },
     });
+    if (vinculo.count === 0) {
+      await cancelAsaasSubscription(subscriptionId).catch(() => {});
+      return { error: "Este cliente ja tem assinatura ativa" };
+    }
 
     const linkFatura = await getInvoiceUrl(subscriptionId).catch(() => null);
 
