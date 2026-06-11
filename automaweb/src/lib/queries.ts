@@ -110,11 +110,17 @@ export async function getKanbanData() {
     tenant: string;
     operador: string;
     dias: number;
-    feedbackCliente: string | null;
     angulo: string | null;
     slides: string[];
     legendaBody: string;
     hashtags: string;
+    edicaoPendente: Array<{
+      slide: number;
+      texto?: string;
+      imagemUrl?: string;
+    }> | null;
+    editadoPeloCliente: boolean;
+    agendadoParaLabel: string | null;
   }>> = {};
 
   for (const c of carrosseis) {
@@ -129,11 +135,18 @@ export async function getKanbanData() {
       tenant: c.tenant.name,
       operador: c.operador ?? "Equipe",
       dias,
-      feedbackCliente: c.feedbackCliente,
       angulo: c.angulo,
       slides: (c.slides as string[] | null) ?? [],
       legendaBody: c.legendaBody ?? "",
       hashtags: c.hashtags ?? "",
+      edicaoPendente:
+        (c.edicaoPendente as Array<{
+          slide: number;
+          texto?: string;
+          imagemUrl?: string;
+        }> | null) ?? null,
+      editadoPeloCliente: c.editadoPeloCliente,
+      agendadoParaLabel: c.agendadoPara ? formatDateTime(c.agendadoPara) : null,
     });
   }
 

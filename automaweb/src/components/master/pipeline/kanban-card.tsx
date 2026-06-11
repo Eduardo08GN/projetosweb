@@ -3,7 +3,7 @@
 import { useDraggable } from "@dnd-kit/core";
 import { motion } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
-import { MessageSquare } from "lucide-react";
+import { Calendar, Pencil } from "lucide-react";
 
 export type KanbanItem = {
   id: string;
@@ -11,11 +11,17 @@ export type KanbanItem = {
   tenant: string;
   operador: string;
   dias: number;
-  feedbackCliente: string | null;
   angulo: string | null;
   slides: string[];
   legendaBody: string;
   hashtags: string;
+  edicaoPendente: Array<{
+    slide: number;
+    texto?: string;
+    imagemUrl?: string;
+  }> | null;
+  editadoPeloCliente: boolean;
+  agendadoParaLabel: string | null;
 };
 
 export function KanbanCard({
@@ -52,12 +58,24 @@ export function KanbanCard({
           {item.dias === 0 ? "Hoje" : `${item.dias}d`}
         </span>
       </div>
-      {item.feedbackCliente && (
-        <div className="mt-3 flex items-start gap-2 rounded-lg bg-[#FEF2F2] px-3 py-2">
-          <MessageSquare size={12} className="mt-0.5 shrink-0 text-[#991B1B]" />
-          <p className="text-xs leading-relaxed text-[#991B1B]">
-            {item.feedbackCliente}
+
+      {item.edicaoPendente && item.edicaoPendente.length > 0 && (
+        <div className="mt-3 flex items-start gap-2 rounded-lg bg-[#FEF9C3] px-3 py-2">
+          <Pencil size={12} className="mt-0.5 shrink-0 text-[#854D0E]" />
+          <p className="text-xs leading-relaxed text-[#854D0E]">
+            Edicao do cliente pra aplicar (
+            {item.edicaoPendente.length} slide
+            {item.edicaoPendente.length > 1 ? "s" : ""})
           </p>
+        </div>
+      )}
+
+      {item.agendadoParaLabel && (
+        <div className="mt-3 flex items-center gap-1.5">
+          <Calendar size={12} strokeWidth={1.5} className="text-[#A1A1AA]" />
+          <span className="text-xs text-[#71717A]">
+            {item.agendadoParaLabel}
+          </span>
         </div>
       )}
     </motion.div>

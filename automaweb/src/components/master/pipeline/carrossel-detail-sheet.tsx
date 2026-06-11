@@ -6,7 +6,8 @@ import {
   CalendarCheck,
   Plus,
   Trash2,
-  MessageSquare,
+  Pencil,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -189,20 +190,43 @@ export function CarrosselDetailSheet({
         </SheetHeader>
 
         <div className="flex flex-col gap-5 px-4 pb-6">
-          {item.feedbackCliente && (
-            <div className="flex items-start gap-2.5 rounded-lg bg-[#FEF2F2] px-3.5 py-3">
-              <MessageSquare
-                size={14}
-                className="mt-0.5 shrink-0 text-[#991B1B]"
-              />
-              <div>
-                <p className="text-xs font-medium text-[#991B1B]">
-                  Ajuste pedido pelo cliente
-                </p>
-                <p className="mt-1 text-xs leading-relaxed text-[#991B1B]">
-                  {item.feedbackCliente}
+          {item.edicaoPendente && item.edicaoPendente.length > 0 && (
+            <div className="rounded-lg bg-[#FEF9C3] px-3.5 py-3">
+              <div className="flex items-center gap-2">
+                <Pencil size={14} className="shrink-0 text-[#854D0E]" />
+                <p className="text-xs font-semibold text-[#854D0E]">
+                  Edicao do cliente pra aplicar
                 </p>
               </div>
+              <div className="mt-2 space-y-2">
+                {item.edicaoPendente.map((edit) => (
+                  <div key={edit.slide} className="text-xs text-[#854D0E]">
+                    <span className="font-semibold">
+                      Slide {edit.slide + 1}:
+                    </span>
+                    {edit.texto && (
+                      <p className="mt-0.5 leading-relaxed">
+                        &ldquo;{edit.texto}&rdquo;
+                      </p>
+                    )}
+                    {edit.imagemUrl && (
+                      <a
+                        href={edit.imagemUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-0.5 inline-flex items-center gap-1 font-medium underline underline-offset-2"
+                      >
+                        Foto de fundo nova
+                        <ExternalLink size={10} strokeWidth={2} />
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <p className="mt-2 text-[11px] leading-relaxed text-[#854D0E]/80">
+                A publicacao automatica fica travada ate a fabrica
+                re-renderizar e dar baixa nesta edicao
+              </p>
             </div>
           )}
 
