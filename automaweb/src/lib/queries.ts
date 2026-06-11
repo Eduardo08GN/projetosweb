@@ -326,6 +326,41 @@ export async function getTenantRecentDms(tenantId: string) {
   }));
 }
 
+export async function getSites() {
+  const sites = await db.site.findMany({
+    include: { tenant: { select: { name: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+
+  const pre = sites
+    .filter((s) => s.fase === "PRE_FECHAMENTO")
+    .map((s) => ({
+      id: s.id,
+      tenant: s.tenant.name,
+      tenantId: s.tenantId,
+      dominio: s.dominio,
+      urlPreview: s.urlPreview,
+      status: s.status,
+      stack: s.stack ?? "",
+      notas: s.notas ?? "",
+    }));
+
+  const pos = sites
+    .filter((s) => s.fase === "POS_FECHAMENTO")
+    .map((s) => ({
+      id: s.id,
+      tenant: s.tenant.name,
+      tenantId: s.tenantId,
+      dominio: s.dominio,
+      urlPreview: s.urlPreview,
+      status: s.status,
+      stack: s.stack ?? "",
+      notas: s.notas ?? "",
+    }));
+
+  return { pre, pos };
+}
+
 export async function getTenantDmMetrics(tenantId: string) {
   const [totalMensagens, totalRespondidas, contatos, automacoesAtivas] =
     await Promise.all([

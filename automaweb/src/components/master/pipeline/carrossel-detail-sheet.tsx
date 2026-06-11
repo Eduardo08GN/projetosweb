@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect, useTransition, useRef } from "react";
 import {
   Save,
   CalendarCheck,
@@ -8,7 +8,11 @@ import {
   Trash2,
   Pencil,
   ExternalLink,
+  Upload,
+  ImageIcon,
+  Loader2,
 } from "lucide-react";
+import { ImageCropper } from "@/components/shared/image-cropper";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -30,11 +34,146 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
+function isImageUrl(url: string) {
+  if (!url) return false;
+  return url.startsWith("http") || url.startsWith("/");
+}
+
+function SlideItem({
+  index,
+  url,
+  carrosselId,
+  onUpdate,
+  onRemove,
+  canRemove,
+}: {
+  index: number;
+  url: string;
+  carrosselId: string;
+  onUpdate: (url: string) => void;
+  onRemove: () => void;
+  canRemove: boolean;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [cropFile, setCropFile] = useState<File | null>(null);
+  const [error, setError] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function handleCropped(blob: Blob) {
+    setUploading(true);
+    setError("");
+    const form = new FormData();
+    form.set("imagem", new File([blob], "slide.jpg", { type: "image/jpeg" }));
+    form.set("carrosselId", carrosselId);
+    form.set("slide", String(index));
+
+    try {
+      const res = await fetch("/api/master/slide-upload", {
+        method: "POST",
+        body: form,
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Erro no upload");
+      } else {
+        onUpdate(data.url);
+        setCropFile(null);
+      }
+    } catch {
+      setError("Falha na conexao");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  if (cropFile) {
+    return (
+      <div className="rounded-lg border border-[#E4E4E7] bg-[#FAFAFA] p-3">
+        <div className="mb-2 flex items-center gap-2">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#F4F4F5] text-xs font-semibold text-[#71717A]">
+            {index + 1}
+          </div>
+          <span className="text-xs font-medium text-[#09090B]">Enquadrar imagem</span>
+        </div>
+        <ImageCropper
+          file={cropFile}
+          uploading={uploading}
+          onConfirm={handleCropped}
+          onCancel={() => setCropFile(null)}
+        />
+        {error && <p className="mt-2 text-xs text-[#991B1B]">{error}</p>}
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-lg border border-[#E4E4E7] bg-[#FAFAFA] p-3">
+      <div className="flex items-start gap-3">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#F4F4F5] text-xs font-semibold text-[#71717A]">
+          {index + 1}
+        </div>
+
+        <div className="min-w-0 flex-1 space-y-2">
+          {isImageUrl(url) ? (
+            <div className="relative aspect-[4/5] w-full max-w-[160px] overflow-hidden rounded-lg border border-[#E4E4E7] bg-white">
+              <img
+                src={url}
+                alt={`Slide ${index + 1}`}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          ) : url ? (
+            <p className="truncate text-xs text-[#71717A]">{url}</p>
+          ) : (
+            <div className="flex aspect-[4/5] w-full max-w-[160px] items-center justify-center rounded-lg border border-dashed border-[#E4E4E7] bg-white">
+              <ImageIcon size={20} className="text-[#D4D4D8]" />
+            </div>
+          )}
+
+          <div className="flex items-center gap-2">
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) setCropFile(file);
+                e.target.value = "";
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              className="flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1.5 text-xs font-medium text-[#09090B] shadow-[0_1px_2px_rgba(0,0,0,0.06)] ring-1 ring-[#E4E4E7] transition-all duration-150 hover:bg-[#F4F4F5]"
+            >
+              <Upload size={12} strokeWidth={2} />
+              Enviar imagem
+            </button>
+            {canRemove && (
+              <button
+                type="button"
+                onClick={onRemove}
+                className="rounded-md p-1.5 text-[#A1A1AA] transition-colors duration-150 hover:bg-[#FEE2E2] hover:text-[#991B1B]"
+              >
+                <Trash2 size={12} strokeWidth={1.5} />
+              </button>
+            )}
+          </div>
+          {error && <p className="text-xs text-[#991B1B]">{error}</p>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SlideEditor({
   slides,
+  carrosselId,
   onChange,
 }: {
   slides: string[];
+  carrosselId: string;
   onChange: (slides: string[]) => void;
 }) {
   function updateSlide(index: number, value: string) {
@@ -65,27 +204,15 @@ function SlideEditor({
         </button>
       </div>
       {slides.map((slide, i) => (
-        <div key={i} className="flex gap-2">
-          <div className="flex h-9 w-7 shrink-0 items-center justify-center rounded-md bg-[#F4F4F5] text-xs font-semibold text-[#71717A]">
-            {i + 1}
-          </div>
-          <textarea
-            value={slide}
-            onChange={(e) => updateSlide(i, e.target.value)}
-            rows={2}
-            placeholder={`Conteudo do slide ${i + 1}`}
-            className="flex-1 resize-none rounded-lg border border-[#E4E4E7] bg-white px-3 py-2 text-sm text-[#09090B] outline-none transition-colors duration-150 placeholder:text-[#D4D4D8] focus:border-[#18181B]"
-          />
-          {slides.length > 1 && (
-            <button
-              type="button"
-              onClick={() => removeSlide(i)}
-              className="flex h-9 w-7 shrink-0 items-center justify-center rounded-md text-[#A1A1AA] transition-colors duration-150 hover:bg-[#FEF2F2] hover:text-[#991B1B]"
-            >
-              <Trash2 size={12} strokeWidth={1.5} />
-            </button>
-          )}
-        </div>
+        <SlideItem
+          key={i}
+          index={i}
+          url={slide}
+          carrosselId={carrosselId}
+          onUpdate={(url) => updateSlide(i, url)}
+          onRemove={() => removeSlide(i)}
+          canRemove={slides.length > 1}
+        />
       ))}
       {slides.length === 0 && (
         <button
@@ -249,7 +376,7 @@ export function CarrosselDetailSheet({
             />
           </div>
 
-          <SlideEditor slides={slides} onChange={setSlides} />
+          <SlideEditor slides={slides} carrosselId={item.id} onChange={setSlides} />
 
           <div>
             <FieldLabel>Legenda</FieldLabel>
