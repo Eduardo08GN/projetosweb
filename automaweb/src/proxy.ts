@@ -10,6 +10,8 @@ const PUBLIC_PATHS = [
   "/login",
   "/api/meta/callback",
   "/api/auth/google",
+  // webhook do gateway de cobranca: autentica por token proprio na rota
+  "/api/asaas/webhook",
 ];
 
 export async function proxy(request: NextRequest) {
