@@ -136,7 +136,10 @@ function StatusDropdown({
   value: string;
   siteId: string;
 }) {
-  const [open, setOpen] = useState(false);
+  // posicao fixa na viewport: o menu escapa do recorte do contêiner
+  // com overflow da tabela (que cortava as opcoes quando ha poucas linhas)
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number } | null>(null);
+  const open = menuPos !== null;
   const [saving, startTransition] = useTransition();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -144,21 +147,39 @@ function StatusDropdown({
     if (!open) return;
     function handleClick(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
+        setMenuPos(null);
       }
     }
+    function handleScroll() {
+      setMenuPos(null);
+    }
     document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    window.addEventListener("scroll", handleScroll, true);
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      window.removeEventListener("scroll", handleScroll, true);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, [open]);
+
+  function toggle(e: React.MouseEvent<HTMLButtonElement>) {
+    if (open) {
+      setMenuPos(null);
+      return;
+    }
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMenuPos({ top: rect.bottom + 4, left: rect.left });
+  }
 
   function select(newStatus: string) {
     if (newStatus === value) {
-      setOpen(false);
+      setMenuPos(null);
       return;
     }
     startTransition(async () => {
       await updateSiteField(siteId, "status", newStatus);
-      setOpen(false);
+      setMenuPos(null);
     });
   }
 
@@ -166,7 +187,7 @@ function StatusDropdown({
     <div ref={ref} className="relative">
       <button
         type="button"
-        onClick={() => setOpen(!open)}
+        onClick={toggle}
         disabled={saving}
         className="group flex items-center gap-1"
       >
@@ -177,7 +198,10 @@ function StatusDropdown({
         />
       </button>
       {open && (
-        <div className="absolute left-0 top-full z-20 mt-1 w-48 rounded-lg border border-[#E4E4E7] bg-white py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+        <div
+          style={{ top: menuPos.top, left: menuPos.left }}
+          className="fixed z-50 w-48 rounded-lg border border-[#E4E4E7] bg-white py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+        >
           {STATUS_OPTIONS.map((opt) => (
             <button
               key={opt.value}
