@@ -3,8 +3,24 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
-import { CheckCircle2, AlertTriangle, XCircle, Unplug, Camera } from "lucide-react";
+import { CheckCircle2, AlertTriangle, XCircle, Unplug } from "lucide-react";
+import { siInstagram } from "simple-icons";
 import { Button } from "@/components/ui/button";
+
+function InstagramGlyph({ size, className }: { size: number; className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      className={className}
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d={siInstagram.path} />
+    </svg>
+  );
+}
 
 type ConnectionStatus = "DESCONECTADO" | "CONECTADO" | "TOKEN_EXPIRADO" | "ERRO";
 
@@ -97,8 +113,8 @@ export function MetaConnectionCard({
     >
       <div className="flex items-center justify-between border-b border-[#E4E4E7] px-6 py-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#F77737]">
-            <Camera size={20} strokeWidth={1.5} className="text-white" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#4F5BD5] via-[#962FBF] to-[#D62976]">
+            <InstagramGlyph size={20} className="text-white" />
           </div>
           <div>
             <h3 className="text-sm font-semibold text-[#09090B]">Instagram</h3>
@@ -152,7 +168,7 @@ export function MetaConnectionCard({
                 onClick={handleConnect}
                 className="gap-2 rounded-lg bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A]"
               >
-                <Camera size={16} strokeWidth={2} />
+                <InstagramGlyph size={16} />
                 Conectar Instagram
               </Button>
 

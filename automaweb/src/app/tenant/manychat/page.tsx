@@ -9,7 +9,6 @@ import { PageHeader } from "@/components/shared/page-header";
 import { DmMetrics } from "@/components/tenant/manychat/dm-metrics";
 import { AutomationsTable } from "@/components/tenant/manychat/automations-table";
 import { RecentDms } from "@/components/tenant/manychat/recent-dms";
-import { Sparkles } from "lucide-react";
 
 export default async function ManychatPage() {
   const session = await getSession();
@@ -34,7 +33,6 @@ export default async function ManychatPage() {
       />
       <div className="space-y-6">
         <div className="flex items-start gap-3 rounded-xl border border-[#FDE68A] bg-[#FFFBEB] px-5 py-4">
-          <Sparkles size={16} strokeWidth={1.5} className="mt-0.5 shrink-0 text-[#92400E]" />
           <div>
             <p className="text-sm font-medium text-[#78350F]">
               Em fase final de testes
