@@ -185,6 +185,12 @@ export async function getTenantMetrics(tenantId: string) {
   return { total, publicados, emProducao, agendados };
 }
 
+// dia no fuso de Brasilia como "AAAA-MM-DD": o agrupamento por dia e
+// resolvido aqui no servidor pra nao divergir do navegador (hidratacao)
+function diaBrasilia(date: Date) {
+  return date.toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
+}
+
 export async function getCalendarEvents() {
   const carrosseis = await db.carrossel.findMany({
     where: {
@@ -194,14 +200,17 @@ export async function getCalendarEvents() {
     orderBy: { createdAt: "asc" },
   });
 
-  return carrosseis.map((c) => ({
-    id: c.id,
-    titulo: c.titulo,
-    tenant: c.tenant.name,
-    // publicado vale mais que agendado: depois de no ar, o dia real e o que conta
-    date: (c.publicadoEm ?? c.agendadoPara)!.toISOString(),
-    publicado: c.status === "PUBLICADO",
-  }));
+  return {
+    hoje: diaBrasilia(new Date()),
+    events: carrosseis.map((c) => ({
+      id: c.id,
+      titulo: c.titulo,
+      tenant: c.tenant.name,
+      // publicado vale mais que agendado: depois de no ar, o dia real e o que conta
+      dia: diaBrasilia((c.publicadoEm ?? c.agendadoPara)!),
+      publicado: c.status === "PUBLICADO",
+    })),
+  };
 }
 
 export async function getTenantConnection(tenantId: string) {

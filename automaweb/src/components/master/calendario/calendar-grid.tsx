@@ -22,7 +22,7 @@ type CalendarEvent = {
   id: string;
   titulo: string;
   tenant: string;
-  date: string;
+  dia: string; // "AAAA-MM-DD" ja no fuso de Brasilia, resolvido no servidor
   publicado: boolean;
 };
 
@@ -36,9 +36,17 @@ const COLOR_PALETTE = [
 
 const WEEKDAYS = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
 
-export function CalendarGrid({ events }: { events: CalendarEvent[] }) {
-  const [currentMonth, setCurrentMonth] = useState(() => new Date());
-  const today = new Date();
+export function CalendarGrid({
+  hoje,
+  events,
+}: {
+  hoje: string;
+  events: CalendarEvent[];
+}) {
+  // o "hoje" vem do servidor (fuso de Brasilia): servidor e navegador
+  // renderizam o mesmo mes e o mesmo dia marcado, sem divergencia
+  const today = new Date(`${hoje}T12:00:00`);
+  const [currentMonth, setCurrentMonth] = useState(today);
 
   // cada cliente ganha uma cor fixa, na ordem alfabetica do nome
   const tenantColors = new Map<string, (typeof COLOR_PALETTE)[number]>();
@@ -53,7 +61,8 @@ export function CalendarGrid({ events }: { events: CalendarEvent[] }) {
   const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
 
   function getEventsForDay(day: Date) {
-    return events.filter((e) => isSameDay(new Date(e.date), day));
+    const chave = format(day, "yyyy-MM-dd");
+    return events.filter((e) => e.dia === chave);
   }
 
   return (

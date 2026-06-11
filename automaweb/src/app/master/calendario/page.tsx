@@ -7,7 +7,7 @@ import { CalendarGrid } from "@/components/master/calendario/calendar-grid";
 export const dynamic = "force-dynamic";
 
 export default async function CalendarioPage() {
-  const events = await getCalendarEvents();
+  const { hoje, events } = await getCalendarEvents();
 
   return (
     <div>
@@ -15,7 +15,7 @@ export default async function CalendarioPage() {
         title="Calendário"
         description="Agenda de publicações"
       />
-      <CalendarGrid events={events} />
+      <CalendarGrid hoje={hoje} events={events} />
     </div>
   );
 }
