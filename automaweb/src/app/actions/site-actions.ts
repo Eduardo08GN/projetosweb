@@ -2,6 +2,9 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { notifyTenant } from "@/lib/email";
+import { emailSitePublicado } from "@/lib/email-templates";
 
 export type SiteActionState = { error?: string; success?: boolean } | undefined;
 
@@ -81,6 +84,12 @@ export async function updateSiteField(
     where: { id: siteId },
     data: { [field]: value || null },
   });
+
+  // virou PUBLICADO agora: o cliente merece saber na hora
+  if (field === "status" && value === "PUBLICADO" && site.status !== "PUBLICADO") {
+    const { subject, html } = emailSitePublicado({ dominio: site.dominio });
+    after(() => notifyTenant(site.tenantId, subject, html));
+  }
 
   revalidatePath("/master/sites");
   return { success: true };

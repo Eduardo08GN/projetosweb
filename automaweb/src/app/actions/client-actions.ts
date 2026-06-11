@@ -3,6 +3,9 @@
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { notifyTenant } from "@/lib/email";
+import { emailBoasVindas } from "@/lib/email-templates";
 
 export type CreateClientState = {
   error?: string;
@@ -52,9 +55,8 @@ export async function createClient(
     },
   });
 
-  const hashedPassword = password
-    ? await bcrypt.hash(password, 10)
-    : await bcrypt.hash(slug + "2026", 10);
+  const senhaInicial = password || slug + "2026";
+  const hashedPassword = await bcrypt.hash(senhaInicial, 10);
 
   await db.user.create({
     data: {
@@ -65,6 +67,10 @@ export async function createClient(
       tenantId: tenant.id,
     },
   });
+
+  // entrega o acesso direto na caixa de entrada do cliente
+  const boasVindas = emailBoasVindas({ nome: name, email, senha: senhaInicial });
+  after(() => notifyTenant(tenant.id, boasVindas.subject, boasVindas.html));
 
   revalidatePath("/master/clientes");
   revalidatePath("/master");

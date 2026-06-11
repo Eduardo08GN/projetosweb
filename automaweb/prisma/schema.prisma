@@ -54,6 +54,8 @@ model MetaConnection {
   tokenExpiresAt DateTime?
   connectedAt    DateTime?
   status         MetaConnectionStatus @default(DESCONECTADO)
+  // faixa (7, 3 ou 1 dia) do ultimo aviso de vencimento enviado, evita email repetido
+  ultimoAvisoDias Int?
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt
 }

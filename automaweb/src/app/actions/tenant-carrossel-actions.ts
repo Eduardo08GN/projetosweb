@@ -3,7 +3,10 @@
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { MAX_TEXTO_SLIDE, type EdicaoSlide } from "@/lib/carrossel-edicao";
+import { notifyMasters } from "@/lib/email";
+import { emailInterno } from "@/lib/email-templates";
 
 function revalidateAll() {
   revalidatePath("/tenant/carrossel");
@@ -53,6 +56,23 @@ export async function approveCarrossel(carrosselId: string) {
     where: { id: carrosselId },
     data: { status: novoStatus, feedbackCliente: null, ajustePedido: false },
   });
+
+  const aviso = emailInterno({
+    assunto: `${carrossel.tenant.name} aprovou um post`,
+    titulo: "Cliente aprovou sem alteracoes",
+    resumo: "O post foi aprovado direto e seguiu no fluxo.",
+    linhas: [
+      ["Cliente", carrossel.tenant.name],
+      ["Post", carrossel.titulo],
+      [
+        "Situacao",
+        novoStatus === "AGENDADO"
+          ? "Agendado, publicacao automatica"
+          : "Aprovado, aguardando agendamento",
+      ],
+    ],
+  });
+  after(() => notifyMasters(aviso.subject, aviso.html));
 
   revalidateAll();
   return { success: true, agendado: novoStatus === "AGENDADO" };
@@ -117,6 +137,20 @@ export async function submitEdit(carrosselId: string, edits: EdicaoSlide[]) {
       ajustePedido: false,
     },
   });
+
+  const aviso = emailInterno({
+    assunto: `${carrossel.tenant.name} enviou ajustes em um post`,
+    titulo: "Cliente editou e aprovou",
+    resumo:
+      "A edicao unica do cliente chegou. Rodar o fluxo de ajustes para re-renderizar os slides.",
+    linhas: [
+      ["Cliente", carrossel.tenant.name],
+      ["Post", carrossel.titulo],
+      ["Slides ajustados", String(limpos.length)],
+    ],
+    cta: { label: "Abrir o pipeline", url: `${process.env.NEXT_PUBLIC_URL ?? "https://automaweb.pro"}/master/pipeline` },
+  });
+  after(() => notifyMasters(aviso.subject, aviso.html));
 
   revalidateAll();
   return { success: true };

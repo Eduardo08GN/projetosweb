@@ -2,6 +2,13 @@ import cron from "node-cron";
 import { db } from "./db";
 import { publishToInstagram } from "./instagram";
 import { r2Delete, r2KeyFromUrl } from "./r2";
+import { notifyMasters, notifyTenant } from "./email";
+import {
+  emailConexaoVencendo,
+  emailConexaoVencida,
+  emailInterno,
+  emailPostPublicado,
+} from "./email-templates";
 
 const MAX_TENTATIVAS = 3;
 
@@ -71,6 +78,9 @@ async function publicarAgendados() {
           `[robo] Publicou "${carrossel.titulo}" no Instagram de ${carrossel.tenant.name}`
         );
 
+        const noAr = emailPostPublicado({ titulo: carrossel.titulo });
+        await notifyTenant(carrossel.tenantId, noAr.subject, noAr.html);
+
         // Publicou: os slides saem do R2 (o acervo fica no repositorio).
         // Falha aqui nao desfaz a publicacao, so loga.
         for (const url of slides) {
@@ -97,6 +107,21 @@ async function publicarAgendados() {
         console.error(
           `[robo] Nao conseguiu publicar "${carrossel.titulo}" (${carrossel.tenant.name}): ${mensagem}`
         );
+
+        // esgotou as tentativas: vira pendencia da equipe
+        if (carrossel.tentativasPublicacao + 1 >= MAX_TENTATIVAS) {
+          const alerta = emailInterno({
+            assunto: `Publicacao falhou: ${carrossel.tenant.name}`,
+            titulo: "Publicacao automatica falhou",
+            resumo: `O post esgotou as ${MAX_TENTATIVAS} tentativas de publicacao e precisa de acao manual.`,
+            linhas: [
+              ["Cliente", carrossel.tenant.name],
+              ["Post", carrossel.titulo],
+              ["Erro", mensagem],
+            ],
+          });
+          await notifyMasters(alerta.subject, alerta.html);
+        }
       }
     }
   } finally {
@@ -112,28 +137,60 @@ async function vigiarTokens() {
   const agora = new Date();
   const em7dias = new Date(agora.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-  const expirados = await db.metaConnection.updateMany({
+  // venceu: marca, avisa o cliente e a equipe (uma unica vez, na virada de status)
+  const expirados = await db.metaConnection.findMany({
     where: { status: "CONECTADO", tokenExpiresAt: { lte: agora } },
-    data: { status: "TOKEN_EXPIRADO" },
+    include: { tenant: { select: { id: true, name: true } } },
   });
-  if (expirados.count > 0) {
-    console.warn(`[robo] ${expirados.count} conexao(oes) com token vencido`);
+  if (expirados.length > 0) {
+    await db.metaConnection.updateMany({
+      where: { id: { in: expirados.map((c) => c.id) } },
+      data: { status: "TOKEN_EXPIRADO" },
+    });
+    console.warn(`[robo] ${expirados.length} conexao(oes) com token vencido`);
+
+    for (const conn of expirados) {
+      const vencida = emailConexaoVencida();
+      await notifyTenant(conn.tenant.id, vencida.subject, vencida.html);
+
+      const alerta = emailInterno({
+        assunto: `Conexao do Instagram venceu: ${conn.tenant.name}`,
+        titulo: "Conexao com o Instagram venceu",
+        resumo:
+          "As publicacoes automaticas deste cliente estao pausadas ate ele renovar a conexao.",
+        linhas: [
+          ["Cliente", conn.tenant.name],
+          ["Situacao", "Aguardando o cliente reconectar em Integracoes"],
+        ],
+      });
+      await notifyMasters(alerta.subject, alerta.html);
+    }
   }
 
+  // perto de vencer: avisa o cliente nas faixas de 7, 3 e 1 dia, sem repetir
   const vencendo = await db.metaConnection.findMany({
     where: {
       status: "CONECTADO",
       tokenExpiresAt: { gt: agora, lte: em7dias },
     },
-    include: { tenant: { select: { name: true } } },
+    include: { tenant: { select: { id: true, name: true } } },
   });
   for (const conn of vencendo) {
     const dias = Math.ceil(
       (conn.tokenExpiresAt!.getTime() - agora.getTime()) / (24 * 60 * 60 * 1000)
     );
+    const faixa = dias <= 1 ? 1 : dias <= 3 ? 3 : 7;
+    if (conn.ultimoAvisoDias !== null && conn.ultimoAvisoDias <= faixa) continue;
+
     console.warn(
-      `[robo] O token do ${conn.tenant.name} expira em ${dias} dia(s). Reconectar em Integracoes`
+      `[robo] O token do ${conn.tenant.name} expira em ${dias} dia(s). Avisando o cliente`
     );
+    const aviso = emailConexaoVencendo({ dias });
+    await notifyTenant(conn.tenant.id, aviso.subject, aviso.html);
+    await db.metaConnection.update({
+      where: { id: conn.id },
+      data: { ultimoAvisoDias: faixa },
+    });
   }
 }
 

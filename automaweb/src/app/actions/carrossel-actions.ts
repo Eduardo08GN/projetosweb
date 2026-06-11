@@ -2,6 +2,9 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { notifyTenant } from "@/lib/email";
+import { emailPostParaAprovar } from "@/lib/email-templates";
 
 export type CreateCarrosselState =
   | { error?: string; success?: boolean }
@@ -71,6 +74,12 @@ export async function moveCarrossel(
         : {}),
     },
   });
+
+  // chegou na mesa do cliente: avisa por email, sem travar a resposta
+  if (newStatus === "APROVACAO" && carrossel.status !== "APROVACAO") {
+    const { subject, html } = emailPostParaAprovar({ titulo: carrossel.titulo });
+    after(() => notifyTenant(carrossel.tenantId, subject, html));
+  }
 
   revalidatePath("/master/pipeline");
   revalidatePath("/master");

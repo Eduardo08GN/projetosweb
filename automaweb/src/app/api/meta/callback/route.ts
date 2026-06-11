@@ -94,6 +94,8 @@ export async function GET(request: NextRequest) {
     tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
     connectedAt: new Date(),
     status: "CONECTADO" as const,
+    // conexao renovada: zera o ciclo de avisos de vencimento
+    ultimoAvisoDias: null,
   };
 
   await db.metaConnection.upsert({
