@@ -2,8 +2,24 @@
 
 import { motion } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
-import { CheckCircle2, Camera } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import { siInstagram } from "simple-icons";
 import Link from "next/link";
+
+function InstagramGlyph({ size, className }: { size: number; className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      className={className}
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d={siInstagram.path} />
+    </svg>
+  );
+}
 
 export function ConnectionBanner({
   connected,
@@ -43,8 +59,8 @@ export function ConnectionBanner({
       transition={transitions.smooth}
     >
       <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#FEF9C3]">
-          <Camera size={16} strokeWidth={1.5} className="text-[#854D0E]" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#4F5BD5] via-[#962FBF] to-[#D62976]">
+          <InstagramGlyph size={16} className="text-white" />
         </div>
         <div>
           <p className="text-sm font-medium text-[#09090B]">
