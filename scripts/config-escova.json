@@ -1,0 +1,53 @@
+{
+  "carrosselId": "cmq64pckr0007i8ue8qkao70s",
+  "tenantSlug": "dra-camila-odonto",
+  "tema": "troca-escova",
+  "slides": [
+    {
+      "kicker": "Saúde bucal",
+      "titulo": "Você escova certo. Com a escova errada.",
+      "corpo": ""
+    },
+    {
+      "kicker": "O sinal que você ignora",
+      "titulo": "A placa volta rápido demais?",
+      "corpo": "Você escova duas vezes por dia, todo dia. E mesmo assim o dente fica áspero no fim da tarde e a gengiva reclama na hora do fio dental. Talvez a culpa não seja da sua técnica."
+    },
+    {
+      "kicker": "A virada",
+      "titulo": "O problema pode estar na sua mão.",
+      "corpo": "Escova tem prazo. E não é o do calendário: é o estado da cerda. Quando ela abre, deixa de alcançar exatamente onde a placa mora."
+    },
+    {
+      "kicker": "Como funciona",
+      "titulo": "Cerda aberta limpa por cima.",
+      "corpo": "A cerda íntegra entra na linha da gengiva e no vão entre os dentes. A cerda gasta desliza por fora e espalha a placa em vez de remover. Por isso a sensação de limpo dura menos."
+    },
+    {
+      "kicker": "O que a pesquisa mostra",
+      "titulo": "267 pessoas. Mesma escova. 3 meses.",
+      "corpo": "Todas escovando do mesmo jeito. Quem terminou com as cerdas abertas saiu com bem mais placa do que quem manteve a escova íntegra. O sinal de troca é visual: cerda passando da base."
+    },
+    {
+      "kicker": "O que muda",
+      "titulo": "Dente liso de passar a língua.",
+      "corpo": "Escova no ponto e limpeza profissional em dia: gengiva que não sangra, hálito tranquilo e a sensação de consultório durando em casa. Cuidado pequeno, diferença diária."
+    },
+    {
+      "kicker": "",
+      "titulo": "Quer saber a hora exata de trocar a sua?",
+      "corpo": "COMENTA ESCOVA"
+    }
+  ],
+  "legendaBody": "Sua escova pode estar te enganando.\n\nVocê escova todos os dias, do jeito certo, e mesmo assim sente que a limpeza não dura. Em boa parte dos casos o problema não é a técnica: é a cerda gasta, que desliza por cima da placa em vez de remover.\n\nArrasta pro lado pra entender o sinal exato de que chegou a hora de trocar.\n\nE se a placa já virou tártaro, escova nenhuma resolve: aí é limpeza profissional. Na avaliação eu te mostro como está sua gengiva e a gente monta junto a rotina ideal pro seu sorriso.\n\nComenta ESCOVA que eu te mando no Direct o checklist pra saber a hora exata de trocar a sua.\n\nFontes:\n- Van Leeuwen MPC et al. Toothbrush wear in relation to toothbrushing effectiveness. International Journal of Dental Hygiene, 2018 (267 participantes, 3 meses de uso padronizado)\n- American Dental Association: troca recomendada a cada 3 ou 4 meses, ou antes, se as cerdas abrirem",
+  "hashtags": "#saudebucal #escovacao #higienebucal #dentista #odontologia #dicasdedentista #sorrisosaudavel #gengivasaudavel #placabacteriana #prevencao #odontologiaestetica #dracamila",
+  "imagePrompts": [
+    "macro photography of a pristine white toothbrush with perfect bristles standing on a deep petrol blue background, soft studio lighting, minimalist dental aesthetic, elegant long shadows, premium product photography",
+    "extreme macro of an old worn toothbrush head with bristles splayed outward and frayed, moody dark petrol background, dramatic side lighting, shallow depth of field, product photography",
+    "hand holding a clean toothbrush against soft cream background, warm natural window light, marble bathroom counter, minimalist spa aesthetic, no face visible",
+    "macro close up of white toothbrush bristles with tiny water droplets, clinical photography, petrol blue and white palette, crisp sharp detail, studio lighting",
+    "rows of identical white toothbrushes arranged in a precise grid on petrol blue surface, overhead flat lay, scientific order, studio product photography, soft shadows",
+    "bright clean modern bathroom sink with a fresh toothbrush in a ceramic holder, morning sunlight streaming in, cream and warm gold tones, serene spa atmosphere, no people",
+    null
+  ]
+}

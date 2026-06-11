@@ -85,6 +85,32 @@ export async function createAsaasSubscription(dados: {
   return sub.id;
 }
 
+/**
+ * Cobranca avulsa de uma mensalidade (sem recorrencia). Devolve o link
+ * da fatura pro master mandar manualmente. Quando paga, o webhook
+ * estende a validade do plano igual ao pagamento da assinatura.
+ */
+export async function createOneOffPayment(dados: {
+  customerId: string;
+  valor: number;
+  vencimento: Date;
+  descricao: string;
+  referencia: string; // tenantId
+}): Promise<string | null> {
+  const pagamento = await asaasFetch<{ invoiceUrl: string | null }>("/payments", {
+    method: "POST",
+    json: {
+      customer: dados.customerId,
+      billingType: "UNDEFINED",
+      value: dados.valor,
+      dueDate: dados.vencimento.toISOString().slice(0, 10),
+      description: dados.descricao,
+      externalReference: dados.referencia,
+    },
+  });
+  return pagamento.invoiceUrl;
+}
+
 export async function cancelAsaasSubscription(subscriptionId: string) {
   await asaasFetch(`/subscriptions/${subscriptionId}`, { method: "DELETE" });
 }

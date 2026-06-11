@@ -9,6 +9,7 @@ import { updateClientField } from "@/app/actions/client-actions";
 import {
   cancelarAssinatura,
   criarAssinatura,
+  gerarLinkPagamento,
   linkFaturaAssinatura,
 } from "@/app/actions/assinatura-actions";
 import { Check, Link2, Loader2, Pencil, Repeat, X } from "lucide-react";
@@ -163,6 +164,7 @@ function SelectCell({
    Com assinatura: tag Ativa + copiar link + cancelar com confirmacao. */
 function RecorrenciaCell({ cliente }: { cliente: ClienteRow }) {
   const [pending, startTransition] = useTransition();
+  const [pendingAvulso, startAvulso] = useTransition();
   const [confirmando, setConfirmando] = useState(false);
 
   async function copiarLink(url: string | null | undefined) {
@@ -172,32 +174,55 @@ function RecorrenciaCell({ cliente }: { cliente: ClienteRow }) {
 
   if (!cliente.assinaturaAtiva) {
     return (
-      <button
-        disabled={pending}
-        onClick={() =>
-          startTransition(async () => {
-            const result = await criarAssinatura(cliente.id);
-            if (result.error) {
-              toast(result.error);
-            } else {
-              await copiarLink(result.linkFatura);
-              toast(
-                result.linkFatura
-                  ? "Assinatura criada. Link da fatura copiado"
-                  : "Assinatura criada"
-              );
-            }
-          })
-        }
-        className="inline-flex items-center gap-1.5 rounded-md border border-[#E4E4E7] bg-white px-2.5 py-1 text-xs font-medium text-[#09090B] transition-colors duration-150 hover:bg-[#F4F4F5] disabled:opacity-50"
-      >
-        {pending ? (
-          <Loader2 size={12} className="animate-spin" />
-        ) : (
-          <Repeat size={12} strokeWidth={1.5} />
-        )}
-        {pending ? "Gerando..." : "Gerar assinatura"}
-      </button>
+      <div className="inline-flex items-center gap-1.5">
+        <button
+          disabled={pending || pendingAvulso}
+          onClick={() =>
+            startTransition(async () => {
+              const result = await criarAssinatura(cliente.id);
+              if (result.error) {
+                toast(result.error);
+              } else {
+                await copiarLink(result.linkFatura);
+                toast(
+                  result.linkFatura
+                    ? "Assinatura criada. Link da fatura copiado"
+                    : "Assinatura criada"
+                );
+              }
+            })
+          }
+          className="inline-flex items-center gap-1.5 rounded-md border border-[#E4E4E7] bg-white px-2.5 py-1 text-xs font-medium text-[#09090B] transition-colors duration-150 hover:bg-[#F4F4F5] disabled:opacity-50"
+        >
+          {pending ? (
+            <Loader2 size={12} className="animate-spin" />
+          ) : (
+            <Repeat size={12} strokeWidth={1.5} />
+          )}
+          {pending ? "Gerando..." : "Gerar assinatura"}
+        </button>
+        <button
+          disabled={pending || pendingAvulso}
+          title="Gerar link de pagamento de uma mensalidade (sem recorrencia)"
+          onClick={() =>
+            startAvulso(async () => {
+              const result = await gerarLinkPagamento(cliente.id);
+              if (result.error) toast(result.error);
+              else if (result.linkPagamento) {
+                await copiarLink(result.linkPagamento);
+                toast("Link de pagamento copiado. E so mandar pro cliente");
+              } else toast("Cobranca criada, mas o link nao veio. Confira no Asaas");
+            })
+          }
+          className="rounded-md border border-[#E4E4E7] bg-white p-1.5 text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B] disabled:opacity-50"
+        >
+          {pendingAvulso ? (
+            <Loader2 size={12} className="animate-spin" />
+          ) : (
+            <Link2 size={12} strokeWidth={1.5} />
+          )}
+        </button>
+      </div>
     );
   }
 
