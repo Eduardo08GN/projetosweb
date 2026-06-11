@@ -22,36 +22,29 @@ type CalendarEvent = {
   id: string;
   titulo: string;
   tenant: string;
-  date: Date;
-  color: string;
-  textColor: string;
+  date: string;
+  publicado: boolean;
 };
 
-const tenantColors: Record<string, { bg: string; text: string }> = {
-  "Prof. Rodger": { bg: "bg-[#DBEAFE]", text: "text-[#1E40AF]" },
-  "Dra. Camila": { bg: "bg-[#FCE7F3]", text: "text-[#9D174D]" },
-  "Studio Bella": { bg: "bg-[#E0E7FF]", text: "text-[#3730A3]" },
-  "Chef Paulo": { bg: "bg-[#FEF9C3]", text: "text-[#854D0E]" },
-  "Fit Academy": { bg: "bg-[#DCFCE7]", text: "text-[#166534]" },
-};
-
-const mockEvents: CalendarEvent[] = [
-  { id: "1", titulo: "Sotaque americano", tenant: "Prof. Rodger", date: new Date(2026, 5, 10), color: "bg-[#DBEAFE]", textColor: "text-[#1E40AF]" },
-  { id: "2", titulo: "Clareamento x facetas", tenant: "Dra. Camila", date: new Date(2026, 5, 11), color: "bg-[#FCE7F3]", textColor: "text-[#9D174D]" },
-  { id: "3", titulo: "Skincare noturna", tenant: "Studio Bella", date: new Date(2026, 5, 12), color: "bg-[#E0E7FF]", textColor: "text-[#3730A3]" },
-  { id: "4", titulo: "Phrasal verbs", tenant: "Prof. Rodger", date: new Date(2026, 5, 15), color: "bg-[#DBEAFE]", textColor: "text-[#1E40AF]" },
-  { id: "5", titulo: "Pratos de inverno", tenant: "Chef Paulo", date: new Date(2026, 5, 17), color: "bg-[#FEF9C3]", textColor: "text-[#854D0E]" },
-  { id: "6", titulo: "Present perfect", tenant: "Prof. Rodger", date: new Date(2026, 5, 20), color: "bg-[#DBEAFE]", textColor: "text-[#1E40AF]" },
-  { id: "7", titulo: "Treino funcional", tenant: "Fit Academy", date: new Date(2026, 5, 22), color: "bg-[#DCFCE7]", textColor: "text-[#166534]" },
-  { id: "8", titulo: "Limpeza de pele", tenant: "Studio Bella", date: new Date(2026, 5, 25), color: "bg-[#E0E7FF]", textColor: "text-[#3730A3]" },
-  { id: "9", titulo: "Implante dentário", tenant: "Dra. Camila", date: new Date(2026, 5, 27), color: "bg-[#FCE7F3]", textColor: "text-[#9D174D]" },
+const COLOR_PALETTE = [
+  { bg: "bg-[#DBEAFE]", text: "text-[#1E40AF]" },
+  { bg: "bg-[#FCE7F3]", text: "text-[#9D174D]" },
+  { bg: "bg-[#E0E7FF]", text: "text-[#3730A3]" },
+  { bg: "bg-[#FEF9C3]", text: "text-[#854D0E]" },
+  { bg: "bg-[#DCFCE7]", text: "text-[#166534]" },
 ];
 
 const WEEKDAYS = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
 
-export function CalendarGrid() {
-  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 5, 1));
+export function CalendarGrid({ events }: { events: CalendarEvent[] }) {
+  const [currentMonth, setCurrentMonth] = useState(() => new Date());
   const today = new Date();
+
+  // cada cliente ganha uma cor fixa, na ordem alfabetica do nome
+  const tenantColors = new Map<string, (typeof COLOR_PALETTE)[number]>();
+  for (const name of [...new Set(events.map((e) => e.tenant))].sort()) {
+    tenantColors.set(name, COLOR_PALETTE[tenantColors.size % COLOR_PALETTE.length]);
+  }
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -60,7 +53,7 @@ export function CalendarGrid() {
   const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
 
   function getEventsForDay(day: Date) {
-    return mockEvents.filter((e) => isSameDay(e.date, day));
+    return events.filter((e) => isSameDay(new Date(e.date), day));
   }
 
   return (
@@ -104,7 +97,7 @@ export function CalendarGrid() {
         {days.map((day, i) => {
           const inMonth = isSameMonth(day, currentMonth);
           const isToday = isSameDay(day, today);
-          const events = getEventsForDay(day);
+          const dayEvents = getEventsForDay(day);
 
           return (
             <div
@@ -125,15 +118,20 @@ export function CalendarGrid() {
                 {format(day, "d")}
               </span>
               <div className="mt-1 flex flex-col gap-0.5">
-                {events.map((event) => (
-                  <div
-                    key={event.id}
-                    className={`truncate rounded px-1.5 py-0.5 text-[11px] font-medium ${event.color} ${event.textColor}`}
-                    title={`${event.titulo} — ${event.tenant}`}
-                  >
-                    {event.titulo}
-                  </div>
-                ))}
+                {dayEvents.map((event) => {
+                  const color = tenantColors.get(event.tenant)!;
+                  return (
+                    <div
+                      key={event.id}
+                      className={`truncate rounded px-1.5 py-0.5 text-[11px] font-medium ${color.bg} ${color.text} ${
+                        event.publicado ? "" : "opacity-80"
+                      }`}
+                      title={`${event.titulo} — ${event.tenant} (${event.publicado ? "publicado" : "agendado"})`}
+                    >
+                      {event.titulo}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           );

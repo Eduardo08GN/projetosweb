@@ -185,6 +185,25 @@ export async function getTenantMetrics(tenantId: string) {
   return { total, publicados, emProducao, agendados };
 }
 
+export async function getCalendarEvents() {
+  const carrosseis = await db.carrossel.findMany({
+    where: {
+      OR: [{ agendadoPara: { not: null } }, { publicadoEm: { not: null } }],
+    },
+    include: { tenant: { select: { name: true } } },
+    orderBy: { createdAt: "asc" },
+  });
+
+  return carrosseis.map((c) => ({
+    id: c.id,
+    titulo: c.titulo,
+    tenant: c.tenant.name,
+    // publicado vale mais que agendado: depois de no ar, o dia real e o que conta
+    date: (c.publicadoEm ?? c.agendadoPara)!.toISOString(),
+    publicado: c.status === "PUBLICADO",
+  }));
+}
+
 export async function getTenantConnection(tenantId: string) {
   const conn = await db.metaConnection.findUnique({ where: { tenantId } });
   if (!conn) return null;

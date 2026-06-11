@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
 import { CheckCircle2, AlertTriangle, XCircle, Unplug } from "lucide-react";
 import { siInstagram } from "simple-icons";
 import { Button } from "@/components/ui/button";
+import { desconectarInstagram } from "@/app/actions/integracao-actions";
 
 function InstagramGlyph({ size, className }: { size: number; className?: string }) {
   return (
@@ -88,6 +89,7 @@ export function MetaConnectionCard({
   const [connection, setConnection] = useState<MetaConnectionData>(
     initialData ?? DEFAULT_DISCONNECTED
   );
+  const [disconnecting, startDisconnect] = useTransition();
   const config = statusConfig[connection.status];
   const StatusIcon = config.icon;
 
@@ -96,7 +98,10 @@ export function MetaConnectionCard({
   }
 
   function handleDisconnect() {
-    setConnection(DEFAULT_DISCONNECTED);
+    startDisconnect(async () => {
+      const result = await desconectarInstagram();
+      if (result.success) setConnection(DEFAULT_DISCONNECTED);
+    });
   }
 
   function handleReconnect() {
@@ -229,9 +234,10 @@ export function MetaConnectionCard({
                 </Button>
                 <button
                   onClick={handleDisconnect}
-                  className="rounded-lg px-4 py-2.5 text-sm font-medium text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B]"
+                  disabled={disconnecting}
+                  className="rounded-lg px-4 py-2.5 text-sm font-medium text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B] disabled:opacity-50"
                 >
-                  Desconectar
+                  {disconnecting ? "Desconectando..." : "Desconectar"}
                 </button>
               </div>
             </motion.div>
