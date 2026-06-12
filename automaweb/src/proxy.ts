@@ -12,6 +12,8 @@ const PUBLIC_PATHS = [
   "/api/auth/google",
   // webhook do gateway de cobranca: autentica por token proprio na rota
   "/api/asaas/webhook",
+  // manifesto do aplicativo: o navegador busca sem cookies de sessao
+  "/manifest.webmanifest",
 ];
 
 export async function proxy(request: NextRequest) {

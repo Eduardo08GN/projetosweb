@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { ProfileCard } from "@/components/tenant/conta/profile-card";
 import { PlanCard } from "@/components/tenant/conta/plan-card";
 import { SecurityCard } from "@/components/tenant/conta/security-card";
+import { InstallAppCard } from "@/components/tenant/conta/install-app-card";
 
 export default async function ContaPage() {
   const session = await getSession();
@@ -25,8 +26,9 @@ export default async function ContaPage() {
           <ProfileCard data={profile} />
           <SecurityCard />
         </div>
-        <div>
+        <div className="space-y-6">
           <PlanCard data={plan} planos={planos} />
+          <InstallAppCard />
         </div>
       </div>
     </div>

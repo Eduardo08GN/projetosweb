@@ -11,6 +11,15 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "AutomaWeb",
   description: "Plataforma de marketing digital",
+  icons: {
+    icon: "/AutomaWeb_favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
+  appleWebApp: {
+    capable: true,
+    title: "AutomaWeb",
+    statusBarStyle: "default",
+  },
 };
 
 export default function RootLayout({
