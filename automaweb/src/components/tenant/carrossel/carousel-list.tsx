@@ -36,12 +36,12 @@ export function CarouselList({ items }: { items: CarouselItem[] }) {
 
   return (
     <div className="space-y-5">
-      <div className="flex gap-1">
+      <div className="-mx-4 flex gap-1 overflow-x-auto px-4 lg:mx-0 lg:px-0">
         {FILTERS.map((f) => (
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
-            className={`rounded-lg px-3.5 py-2 text-sm font-medium transition-colors duration-150 ${
+            className={`shrink-0 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors duration-150 ${
               filter === f.key
                 ? "bg-[#18181B] text-[#FAFAFA]"
                 : "text-[#71717A] hover:bg-[#F4F4F5] hover:text-[#09090B]"
@@ -53,7 +53,7 @@ export function CarouselList({ items }: { items: CarouselItem[] }) {
       </div>
 
       <motion.div
-        className="grid grid-cols-2 gap-5"
+        className="grid grid-cols-1 gap-5 lg:grid-cols-2"
         variants={variants.staggerContainer}
         initial="hidden"
         animate="visible"

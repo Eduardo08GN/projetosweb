@@ -8,6 +8,7 @@ import {
   Globe,
 } from "lucide-react";
 import { AppSidebar, type NavItem } from "@/components/shared/app-sidebar";
+import { MobileTabBar } from "@/components/shared/mobile-nav";
 
 const masterNav: NavItem[] = [
   { label: "Inicio", href: "/master", icon: LayoutDashboard },
@@ -19,4 +20,8 @@ const masterNav: NavItem[] = [
 
 export function MasterSidebar() {
   return <AppSidebar items={masterNav} />;
+}
+
+export function MasterMobileNav() {
+  return <MobileTabBar items={masterNav} />;
 }

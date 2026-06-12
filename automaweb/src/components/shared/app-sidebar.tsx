@@ -25,7 +25,7 @@ export function AppSidebar({
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-full w-60 shrink-0 flex-col border-r border-[#E4E4E7] bg-white">
+    <aside className="hidden h-full w-60 shrink-0 flex-col border-r border-[#E4E4E7] bg-white lg:flex">
       <div className="flex h-16 items-center px-5">
         {logo ?? (
           <Image

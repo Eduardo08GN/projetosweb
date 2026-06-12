@@ -8,6 +8,7 @@ import {
   UserCircle,
 } from "lucide-react";
 import { AppSidebar, type NavItem } from "@/components/shared/app-sidebar";
+import { MobileTabBar } from "@/components/shared/mobile-nav";
 
 const tenantNav: NavItem[] = [
   { label: "Inicio", href: "/tenant", icon: LayoutDashboard },
@@ -19,4 +20,8 @@ const tenantNav: NavItem[] = [
 
 export function TenantSidebar() {
   return <AppSidebar items={tenantNav} />;
+}
+
+export function TenantMobileNav() {
+  return <MobileTabBar items={tenantNav} />;
 }

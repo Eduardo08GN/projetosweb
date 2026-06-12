@@ -3,7 +3,8 @@ import { Toaster } from "sonner";
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { logout } from "@/app/actions/auth-actions";
-import { TenantSidebar } from "@/components/tenant/tenant-sidebar";
+import { TenantSidebar, TenantMobileNav } from "@/components/tenant/tenant-sidebar";
+import { MobileHeader } from "@/components/shared/mobile-nav";
 
 /* Conta fora do estado ATIVO nao navega: cai na tela de regularizacao.
    Nada e apagado; o acesso volta sozinho quando o estado virar ATIVO. */
@@ -62,11 +63,13 @@ export default async function TenantLayout({
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen flex-col lg:flex-row">
       <TenantSidebar />
-      <main className="flex-1 overflow-y-auto bg-[#FAFAFA] px-10 py-8">
+      <MobileHeader />
+      <main className="flex-1 overflow-y-auto bg-[#FAFAFA] px-4 pb-28 pt-6 lg:px-10 lg:py-8">
         {children}
       </main>
+      <TenantMobileNav />
       <Toaster
         position="bottom-right"
         toastOptions={{

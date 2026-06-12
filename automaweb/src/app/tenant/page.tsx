@@ -41,8 +41,8 @@ export default async function TenantDashboard() {
           username={connection?.igUsername ?? undefined}
         />
         <TenantMetrics data={metrics} />
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+          <div className="xl:col-span-2">
             <RecentCarousels items={carousels} />
           </div>
           <div className="space-y-6">

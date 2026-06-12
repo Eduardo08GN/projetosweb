@@ -52,7 +52,7 @@ export function ConnectionBanner({
 
   return (
     <motion.div
-      className="flex items-center justify-between rounded-xl border border-[#FEF9C3] bg-[#FFFBEB] px-5 py-3.5"
+      className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#FEF9C3] bg-[#FFFBEB] px-5 py-3.5"
       variants={variants.fadeUpSmall}
       initial="hidden"
       animate="visible"

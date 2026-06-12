@@ -14,14 +14,14 @@ export function PageHeader({
 }) {
   return (
     <motion.div
-      className="flex items-start justify-between pb-8"
+      className="flex flex-wrap items-start justify-between gap-3 pb-6 lg:pb-8"
       initial="hidden"
       animate="visible"
       variants={variants.fadeUp}
       transition={transitions.page}
     >
       <div>
-        <h1 className="text-[28px] font-bold leading-[1.2] tracking-[-0.02em] text-[#09090B]">
+        <h1 className="text-2xl font-bold leading-[1.2] tracking-[-0.02em] text-[#09090B] lg:text-[28px]">
           {title}
         </h1>
         {description && (
