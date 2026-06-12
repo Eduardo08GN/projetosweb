@@ -97,7 +97,7 @@ export async function updateClientField(
   field: string,
   value: string
 ): Promise<{ error?: string; success?: boolean }> {
-  const allowed = ["status", "phone", "plano", "planoValidoAte", "planoMensalidade", "documento"];
+  const allowed = ["status", "phone", "plano", "planoValidoAte", "planoMensalidade", "documento", "horaPublicacaoPadrao"];
   if (!allowed.includes(field)) return { error: "Campo nao permitido" };
 
   const tenant = await db.tenant.findUnique({ where: { id: tenantId } });
@@ -130,6 +130,14 @@ export async function updateClientField(
       const num = parseInt(value, 10);
       if (isNaN(num) || num < 0) return { error: "Valor invalido" };
       data = { planoMensalidade: num };
+    }
+  } else if (field === "horaPublicacaoPadrao") {
+    if (!value) {
+      data = { horaPublicacaoPadrao: null }; // volta pro padrao global (13h)
+    } else {
+      const num = parseInt(value, 10);
+      if (isNaN(num) || num < 0 || num > 23) return { error: "Hora invalida (0 a 23)" };
+      data = { horaPublicacaoPadrao: num };
     }
   } else {
     data = { [field]: value || null };

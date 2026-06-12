@@ -13,8 +13,17 @@ import {
 } from "@/components/ui/sheet";
 import { ImageCropper } from "@/components/shared/image-cropper";
 import { SlideImage } from "@/components/shared/slide-image";
+import { DateTimeField } from "./datetime-field";
 import { submitEdit } from "@/app/actions/tenant-carrossel-actions";
 import { MAX_TEXTO_SLIDE, type EdicaoSlide } from "@/lib/carrossel-edicao";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 type SlideEdit = { texto: string; imagemUrl?: string; previewUrl?: string };
 
@@ -25,12 +34,14 @@ export function EditSheet({
   carrosselId,
   slides,
   versao,
+  agendadoParaInput,
   open,
   onOpenChange,
 }: {
   carrosselId: string;
   slides: string[];
   versao: number;
+  agendadoParaInput: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
@@ -38,8 +49,12 @@ export function EditSheet({
   const [edits, setEdits] = useState<Record<number, SlideEdit>>({});
   const [cropFile, setCropFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [data, setData] = useState(agendadoParaInput);
+  const [confirmando, setConfirmando] = useState(false);
   const [pending, startTransition] = useTransition();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const dataMudou = data !== "" && data !== agendadoParaInput;
 
   const currentEdit = edits[current] ?? { texto: "" };
   const totalEdits = Object.values(edits).filter(
@@ -99,7 +114,12 @@ export function EditSheet({
       .filter((e) => e.texto || e.imagemUrl);
 
     startTransition(async () => {
-      const result = await submitEdit(carrosselId, payload);
+      const result = await submitEdit(
+        carrosselId,
+        payload,
+        dataMudou ? data : undefined
+      );
+      setConfirmando(false);
       if (result.error) {
         toast(result.error);
       } else {
@@ -270,26 +290,63 @@ export function EditSheet({
             </div>
           )}
 
+          {/* data de publicacao */}
+          <div className="border-t border-[#E4E4E7] pt-5">
+            <DateTimeField value={data} onChange={setData} />
+            <p className="mt-1.5 text-[11px] text-[#A1A1AA]">
+              Padrao definido pela gente. Mude se quiser outra data.
+            </p>
+          </div>
+
           {/* envio */}
           <div className="mt-auto border-t border-[#E4E4E7] pt-4">
             <Button
-              onClick={handleSubmit}
-              disabled={pending || uploading || totalEdits === 0}
+              onClick={() => setConfirmando(true)}
+              disabled={pending || uploading || (totalEdits === 0 && !dataMudou)}
               className="w-full gap-2 rounded-lg bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A] disabled:opacity-50"
             >
               <Check size={14} strokeWidth={2} />
-              {pending
-                ? "Enviando..."
-                : totalEdits > 0
-                  ? `Enviar alteracao e aprovar (${totalEdits} slide${totalEdits > 1 ? "s" : ""})`
-                  : "Enviar alteracao e aprovar"}
+              {totalEdits > 0
+                ? `Enviar alteracao e aprovar (${totalEdits} slide${totalEdits > 1 ? "s" : ""})`
+                : "Aprovar e agendar"}
             </Button>
             <p className="mt-2 text-center text-[11px] text-[#A1A1AA]">
-              Essa e sua unica edicao. Ao enviar, o post fica aprovado.
+              {totalEdits > 0
+                ? "Essa e sua unica edicao. Ao enviar, o post fica aprovado."
+                : "Ao aprovar, o post entra na fila pra publicar."}
             </p>
           </div>
         </div>
       </SheetContent>
+
+      <Dialog open={confirmando} onOpenChange={setConfirmando}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>Aprovar e publicar?</DialogTitle>
+            <DialogDescription>
+              Depois de publicado, nao da mais pra editar.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setConfirmando(false)}
+              disabled={pending}
+              className="rounded-lg"
+            >
+              Voltar
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={pending}
+              className="gap-2 rounded-lg bg-[#18181B] text-[#FAFAFA] hover:bg-[#27272A]"
+            >
+              {pending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} strokeWidth={2} />}
+              {pending ? "Enviando..." : "Confirmar"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Sheet>
   );
 }

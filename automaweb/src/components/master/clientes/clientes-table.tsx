@@ -24,6 +24,7 @@ type ClienteRow = {
   plano: string;
   planoValidoAte: string; // yyyy-mm-dd ou ""
   planoMensalidade: number | null;
+  horaPublicacaoPadrao: number | null;
   assinaturaAtiva: boolean;
   carrosseis: number;
 };
@@ -300,22 +301,11 @@ export function ClientesTable({ items }: { items: ClienteRow[] }) {
 
   async function save(tenantId: string, field: string, value: string) {
     const anterior = rows;
+    const numerico = field === "planoMensalidade" || field === "horaPublicacaoPadrao";
     setRows((prev) =>
       prev.map((r) =>
         r.id === tenantId
-          ? {
-              ...r,
-              [field === "planoValidoAte"
-                ? "planoValidoAte"
-                : field === "planoMensalidade"
-                  ? "planoMensalidade"
-                  : field]:
-                field === "planoMensalidade"
-                  ? value
-                    ? parseInt(value, 10)
-                    : null
-                  : value,
-            }
+          ? { ...r, [field]: numerico ? (value ? parseInt(value, 10) : null) : value }
           : r
       )
     );
@@ -338,12 +328,12 @@ export function ClientesTable({ items }: { items: ClienteRow[] }) {
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#E4E4E7] bg-[#F4F4F5]">
-              {["Cliente", "Contato", "Situacao", "Plano", "Mensalidade", "Valido ate", "Recorrencia"].map(
-                (h, i) => (
+              {["Cliente", "Contato", "Situacao", "Plano", "Mensalidade", "Valido ate", "Horario", "Recorrencia"].map(
+                (h) => (
                   <th
                     key={h}
                     className={`px-5 py-3 text-xs font-semibold uppercase tracking-[0.05em] text-[#71717A] ${
-                      i >= 4 && h !== "Recorrencia" ? "text-right" : "text-left"
+                      h === "Mensalidade" || h === "Valido ate" ? "text-right" : "text-left"
                     }`}
                   >
                     {h}
@@ -452,6 +442,25 @@ export function ClientesTable({ items }: { items: ClienteRow[] }) {
                       </span>
                     }
                     onSave={(v) => save(c.id, "planoValidoAte", v)}
+                  />
+                </td>
+                <td className="px-5 py-3.5">
+                  <InlineEdit
+                    value={c.horaPublicacaoPadrao !== null ? String(c.horaPublicacaoPadrao) : ""}
+                    type="number"
+                    display={
+                      <span
+                        className={`text-sm ${
+                          c.horaPublicacaoPadrao !== null ? "text-[#09090B]" : "text-[#D4D4D8]"
+                        }`}
+                        style={{ fontVariantNumeric: "tabular-nums" }}
+                      >
+                        {c.horaPublicacaoPadrao !== null
+                          ? `${c.horaPublicacaoPadrao}h`
+                          : "13h"}
+                      </span>
+                    }
+                    onSave={(v) => save(c.id, "horaPublicacaoPadrao", v)}
                   />
                 </td>
                 <td className="px-5 py-3.5">

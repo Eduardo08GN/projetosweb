@@ -63,10 +63,10 @@ export default async function TenantLayout({
   }
 
   return (
-    <div className="flex h-screen flex-col lg:flex-row">
+    <div className="flex h-[100dvh] flex-col lg:flex-row">
       <TenantSidebar />
       <MobileHeader />
-      <main className="flex-1 overflow-y-auto bg-[#FAFAFA] px-4 pb-28 pt-6 lg:px-10 lg:py-8">
+      <main className="flex-1 overflow-y-auto bg-[#FAFAFA] px-4 pb-8 pt-6 lg:px-10 lg:py-8">
         {children}
       </main>
       <TenantMobileNav />

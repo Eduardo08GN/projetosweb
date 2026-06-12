@@ -100,3 +100,43 @@ export async function getInvoiceUrl(subscriptionId: string): Promise<string | nu
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate))[0];
   return aberto?.invoiceUrl ?? pagamentos.data[0]?.invoiceUrl ?? null;
 }
+
+export type PagamentoAsaas = {
+  id: string;
+  valor: number;
+  status: string;
+  vencimento: string; // YYYY-MM-DD
+  pagoEm: string | null; // YYYY-MM-DD
+  // link da fatura (aberta) ou do comprovante (paga)
+  link: string | null;
+};
+
+/** Historico de pagamentos de uma assinatura, do mais novo pro mais antigo. */
+export async function listSubscriptionPayments(
+  subscriptionId: string
+): Promise<PagamentoAsaas[]> {
+  const pagamentos = await asaasFetch<{
+    data: Array<{
+      id: string;
+      value: number;
+      status: string;
+      dueDate: string;
+      paymentDate: string | null;
+      clientPaymentDate: string | null;
+      invoiceUrl: string | null;
+      transactionReceiptUrl: string | null;
+    }>;
+  }>(`/payments?subscription=${subscriptionId}&limit=50&order=desc`);
+
+  return pagamentos.data
+    .map((p) => ({
+      id: p.id,
+      valor: p.value,
+      status: p.status,
+      vencimento: p.dueDate,
+      pagoEm: p.paymentDate ?? p.clientPaymentDate ?? null,
+      // pago mostra o comprovante; em aberto mostra a fatura pra pagar
+      link: p.transactionReceiptUrl ?? p.invoiceUrl ?? null,
+    }))
+    .sort((a, b) => b.vencimento.localeCompare(a.vencimento));
+}

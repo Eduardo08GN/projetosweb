@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { notifyTenant } from "@/lib/email";
 import { emailPostParaAprovar } from "@/lib/email-templates";
+import { proximaVagaAgendamento } from "@/lib/agendamento";
 
 export type CreateCarrosselState =
   | { error?: string; success?: boolean }
@@ -64,10 +65,20 @@ export async function moveCarrossel(
     return { error: "Carrossel nao encontrado" };
   }
 
+  // chega na mesa do cliente sem data? recebe a proxima vaga util (13h),
+  // que o cliente pode trocar depois. agendadoPara alimenta o calendario.
+  const chegandoNaAprovacao =
+    newStatus === "APROVACAO" && carrossel.status !== "APROVACAO";
+  const dataPadrao =
+    chegandoNaAprovacao && !carrossel.agendadoPara
+      ? await proximaVagaAgendamento(carrossel.tenantId)
+      : undefined;
+
   await db.carrossel.update({
     where: { id: carrosselId },
     data: {
       status: newStatus as typeof carrossel.status,
+      ...(dataPadrao ? { agendadoPara: dataPadrao } : {}),
       // voltou pra producao depois de um pedido de ajuste? limpa a flag
       ...(carrossel.ajustePedido && newStatus === "APROVACAO"
         ? { ajustePedido: false, feedbackCliente: null }
@@ -76,7 +87,7 @@ export async function moveCarrossel(
   });
 
   // chegou na mesa do cliente: avisa por email, sem travar a resposta
-  if (newStatus === "APROVACAO" && carrossel.status !== "APROVACAO") {
+  if (chegandoNaAprovacao) {
     const { subject, html } = emailPostParaAprovar({ titulo: carrossel.titulo });
     after(() => notifyTenant(carrossel.tenantId, subject, html));
   }

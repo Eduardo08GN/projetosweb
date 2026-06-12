@@ -1,6 +1,7 @@
 import { db } from "./db";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { paraInputBR, dentroDoPrazo } from "./agendamento";
 
 function timeAgo(date: Date) {
   return formatDistanceToNow(date, { addSuffix: false, locale: ptBR });
@@ -96,6 +97,7 @@ export async function getClientes() {
       ? t.planoValidoAte.toISOString().slice(0, 10)
       : "",
     planoMensalidade: t.planoMensalidade,
+    horaPublicacaoPadrao: t.horaPublicacaoPadrao,
     assinaturaAtiva: !!t.asaasSubscriptionId,
     carrosseis: t._count.carrosseis,
   }));
@@ -231,17 +233,24 @@ export async function getTenantConnection(tenantId: string) {
 }
 
 export async function getTenantRecentCarousels(tenantId: string) {
-  const carrosseis = await db.carrossel.findMany({
-    where: { tenantId },
-    orderBy: { updatedAt: "desc" },
-    take: 5,
-  });
+  const [carrosseis, tenant] = await Promise.all([
+    db.carrossel.findMany({
+      where: { tenantId },
+      orderBy: { updatedAt: "desc" },
+      take: 5,
+    }),
+    db.tenant.findUnique({ where: { id: tenantId }, select: { name: true } }),
+  ]);
+
+  // atribuicao espelha quem deu a palavra final: editou na plataforma
+  // leva o nome do cliente; saiu direto da fabrica fica como Equipe
+  const primeiroNome = tenant?.name?.split(" ")[0] ?? "voce";
 
   return carrosseis.map((c) => ({
     id: c.id,
     titulo: c.titulo,
     status: c.status,
-    operador: c.operador ?? "Equipe",
+    autor: c.editadoPeloCliente ? primeiroNome : "Equipe",
     updatedAt: timeAgo(c.updatedAt),
   }));
 }
@@ -270,19 +279,43 @@ export async function getTenantNextPost(tenantId: string) {
     ((stepMap[next.status] ?? 1) / totalSteps) * 100
   );
 
+  // remarcavel ate 5h antes da publicacao; depois disso ja esta na fila
+  const editavel = next.status !== "PUBLICADO" && dentroDoPrazo(next.agendadoPara);
+
   return {
+    id: next.id,
     titulo: next.titulo,
     data: next.agendadoPara!.toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "short",
       year: "numeric",
+      timeZone: "America/Sao_Paulo",
     }),
     hora: next.agendadoPara!.toLocaleTimeString("pt-BR", {
       hour: "2-digit",
       minute: "2-digit",
+      timeZone: "America/Sao_Paulo",
     }),
+    agendadoParaInput: paraInputBR(next.agendadoPara!),
+    editavel,
     progress,
   };
+}
+
+/** Site do cliente que ja esta no ar (publicado), com a URL pronta. */
+export async function getTenantSite(tenantId: string) {
+  const site = await db.site.findFirst({
+    where: { tenantId, status: "PUBLICADO" },
+    orderBy: { updatedAt: "desc" },
+    select: { dominio: true, urlPreview: true },
+  });
+  if (!site) return null;
+
+  const endereco = site.dominio || site.urlPreview;
+  if (!endereco) return null;
+
+  const url = endereco.startsWith("http") ? endereco : `https://${endereco}`;
+  return { url, label: endereco.replace(/^https?:\/\//, "").replace(/\/$/, "") };
 }
 
 export async function getTenantDmStats(tenantId: string) {
@@ -337,6 +370,8 @@ export async function getTenantCarousels(tenantId: string) {
     editadoPeloCliente: c.editadoPeloCliente,
     temEdicaoPendente: c.edicaoPendente !== null,
     conectado,
+    // data agendada no formato do input (hora de Brasilia), pra editar/remarcar
+    agendadoParaInput: c.agendadoPara ? paraInputBR(c.agendadoPara) : "",
     // fura o cache de imagem quando o slide e re-renderizado no mesmo endereco
     versao: c.updatedAt.getTime(),
   }));

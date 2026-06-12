@@ -6,11 +6,13 @@ import {
   getTenantRecentCarousels,
   getTenantNextPost,
   getTenantDmStats,
+  getTenantSite,
 } from "@/lib/queries";
 import { PageHeader } from "@/components/shared/page-header";
 import { PageShell } from "@/components/shared/page-shell";
 import { TenantMetrics } from "@/components/tenant/dashboard/tenant-metrics";
 import { ConnectionBanner } from "@/components/tenant/dashboard/connection-banner";
+import { SiteLiveCard } from "@/components/tenant/dashboard/site-live-card";
 import { RecentCarousels } from "@/components/tenant/dashboard/recent-carousels";
 import { NextPost } from "@/components/tenant/dashboard/next-post";
 import { DmStats } from "@/components/tenant/dashboard/dm-stats";
@@ -19,15 +21,15 @@ export default async function TenantDashboard() {
   const session = await getSession();
   if (!session?.tenantId) redirect("/login");
 
-  const [metrics, connection, carousels, nextPost, dmStats] = await Promise.all(
-    [
+  const [metrics, connection, carousels, nextPost, dmStats, site] =
+    await Promise.all([
       getTenantMetrics(session.tenantId),
       getTenantConnection(session.tenantId),
       getTenantRecentCarousels(session.tenantId),
       getTenantNextPost(session.tenantId),
       getTenantDmStats(session.tenantId),
-    ]
-  );
+      getTenantSite(session.tenantId),
+    ]);
 
   return (
     <PageShell>
@@ -40,6 +42,7 @@ export default async function TenantDashboard() {
           connected={connection?.status === "CONECTADO"}
           username={connection?.igUsername ?? undefined}
         />
+        <SiteLiveCard data={site} />
         <TenantMetrics data={metrics} />
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
           <div className="xl:col-span-2">

@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${jakarta.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans bg-[#FAFAFA] text-[#09090B]">
+      <body className="min-h-full flex flex-col overflow-x-hidden font-sans bg-[#FAFAFA] text-[#09090B]">
         <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>

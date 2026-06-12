@@ -8,7 +8,7 @@ type CarouselItem = {
   id: string;
   titulo: string;
   status: string;
-  operador: string;
+  autor: string;
   updatedAt: string;
 };
 
@@ -30,23 +30,18 @@ export function RecentCarousels({ items }: { items: CarouselItem[] }) {
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between px-5 py-3.5 transition-colors duration-150 hover:bg-[#FAFAFA]"
+            className="flex items-start gap-3 px-5 py-3.5 transition-colors duration-150 hover:bg-[#FAFAFA]"
           >
-            <div className="flex items-center gap-4">
-              <div>
-                <p className="text-sm font-medium text-[#09090B]">
-                  {item.titulo}
-                </p>
-                <p className="mt-0.5 text-xs text-[#A1A1AA]">
-                  por {item.operador}
-                </p>
-              </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-medium text-[#09090B]">
+                {item.titulo}
+              </p>
+              <p className="mt-0.5 text-xs text-[#A1A1AA]">
+                por {item.autor} &middot; {item.updatedAt}
+              </p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="shrink-0 whitespace-nowrap pt-0.5">
               <StatusTag status={item.status} />
-              <span className="min-w-[100px] text-right text-xs text-[#A1A1AA]">
-                {item.updatedAt}
-              </span>
             </div>
           </div>
         ))}

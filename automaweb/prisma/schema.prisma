@@ -34,6 +34,8 @@ model Tenant {
   planoInicio      DateTime?
   planoValidoAte   DateTime?
   planoMensalidade Int?
+  // hora de publicacao padrao deste cliente (0-23, Brasilia). Null = 13h global
+  horaPublicacaoPadrao Int?
   // faixa (7, 3, 1 dia ou 0 = vencido) do ultimo aviso de plano enviado
   planoAvisoDias   Int?
   // cobranca recorrente (Asaas)

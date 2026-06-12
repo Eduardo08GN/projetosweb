@@ -4,6 +4,7 @@ import { getPlanosCatalogo, getTenantPlan, getTenantProfile } from "@/lib/querie
 import { PageHeader } from "@/components/shared/page-header";
 import { ProfileCard } from "@/components/tenant/conta/profile-card";
 import { PlanCard } from "@/components/tenant/conta/plan-card";
+import { PaymentsCard } from "@/components/tenant/conta/payments-card";
 import { SecurityCard } from "@/components/tenant/conta/security-card";
 import { InstallAppCard } from "@/components/tenant/conta/install-app-card";
 
@@ -28,6 +29,7 @@ export default async function ContaPage() {
         </div>
         <div className="space-y-6">
           <PlanCard data={plan} planos={planos} />
+          <PaymentsCard />
           <InstallAppCard />
         </div>
       </div>

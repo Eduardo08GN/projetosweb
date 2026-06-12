@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
-import { Smartphone, Share, Download, CheckCircle2 } from "lucide-react";
+import { Smartphone, Share, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useInstallApp } from "@/components/shared/install-app";
 
@@ -11,6 +11,9 @@ import { useInstallApp } from "@/components/shared/install-app";
 
 export function InstallAppCard() {
   const { instalado, ios, promptNativo, instalar } = useInstallApp();
+
+  // ja instalado nao precisa de card: abrir pelo icone e o estado final
+  if (instalado) return null;
 
   return (
     <motion.div
@@ -28,14 +31,7 @@ export function InstallAppCard() {
       </div>
 
       <div className="px-6 py-5">
-        {instalado ? (
-          <div className="flex items-center gap-3 rounded-lg bg-[#F0FDF4] px-4 py-3">
-            <CheckCircle2 size={16} strokeWidth={1.5} className="shrink-0 text-[#166534]" />
-            <p className="text-sm text-[#166534]">
-              Aplicativo instalado. Voce ja abre o painel direto pelo icone.
-            </p>
-          </div>
-        ) : (
+        {(
           <>
             <p className="text-sm text-[#09090B]">
               Instale o aplicativo da AutomaWeb no seu celular e abra seu

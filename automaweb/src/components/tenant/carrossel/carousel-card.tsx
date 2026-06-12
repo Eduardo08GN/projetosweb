@@ -55,6 +55,7 @@ export type CarouselData = {
   editadoPeloCliente: boolean;
   temEdicaoPendente: boolean;
   conectado: boolean;
+  agendadoParaInput: string;
   versao: number;
 };
 
@@ -313,6 +314,7 @@ export function CarouselCard({ data }: { data: CarouselData }) {
           carrosselId={data.id}
           slides={data.slides}
           versao={data.versao}
+          agendadoParaInput={data.agendadoParaInput}
           open={sheetOpen}
           onOpenChange={setSheetOpen}
         />

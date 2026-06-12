@@ -7,8 +7,30 @@ import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { notifyMasters } from "@/lib/email";
 import { emailInterno } from "@/lib/email-templates";
+import { listSubscriptionPayments, type PagamentoAsaas } from "@/lib/asaas";
 
 export type AccountActionState = { error?: string; success?: boolean } | undefined;
+
+/** Historico de pagamentos do proprio cliente (pra baixar comprovante). */
+export async function listarMeusPagamentos(): Promise<{
+  pagamentos?: PagamentoAsaas[];
+  error?: string;
+}> {
+  const session = await getSession();
+  if (!session?.tenantId) return { error: "Nao autorizado" };
+
+  const tenant = await db.tenant.findUnique({
+    where: { id: session.tenantId },
+    select: { asaasSubscriptionId: true },
+  });
+  if (!tenant?.asaasSubscriptionId) return { pagamentos: [] };
+
+  try {
+    return { pagamentos: await listSubscriptionPayments(tenant.asaasSubscriptionId) };
+  } catch {
+    return { error: "Nao consegui carregar agora. Tente de novo em instantes" };
+  }
+}
 
 export async function updateProfile(
   _prev: AccountActionState,
