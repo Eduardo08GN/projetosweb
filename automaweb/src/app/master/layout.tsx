@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import { MasterSidebar, MasterMobileNav } from "@/components/master/master-sidebar";
 import { MobileHeader } from "@/components/shared/mobile-nav";
 
@@ -14,6 +15,17 @@ export default function MasterLayout({
         {children}
       </main>
       <MasterMobileNav />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: "#18181B",
+            color: "#FAFAFA",
+            border: "none",
+            borderRadius: "10px",
+          },
+        }}
+      />
     </div>
   );
 }

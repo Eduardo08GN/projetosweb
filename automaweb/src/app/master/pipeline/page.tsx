@@ -1,5 +1,8 @@
 import { getKanbanData, getActiveTenants } from "@/lib/queries";
 import { PageHeader } from "@/components/shared/page-header";
+
+// o robo publica em segundo plano, sem action que revalide
+export const dynamic = "force-dynamic";
 import { KanbanBoard } from "@/components/master/pipeline/kanban-board";
 import { NewCarrosselModal } from "@/components/master/pipeline/new-carrossel-modal";
 

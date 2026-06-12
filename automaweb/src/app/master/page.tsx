@@ -1,5 +1,9 @@
 import { getMasterMetrics, getRecentActivity, getUpcomingPosts } from "@/lib/queries";
 import { PageHeader } from "@/components/shared/page-header";
+
+// o robo publica e pausa contas em segundo plano, sem action que
+// revalide: as paginas do master saem sempre frescas do banco
+export const dynamic = "force-dynamic";
 import { MasterMetrics } from "@/components/master/dashboard/master-metrics";
 import { RecentActivity } from "@/components/master/dashboard/recent-activity";
 import { UpcomingPosts } from "@/components/master/dashboard/upcoming-posts";

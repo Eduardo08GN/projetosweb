@@ -1,5 +1,8 @@
 import { getClientes, getPlanosCatalogo } from "@/lib/queries";
 import { PageHeader } from "@/components/shared/page-header";
+
+// webhook de pagamento e regua diaria mudam status sem action local
+export const dynamic = "force-dynamic";
 import { ClientesTable } from "@/components/master/clientes/clientes-table";
 import { NewClientModal } from "@/components/master/clientes/new-client-modal";
 import { PlanosSheet } from "@/components/master/clientes/planos-sheet";
