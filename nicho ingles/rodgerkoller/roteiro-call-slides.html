@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roteiro Call, Slides, Rodger Koller | AutomaWeb</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #000000;
+      --black-card: #111111;
+      --green: #2BF5A0;
+      --green-soft: rgba(43,245,160,0.10);
+      --green-border: rgba(43,245,160,0.20);
+      --red: #EF4444;
+      --red-soft: rgba(239,68,68,0.10);
+      --red-border: rgba(239,68,68,0.20);
+      --gold: #F59E0B;
+      --gold-soft: rgba(245,158,11,0.10);
+      --gold-border: rgba(245,158,11,0.20);
+      --cyan: #06b6d4;
+      --cyan-soft: rgba(6,182,212,0.10);
+      --cyan-border: rgba(6,182,212,0.20);
+      --white: #FFFFFF;
+      --muted: #888888;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--black); font-family: 'Inter', sans-serif; color: var(--white); cursor: default; }
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .slide { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 56px 72px; opacity: 0; pointer-events: none; transition: opacity 400ms ease; overflow-y: auto; }
+    .slide.active { opacity: 1; pointer-events: auto; }
+    .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--green); transition: width 400ms ease; z-index: 100; }
+    .counter { position: fixed; bottom: 28px; right: 40px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.2); z-index: 100; letter-spacing: 1px; }
+    .nav-hint { position: fixed; bottom: 28px; left: 40px; font-size: 13px; color: rgba(255,255,255,0.15); z-index: 100; }
+
+    .aw-logo-fixed { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 10px; z-index: 100; }
+    .aw-logo-fixed .aw-logo-icon { width: 28px; height: 28px; }
+    .aw-logo-fixed .aw-logo-text { font-size: 15px; font-weight: 700; letter-spacing: 0.5px; }
+    .aw-logo-fixed .aw-white { color: var(--white); }
+    .aw-logo-fixed .aw-green { color: var(--green); }
+
+    .tag { font-size: 16px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; padding: 10px 24px; border-radius: 8px; display: inline-block; }
+    .tag-green { color: var(--green); background: var(--green-soft); border: 1px solid var(--green-border); }
+    .tag-red { color: var(--red); background: var(--red-soft); border: 1px solid var(--red-border); }
+    .tag-gold { color: var(--gold); background: var(--gold-soft); border: 1px solid var(--gold-border); }
+    .tag-cyan { color: var(--cyan); background: var(--cyan-soft); border: 1px solid var(--cyan-border); }
+
+    .title { font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 36px; max-width: 900px; }
+    .title em { font-style: normal; color: var(--red); }
+    .title .green { color: var(--green); }
+    .title .gold { color: var(--gold); }
+    .title .cyan { color: var(--cyan); }
+
+    .subtitle { font-size: 20px; color: var(--muted); line-height: 1.6; max-width: 750px; margin-bottom: 40px; }
+
+    .s-cover { justify-content: center; align-items: center; text-align: center; }
+    .s-cover .tag { margin-bottom: 24px; }
+    .s-cover .title { font-size: 52px; max-width: 850px; }
+    .s-cover .subtitle { text-align: center; max-width: 650px; }
+    .cover-line { width: 50px; height: 3px; background: var(--green); border-radius: 2px; margin-top: 24px; }
+
+    .glow-tr::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(43,245,160,0.04) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+    .glow-bl::after { content: ''; position: absolute; bottom: -200px; left: -200px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(43,245,160,0.03) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+
+    .content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+    .compare-box { background: var(--black-card); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; }
+    .compare-box.bad { border-color: var(--red-border); }
+    .compare-box.good { border-color: var(--green-border); }
+    .compare-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .compare-url { font-family: 'Consolas', monospace; font-size: 13px; padding: 6px 14px; border-radius: 6px; display: inline-block; margin-bottom: 16px; }
+    .compare-list { text-align: left; list-style: none; padding: 0; }
+    .compare-list li { font-size: 14px; padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .compare-list li:last-child { border-bottom: none; }
+
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .problem-card { background: var(--black-card); border: 1px solid var(--border); border-left: 3px solid var(--red); border-radius: 10px; padding: 20px 24px; display: flex; align-items: flex-start; gap: 16px; }
+    .problem-card.warn { border-left-color: var(--gold); }
+    .problem-card.ok { border-left-color: var(--green); }
+    .problem-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .problem-title { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .problem-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    .question-box { background: var(--gold-soft); border: 2px solid var(--gold-border); border-radius: 14px; padding: 32px 40px; margin-top: 24px; }
+    .question-icon { font-size: 28px; margin-bottom: 12px; }
+    .question-text { font-size: 20px; font-weight: 700; color: var(--gold); line-height: 1.5; }
+    .question-hint { font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+    .copy-proposal { background: var(--green-soft); border: 1px solid var(--green-border); border-radius: 14px; padding: 28px 32px; margin-top: 20px; }
+    .copy-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+    .copy-content { font-size: 15px; color: #d1fae5; line-height: 1.8; white-space: pre-line; }
+
+    .emails-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .email-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+    .email-icon { font-size: 18px; flex-shrink: 0; }
+    .email-addr { font-family: 'Consolas', monospace; font-size: 13px; color: var(--white); word-break: break-all; }
+    .email-where { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .service-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 22px 26px; display: flex; align-items: flex-start; gap: 16px; }
+    .service-card.highlight { border-color: var(--green-border); background: linear-gradient(135deg, var(--black-card) 0%, rgba(43,245,160,0.03) 100%); }
+    .service-card.bonus { border-color: var(--gold-border); background: linear-gradient(135deg, var(--black-card) 0%, rgba(245,158,11,0.03) 100%); }
+    .service-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .si-green { background: var(--green-soft); }
+    .si-gold { background: var(--gold-soft); }
+    .service-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .service-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .service-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; margin-top: 6px; }
+    .sb-included { background: var(--green-soft); color: var(--green); }
+    .sb-bonus { background: var(--gold-soft); color: var(--gold); }
+
+    .divider-slide { justify-content: center; align-items: center; text-align: center; }
+    .divider-num { font-size: 100px; font-weight: 900; line-height: 1; margin-bottom: 16px; }
+    .divider-num.red { color: var(--red); }
+    .divider-num.green { color: var(--green); }
+    .divider-title { font-size: 36px; font-weight: 800; color: var(--white); margin-bottom: 12px; }
+    .divider-sub { font-size: 18px; color: var(--muted); max-width: 500px; }
+
+    .full-list { display: flex; flex-direction: column; gap: 10px; }
+    .full-item { display: flex; align-items: center; gap: 16px; background: var(--black-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 22px; }
+    .full-item-icon { font-size: 18px; flex-shrink: 0; }
+    .full-item-title { font-size: 15px; font-weight: 700; color: var(--white); }
+
+    .info-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 14px; padding: 32px 36px; }
+    .info-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .info-row:last-child { margin-bottom: 0; }
+    .info-icon { font-size: 28px; flex-shrink: 0; }
+    .info-title { font-size: 20px; font-weight: 700; }
+    .info-desc { font-size: 15px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+    .info-divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+    .questions-list { display: flex; flex-direction: column; gap: 14px; }
+    .q-card { background: var(--gold-soft); border: 1px solid var(--gold-border); border-radius: 10px; padding: 18px 24px; display: flex; align-items: flex-start; gap: 14px; }
+    .q-num { width: 32px; height: 32px; border-radius: 50%; background: var(--gold); color: var(--black); font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .q-text { font-size: 15px; font-weight: 600; color: var(--gold); line-height: 1.5; }
+
+    .s-cta { justify-content: center; align-items: center; text-align: center; }
+    .s-cta .title { font-size: 48px; max-width: 800px; }
+    .cta-box { background: var(--green-soft); border: 1px solid var(--green-border); border-radius: 16px; padding: 32px 48px; margin-top: 16px; }
+    .cta-items { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+    .cta-item { text-align: center; }
+    .cta-item-icon { font-size: 28px; margin-bottom: 8px; }
+    .cta-item-text { font-size: 15px; font-weight: 600; color: var(--white); }
+    .cta-item-sub { font-size: 12px; color: var(--muted); }
+
+    .action-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; margin-bottom: 16px; }
+    .action-show { background: rgba(6,182,212,0.15); color: var(--cyan); border: 1px solid rgba(6,182,212,0.3); }
+
+    .evidence-row { display: flex; gap: 32px; align-items: center; }
+    .mockup { background: #fff; border-radius: 14px; padding: 28px; flex: 1; box-shadow: 0 12px 40px rgba(0,0,0,0.5); color: #111; }
+    .mockup-sm { font-size: 14px; color: #6b7280; }
+    .mockup-title { font-size: 18px; font-weight: 700; color: #111; margin: 8px 0; }
+    .mockup-stars { color: #F59E0B; font-size: 16px; }
+    .mockup-error { background: #FEE2E2; border: 2px solid #FECACA; border-radius: 10px; padding: 16px; text-align: center; margin-top: 12px; }
+    .mockup-error-title { font-size: 16px; font-weight: 700; color: #DC2626; }
+    .mockup-error-sub { font-size: 12px; color: #6b7280; margin-top: 4px; }
+    .evidence-text { flex: 1; display: flex; flex-direction: column; gap: 14px; }
+    .evidence-text h3 { font-size: 26px; font-weight: 800; line-height: 1.3; }
+    .evidence-text p { font-size: 16px; color: var(--muted); line-height: 1.6; }
+    .stat-row { display: flex; gap: 28px; margin-top: 8px; }
+    .stat-box { text-align: center; }
+    .stat-num { font-size: 32px; font-weight: 800; color: var(--red); }
+    .stat-label { font-size: 12px; color: var(--muted); }
+
+    .funnel { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+    .funnel-box { flex: 1; background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; }
+    .funnel-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .funnel-value { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+    .funnel-status { font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 6px; display: inline-block; }
+    .f-ok { background: var(--green-soft); color: var(--green); }
+    .f-dead { background: var(--red-soft); color: var(--red); }
+    .funnel-arrow { font-size: 24px; color: rgba(255,255,255,0.15); flex-shrink: 0; }
+    .funnel-result { background: var(--red-soft); border: 1px solid var(--red-border); border-radius: 12px; padding: 18px 28px; text-align: center; }
+    .funnel-result strong { color: var(--red); font-size: 17px; }
+    .funnel-result span { color: var(--muted); font-size: 14px; margin-left: 8px; }
+
+    .key-points { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+    .key-point { display: flex; align-items: flex-start; gap: 14px; padding: 14px 20px; background: var(--black-card); border: 1px solid var(--border); border-radius: 10px; }
+    .key-point-icon { font-size: 20px; flex-shrink: 0; }
+    .key-point-text { font-size: 15px; color: var(--white); line-height: 1.5; }
+    .key-point-text strong { color: var(--green); }
+
+    .answer-space { margin-top: 12px; border: 2px dashed rgba(245,158,11,0.3); border-radius: 10px; min-height: 48px; padding: 12px 18px; font-size: 15px; color: var(--white); background: rgba(245,158,11,0.05); cursor: text; }
+    .answer-space::before { content: "Resposta:"; font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px; }
+    .answer-space:focus { outline: none; border-color: var(--gold); background: rgba(245,158,11,0.08); }
+
+    .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 56px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; cursor: pointer; z-index: 200; transition: all 200ms ease; user-select: none; }
+    .nav-arrow:hover { color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); }
+    .nav-arrow:active { color: var(--green); background: rgba(43,245,160,0.08); }
+    .nav-arrow-left { left: 16px; }
+    .nav-arrow-right { right: 16px; }
+
+    /* Split-screen */
+    .deck.split { width: 50vw; }
+    .deck.split .nav-arrow-right { right: calc(50vw + 16px); }
+    .deck.split .counter { right: calc(50vw / 2 - 20px); }
+    .deck.split .aw-logo-fixed { left: 25vw; }
+    .deck.split .nav-hint { display: none; }
+
+    .preview-panel { position: fixed; top: 0; right: 0; width: 50vw; height: 100vh; background: #0a0a0a; border-left: 2px solid rgba(43,245,160,0.15); z-index: 300; display: none; flex-direction: column; }
+    .preview-panel.open { display: flex; }
+    .preview-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #111; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
+    .preview-bar-title { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; }
+    .preview-bar-actions { display: flex; gap: 8px; }
+    .preview-btn { font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer; letter-spacing: 0.5px; }
+    .preview-btn-tab { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-border); }
+    .preview-btn-tab:hover { background: rgba(43,245,160,0.2); }
+    .preview-btn-close { background: var(--red-soft); color: var(--red); border: 1px solid var(--red-border); }
+    .preview-btn-close:hover { background: rgba(239,68,68,0.2); }
+    .preview-iframe { flex: 1; border: none; background: #fff; }
+
+    /* Link pills */
+    .link-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .link-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: all 200ms ease; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: var(--muted); user-select: none; }
+    .link-pill:hover { background: rgba(6,182,212,0.1); border-color: var(--cyan-border); color: var(--cyan); }
+    .link-pill-icon { font-size: 14px; }
+    .link-pill--red { border-color: var(--red-border); color: #fca5a5; background: var(--red-soft); }
+    .link-pill--red:hover { background: rgba(239,68,68,0.2); color: var(--red); }
+    .link-pill--green { border-color: var(--green-border); color: #86efac; background: var(--green-soft); }
+    .link-pill--green:hover { background: rgba(43,245,160,0.2); color: var(--green); }
+
+    /* Pricing cards */
+    .pricing-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; position: relative; display: flex; flex-direction: column; }
+    .pricing-card--recommended { border-color: var(--green-border); background: linear-gradient(160deg, var(--black-card) 0%, rgba(43,245,160,0.04) 100%); }
+    .pricing-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--green); color: var(--black); font-size: 11px; font-weight: 800; letter-spacing: 2px; padding: 5px 20px; border-radius: 20px; text-transform: uppercase; white-space: nowrap; }
+    .pricing-label { font-size: 24px; font-weight: 900; color: var(--white); margin-bottom: 20px; }
+    .pricing-items { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .pricing-item { font-size: 14px; color: #ccc; padding: 5px 0; display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+    .pricing-check { color: var(--green); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .pricing-divider { height: 1px; border-top: 1px dashed var(--border); margin: 24px 0; }
+    .pricing-prices { display: flex; gap: 20px; }
+    .pricing-option { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+    .pricing-option--highlight { border-color: var(--green-border); background: var(--green-soft); }
+    .pricing-option-tag { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .pricing-option--highlight .pricing-option-tag { color: var(--green); }
+    .pricing-amount { font-size: 32px; font-weight: 900; color: var(--white); line-height: 1; }
+    .pricing-option--highlight .pricing-amount { color: var(--green); }
+    .pricing-amount-sub { font-size: 20px; font-weight: 800; color: var(--white); line-height: 1; }
+    .pricing-detail { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+    .pricing-bonus-note { margin-top: 16px; background: var(--gold-soft); border: 1px solid var(--gold-border); border-radius: 10px; padding: 14px 18px; font-size: 13px; color: var(--gold); font-weight: 600; display: flex; align-items: center; gap: 10px; line-height: 1.5; }
+    .pricing-bonus-icon { font-size: 20px; flex-shrink: 0; }
+
+    /* Steps */
+    .steps-row { display: flex; align-items: stretch; gap: 16px; margin-bottom: 28px; }
+    .step-card { flex: 1; background: var(--black-card); border: 1px solid var(--border); border-radius: 14px; padding: 28px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .step-num { font-size: 52px; font-weight: 900; color: var(--green); line-height: 1; margin-bottom: 12px; }
+    .step-title { font-size: 18px; font-weight: 800; color: var(--white); margin-bottom: 10px; }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .step-arrow { font-size: 28px; color: rgba(255,255,255,0.15); flex-shrink: 0; display: flex; align-items: center; }
+    .validity-box { background: var(--green-soft); border: 1px solid var(--green-border); border-radius: 12px; padding: 22px 28px; display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    .validity-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+    .validity-title { font-size: 17px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+    .validity-desc { font-size: 14px; color: #d1fae5; line-height: 1.6; }
+    .validity-note { font-size: 13px; color: var(--muted); text-align: center; padding: 14px 20px; border: 1px dashed rgba(255,255,255,0.12); border-radius: 10px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+  <div class="progress" id="progress"></div>
+  <div class="counter" id="counter"></div>
+  <div class="nav-hint">Setas laterais ou ← → no teclado &middot; F para fullscreen</div>
+  <div class="nav-arrow nav-arrow-left" id="navLeft">&#8249;</div>
+  <div class="nav-arrow nav-arrow-right" id="navRight">&#8250;</div>
+
+  <div class="aw-logo-fixed">
+    <svg class="aw-logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 5 L90 85 L10 85 Z" fill="white" stroke="none"/>
+      <path d="M50 25 L72 75 L28 75 Z" fill="black"/>
+      <path d="M52 42 L68 72 L48 72 L48 55 L38 65 L52 42Z" fill="#2BF5A0"/>
+    </svg>
+    <span class="aw-logo-text"><span class="aw-white">Automa</span><span class="aw-green">Web</span></span>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 0: CAPA                   -->
+  <!-- =============================== -->
+  <div class="slide s-cover glow-tr glow-bl active" data-slide="0">
+    <div class="content" style="align-items:center; text-align:center;">
+      <p class="tag tag-green">Diagnóstico de Funil e Presença Digital</p>
+      <h1 class="title">Rodger, analisamos<br>toda a sua presença online.</h1>
+      <p class="subtitle">Instagram, YouTube, Facebook, Hotmart e todas as plataformas. Encontramos problemas que estão te fazendo perder alunos e vendas todos os dias.</p>
+      <div class="cover-line"></div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 1: ABERTURA               -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="1">
+    <p class="tag tag-green">Abertura</p>
+    <h2 class="title">Quem somos e o que <span class="green">encontramos</span></h2>
+    <div class="content">
+      <div class="key-points">
+        <div class="key-point">
+          <span class="key-point-icon">👋</span>
+          <div class="key-point-text">Lucas e Eduardo, fundadores da <strong>AutomaWeb</strong>, automação de marketing digital, sites de alta conversão e análise de redes sociais.</div>
+        </div>
+        <div class="key-point">
+          <span class="key-point-icon">🔍</span>
+          <div class="key-point-text">Fizemos uma <strong>análise completa e gratuita</strong> de toda a sua presença online. Instagram, YouTube, Facebook, Hotmart, tudo. E encontramos vários pontos que estão te fazendo perder alunos e vendas.</div>
+        </div>
+        <div class="key-point" style="border-color:var(--green-border);background:rgba(43,245,160,0.04);">
+          <span class="key-point-icon">🤝</span>
+          <div class="key-point-text"><strong>Não estamos aqui pra criticar</strong> nada do que você fez até agora. Muito pelo contrário. O que vamos mostrar são apontamentos estratégicos pra melhorar o fluxo do seu negócio. Você construiu algo incrível, falta só a estrutura digital certa.</div>
+        </div>
+        <div class="key-point">
+          <span class="key-point-icon">💪</span>
+          <div class="key-point-text">Você já construiu uma base incrível: <strong>34 mil inscritos, 412 vídeos, certificação Cambridge</strong>. O que falta é a estrutura digital pra transformar isso em resultado.</div>
+        </div>
+        <div class="key-point">
+          <span class="key-point-icon">🎯</span>
+          <div class="key-point-text">Vamos mostrar <strong>ponto por ponto</strong> o que encontramos, o que precisa mudar, e como já temos tudo pronto pra resolver.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 2: SITE ATUAL vs NOVO     -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="2">
+    <p class="tag tag-red">Seu site atual</p>
+    <h2 class="title">Seu site não transmite a <em>autoridade que você tem</em></h2>
+    <div class="content">
+      <div class="link-bar">
+        <span class="link-pill link-pill--red" data-href="https://flytofluency.com/" data-title="Site atual — flytofluency.com"><span class="link-pill-icon">&#128308;</span> Abrir site atual</span>
+        <span class="link-pill link-pill--green" data-href="file:///C:/Users/lucas/Desktop/Artimplan/site/nicho%20ingles/rodgerkoller/site/index.html" data-title="Novo site AutomaWeb"><span class="link-pill-icon">&#9989;</span> Abrir novo site</span>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-box bad">
+          <div class="compare-label" style="color:var(--red);">Hoje, flytofluency.com</div>
+          <ul class="compare-list">
+            <li><span style="color:var(--red)">&#10005;</span> Visual desatualizado e amador</li>
+            <li><span style="color:var(--red)">&#10005;</span> Não transmite confiança pra comprar</li>
+            <li><span style="color:var(--red)">&#10005;</span> Sem integração com WhatsApp</li>
+            <li><span style="color:var(--red)">&#10005;</span> Sem depoimentos visíveis</li>
+            <li><span style="color:var(--red)">&#10005;</span> Sem link direto pro curso</li>
+            <li><span style="color:var(--red)">&#10005;</span> Sem SEO otimizado</li>
+          </ul>
+        </div>
+        <div class="compare-box good">
+          <div class="compare-label" style="color:var(--green);">Novo site AutomaWeb</div>
+          <ul class="compare-list">
+            <li><span style="color:var(--green)">&#10003;</span> Design profissional e moderno</li>
+            <li><span style="color:var(--green)">&#10003;</span> Transmite credibilidade e autoridade</li>
+            <li><span style="color:var(--green)">&#10003;</span> WhatsApp integrado</li>
+            <li><span style="color:var(--green)">&#10003;</span> Depoimentos e prova social</li>
+            <li><span style="color:var(--green)">&#10003;</span> Link direto pro curso e mentoria</li>
+            <li><span style="color:var(--green)">&#10003;</span> SEO otimizado para o Google</li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top:20px;text-align:center;">
+        <p style="font-size:15px;color:var(--muted);">Tudo a partir de agora, redes sociais, emails, SEO, vai apontar pra esse <strong style="color:var(--green)">novo site</strong> como destino principal.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 3: INSTAGRAM BIO          -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="3">
+    <p class="tag tag-red">Instagram</p>
+    <h2 class="title">Sua bio está <em>cortada e confusa</em></h2>
+    <div class="content">
+      <div class="link-bar">
+        <span class="link-pill" data-href="https://www.instagram.com/rodgerkoller/" data-title="Instagram — @rodgerkoller"><span class="link-pill-icon">&#128247;</span> Abrir Instagram</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        <div>
+          <div class="compare-box bad">
+            <div class="compare-label" style="color:var(--red);">Bio atual</div>
+            <ul class="compare-list">
+              <li><span style="color:var(--red)">&#10005;</span> Texto muito longo, precisa clicar "mais"</li>
+              <li><span style="color:var(--red)">&#10005;</span> Escrita em inglês</li>
+              <li><span style="color:var(--red)">&#10005;</span> Qualificações não ficam claras</li>
+            </ul>
+          </div>
+          <div class="question-box" style="margin-top:16px;">
+            <div class="question-icon">&#10067;</div>
+            <div class="question-text">O seu maior público-alvo já fala inglês ou é brasileiro?</div>
+            <div class="question-hint">Se for brasileiro, a bio precisa estar em português.</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+        <div class="copy-proposal">
+          <div class="copy-label">Nova bio proposta</div>
+          <div class="copy-content">Rodger Koller | Prof. Inglês
+
+&#127891; Prof de Inglês certificado por Cambridge.
+&#128104;&#8205;&#127979; +34 mil alunos transformados.
+&#9989; YouTube | Curso | Mentoria
+Destrave sua fluência em 6 meses &#128071;
+[Link do Site feito pela AutomaWeb]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 4: INSTAGRAM DESTAQUES    -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="4">
+    <p class="tag tag-red">Instagram, Destaques</p>
+    <h2 class="title">Destaques precisam de <em>identidade visual</em></h2>
+    <div class="content">
+      <div class="link-bar">
+        <span class="link-pill" data-href="https://www.instagram.com/rodgerkoller/" data-title="Instagram — @rodgerkoller"><span class="link-pill-icon">&#128247;</span> Abrir Instagram</span>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <span class="problem-icon">&#128308;</span>
+          <div>
+            <div class="problem-title">"Eu sou Bonito"</div>
+            <div class="problem-desc">Sem relação com inglês, muito antigo. Recomendamos ocultar. Polui o perfil.</div>
+          </div>
+        </div>
+        <div class="problem-card ok">
+          <span class="problem-icon">&#9989;</span>
+          <div>
+            <div class="problem-title">Solução: identidade unificada</div>
+            <div class="problem-desc">Trocar as capas de "DEPOIMENTOS", "MEU CURSO" e "DEPOIMEN. 2" pelas imagens do novo site (Pronúncia, Reading, Listening).</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:24px;background:var(--green-soft);border:1px solid var(--green-border);border-radius:10px;padding:18px 24px;text-align:center;">
+        <span style="font-size:16px;font-weight:700;color:var(--green);">Essa padronização, bio + destaques, será replicada em todas as redes sociais.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 5: EMAILS FRAGMENTADOS    -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="5">
+    <p class="tag tag-red">Emails fragmentados</p>
+    <h2 class="title"><em>6 emails diferentes</em> espalhados pelas suas redes</h2>
+    <div class="content">
+      <div class="emails-grid">
+        <div class="email-card">
+          <span class="email-icon">&#128231;</span>
+          <div><div class="email-addr">rodgerkoller@flytofluency.com</div></div>
+        </div>
+        <div class="email-card">
+          <span class="email-icon">&#128231;</span>
+          <div><div class="email-addr">flytofluency.official@gmail.com</div></div>
+        </div>
+        <div class="email-card">
+          <span class="email-icon">&#128231;</span>
+          <div><div class="email-addr">rodgerkoller2018@gmail.com</div></div>
+        </div>
+        <div class="email-card">
+          <span class="email-icon">&#128231;</span>
+          <div><div class="email-addr">koller.institute@gmail.com</div></div>
+        </div>
+        <div class="email-card">
+          <span class="email-icon">&#128231;</span>
+          <div><div class="email-addr">onlineteacherkoller@gmail.com</div></div>
+        </div>
+        <div class="email-card" style="border-color:var(--red-border);">
+          <span class="email-icon">&#9888;&#65039;</span>
+          <div>
+            <div class="email-addr">crazykollers@gmail.com</div>
+            <div class="email-where" style="color:var(--red);">YouTube, contato principal (marca antiga!)</div>
+          </div>
+        </div>
+      </div>
+      <div class="question-box">
+        <div class="question-icon">&#10067;</div>
+        <div class="question-text">Qual email você quer manter como o oficial único?</div>
+        <div class="question-hint">A gente atualiza todas as redes e publicações pra apontar só pra ele.</div>
+        <div class="answer-space" contenteditable="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 6: LINKTREE -> SITE       -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="6">
+    <p class="tag tag-red">Linktree</p>
+    <h2 class="title">Linktree é <em>amador</em>. Todo tráfego pro novo site</h2>
+    <div class="content">
+      <div class="link-bar">
+        <span class="link-pill link-pill--red" data-href="https://linktr.ee/RodgerKoller?utm_source=threads&utm_medium=social&utm_content=link_in_bio" data-title="Linktree — RodgerKoller"><span class="link-pill-icon">&#128308;</span> Abrir Linktree</span>
+        <span class="link-pill link-pill--green" data-href="file:///C:/Users/lucas/Desktop/Artimplan/site/nicho%20ingles/rodgerkoller/site/index.html" data-title="Novo site AutomaWeb"><span class="link-pill-icon">&#9989;</span> Abrir novo site</span>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-box bad">
+          <div class="compare-label" style="color:var(--red);">Linktree atual</div>
+          <ul class="compare-list">
+            <li><span style="color:var(--red)">&#10005;</span> Visual genérico e amador</li>
+            <li><span style="color:var(--red)">&#10005;</span> Textos cortados nos cards</li>
+            <li><span style="color:var(--red)">&#10005;</span> Não transmite profissionalismo</li>
+            <li><span style="color:var(--red)">&#10005;</span> Sem SEO. Google não indexa</li>
+          </ul>
+        </div>
+        <div class="compare-box good">
+          <div class="compare-label" style="color:var(--green);">Novo site AutomaWeb</div>
+          <ul class="compare-list">
+            <li><span style="color:var(--green)">&#10003;</span> Site profissional com sua identidade</li>
+            <li><span style="color:var(--green)">&#10003;</span> Tudo que o Linktree faz e muito mais</li>
+            <li><span style="color:var(--green)">&#10003;</span> SEO. Aparece no Google</li>
+            <li><span style="color:var(--green)">&#10003;</span> Feito pra converter visitante em aluno</li>
+          </ul>
+        </div>
+      </div>
+      <div class="question-box">
+        <div class="question-icon">&#10067;</div>
+        <div class="question-text">O grupo do Telegram e o grupo do WhatsApp que você mencionava nos vídeos ainda estão ativos?</div>
+        <div class="question-hint">Se sim, integramos diretamente dentro do site. Depoimentos da Hotmart e vídeo de depoimentos também entram no site.</div>
+        <div class="answer-space" contenteditable="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 7: THREADS                -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="7">
+    <p class="tag tag-gold">Threads</p>
+    <h2 class="title">Threads precisa <span class="gold">espelhar o Instagram</span></h2>
+    <div class="content" style="max-width:800px;">
+      <div class="info-card">
+        <div class="info-row">
+          <div class="info-icon">&#129525;</div>
+          <div>
+            <div class="info-title">Bio diferente do Instagram</div>
+            <div class="info-desc">A descrição do perfil no Threads está diferente da do Instagram. Precisa ser idêntica pra manter congruência entre as plataformas.</div>
+          </div>
+        </div>
+        <div class="info-divider"></div>
+        <div class="info-row">
+          <div class="info-icon" style="color:var(--green)">&#9989;</div>
+          <div>
+            <div class="info-title" style="color:var(--green)">Mesma bio, mesmo link, mesma identidade</div>
+            <div class="info-desc">Correção rápida. Padronizamos tudo de uma vez.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 8: YOUTUBE                -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="8">
+    <p class="tag tag-red">YouTube, 32 mil inscritos</p>
+    <h2 class="title">A descrição do seu canal é só <em>"Intercâmbio na Irlanda"</em></h2>
+    <div class="content">
+      <div class="link-bar">
+        <span class="link-pill" data-href="https://www.youtube.com/@RodgerKoller/videos" data-title="YouTube — Fly to Fluency"><span class="link-pill-icon">&#9655;</span> Abrir canal YouTube</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        <div class="compare-box bad">
+          <div class="compare-label" style="color:var(--red);">Descrição atual</div>
+          <div style="font-size:22px;font-weight:700;color:#555;padding:20px 0;font-style:italic;text-align:center;">"Intercâmbio na Irlanda"</div>
+          <ul class="compare-list">
+            <li><span style="color:var(--red)">&#10005;</span> Não menciona curso, site ou contato</li>
+            <li><span style="color:var(--red)">&#10005;</span> Sem qualificações (CPE, CELTA)</li>
+            <li><span style="color:var(--red)">&#10005;</span> Email: crazykollers@gmail.com</li>
+            <li><span style="color:var(--red)">&#10005;</span> Sem link para nenhum site</li>
+          </ul>
+        </div>
+        <div class="copy-proposal" style="margin-top:0;">
+          <div class="copy-label">Nova descrição proposta</div>
+          <div class="copy-content" style="font-size:13px;">Aqui você aprende inglês de verdade, com quem vive o idioma na prática. Sou professor certificado pela Universidade de Cambridge (CPE | CELTA), moro na Irlanda, e já ajudei mais de 34.000 alunos a destravarem a fluência.
+
+Toda semana tem conteúdo novo de pronúncia, vocabulário e conversação real. Mas se você quer dar o próximo passo...
+
+&#128071; ACESSE O MEU SITE OFICIAL:
+[LINK DO SITE AQUI]
+
+&#9989; Meu Curso Completo (Método Koller)
+&#9989; Aulas Particulares e Mentoria VIP
+&#9989; Contato direto via WhatsApp</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 9: HOTMART                -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="9">
+    <p class="tag tag-red">Hotmart</p>
+    <h2 class="title">Seu curso está <em>fora do ar</em>. Ninguém consegue comprar</h2>
+    <div class="content">
+      <div class="link-bar">
+        <span class="link-pill link-pill--red" data-href="https://hotmart.com/en/marketplace/products/curso-de-ingles-definitivo-metodo-koller/M29908265M" data-title="Hotmart — Curso Método Koller"><span class="link-pill-icon">&#128308;</span> Abrir Hotmart</span>
+        <span class="link-pill link-pill--red" data-href="https://rodgerkoller2018.systeme.io/21cb5077" data-title="Systeme.io — PDF Grátis (bloqueado)"><span class="link-pill-icon">&#128308;</span> Abrir Systeme.io</span>
+      </div>
+      <div class="evidence-row">
+        <div class="mockup">
+          <p class="mockup-sm">hotmart.com/marketplace</p>
+          <p class="mockup-title">CURSO DE INGLÊS DEFINITIVO [MÉTODO KOLLER]</p>
+          <p><span class="mockup-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <span class="mockup-sm">4.8 &middot; 13 reviews &middot; Top Rated</span></p>
+          <p class="mockup-sm" style="margin-top:6px">6 módulos &middot; 1 ano de acompanhamento pessoal</p>
+          <div class="mockup-error">
+            <div class="mockup-error-title">Product unavailable</div>
+            <div class="mockup-error-sub">Sign up and let the creator know you're interested</div>
+          </div>
+        </div>
+        <div class="evidence-text">
+          <h3>Produto 4.8 estrelas que <em>ninguém consegue comprar</em></h3>
+          <p>Prova social excelente completamente desperdiçada. Se o curso ainda estiver ativo, a gente integra o link de compra direto no site novo.</p>
+          <div class="question-box" style="margin-top:12px;">
+            <div class="question-icon">&#10067;</div>
+            <div class="question-text">Esse curso ainda está ativo? Ainda deseja vendê-lo?</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 10: X / TWITTER           -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="10">
+    <p class="tag tag-gold">X / Twitter</p>
+    <h2 class="title">X/Twitter, <span class="gold">ainda é relevante pra você?</span></h2>
+    <div class="content" style="max-width:800px;">
+      <div class="link-bar">
+        <span class="link-pill" data-href="https://x.com/RodgerKoller" data-title="X / Twitter — @RodgerKoller"><span class="link-pill-icon">&#120143;</span> Abrir X/Twitter</span>
+      </div>
+      <div class="info-card" style="border-color:var(--gold-border);">
+        <div class="info-row">
+          <div class="info-icon">&#120143;</div>
+          <div>
+            <div class="info-title">Descrição precisa ser atualizada</div>
+            <div class="info-desc">Se for rede ativa: padronizar bio, link e email igual às demais.</div>
+          </div>
+        </div>
+        <div class="info-divider"></div>
+        <div class="info-row">
+          <div class="info-icon">&#9888;&#65039;</div>
+          <div>
+            <div class="info-title" style="color:var(--gold);">Se não for ativa, é melhor desativar</div>
+            <div class="info-desc">Perfil abandonado polui a presença online e confunde quem procura por você.</div>
+          </div>
+        </div>
+      </div>
+      <div class="question-box">
+        <div class="question-icon">&#10067;</div>
+        <div class="question-text">O X/Twitter é uma rede social ativa e importante pra você?</div>
+        <div class="answer-space" contenteditable="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 11: FACEBOOK              -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="11">
+    <p class="tag tag-red">Facebook</p>
+    <h2 class="title">Facebook com informações <em>totalmente desatualizadas</em></h2>
+    <div class="content">
+      <div class="problem-grid">
+        <div class="problem-card">
+          <span class="problem-icon">&#128308;</span>
+          <div>
+            <div class="problem-title">Sem descrição, sem site, sem contato</div>
+            <div class="problem-desc">Nenhuma informação básica preenchida. Quem entra não sabe o que você oferece.</div>
+          </div>
+        </div>
+        <div class="problem-card">
+          <span class="problem-icon">&#128308;</span>
+          <div>
+            <div class="problem-title">2 @ do X/Twitter quebrados</div>
+            <div class="problem-desc">Um não funciona e o outro está desativado/sem foto nas informações de contato.</div>
+          </div>
+        </div>
+        <div class="problem-card">
+          <span class="problem-icon">&#128308;</span>
+          <div>
+            <div class="problem-title">Sem email nem WhatsApp visível</div>
+            <div class="problem-desc">Emails só aparecem soltos na descrição de alguns posts. Link do YouTube escondido.</div>
+          </div>
+        </div>
+        <div class="problem-card ok">
+          <span class="problem-icon">&#9989;</span>
+          <div>
+            <div class="problem-title">A AutomaWeb atualiza tudo</div>
+            <div class="problem-desc">Descrição, link do novo site, email oficial único e WhatsApp. Tudo padronizado.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 12: SEO / GOOGLE          -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="12">
+    <p class="tag tag-red">SEO / Google</p>
+    <h2 class="title">Quem pesquisa seu nome no Google <em>não te encontra</em></h2>
+    <div class="content">
+      <div class="link-bar">
+        <span class="link-pill link-pill--red" data-href="https://www.google.com/search?q=rodger+koller+Fly+to+Fluency+curso&sca_esv=50d2a87678068abc&biw=1920&bih=919&sxsrf=ANbL-n4oPC9kZORcdPCvruT-SSC11Vp2dg%3A1781209851768&ei=-xoraqfDLqra1sQPiMyA-Ao&ved=0ahUKEwjnrPDjg4CVAxUqrZUCHQgmAK8Q4dUDCBI&uact=5&oq=rodger+koller+Fly+to+Fluency+curso&gs_lp=Egxnd3Mtd2l6LXNlcnAiInJvZGdlciBrb2xsZXIgRmx5IHRvIEZsdWVuY3kgY3Vyc28yBRAhGKABMgUQIRigAUjkE1CTCVjlD3ACeACQAQCYAacBoAHZBqoBAzAuNrgBA8gBAPgBAZgCB6AC9gXCAggQABjvBRiwA8ICBxAhGAoYoAGYAwCIBgGQBgSSBwMyLjWgB84RsgcDMC41uAfwBcIHBTEuNC4yyAcSgAgB&sclient=gws-wiz-serp" data-title="Google — Pesquisa 'Rodger Koller Fly to Fluency curso'"><span class="link-pill-icon">&#128269;</span> Pesquisar no Google</span>
+        <span class="link-pill link-pill--green" data-href="https://www.google.com/search?q=dentista+zona+norte&oq=dentista+zona+norte&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIKCAEQABiSAxiABDIKCAIQABiSAxiABDIKCAMQABjJAxiABDINCAQQABiDARixAxiABDIHCAUQABiABDIHCAYQABiABDIGCAcQRRg80gEIMjc2MGowajSoAgCwAgE&sourceid=chrome&ie=UTF-8#sv=CAwSuAIKBmxjbF9wdhI_CgNwdnESOENnMHZaeTh4TVdaZmVtdG5NMlp6SWhrS0UyUmxiblJwYzNSaElIcHZibUVnYm05eWRHVVFBaGdEEqoBCgNscWkSogFDaE5rWlc1MGFYTjBZU0I2YjI1aElHNXZjblJsU0xpYjNPal9yWUNBQ0ZvaEVBQVFBUkFDR0FBWUFSZ0NJaE5rWlc1MGFYTjBZU0I2YjI1aElHNXZjblJsa2dFSFpHVnVkR2x6ZEpvQkkwTm9Xa1JUVldoT1RVYzVibE13VmtwUk1FWnVVMVZTTkdONU1XWmhSbHB1UlVGRi1nRUVDQ0FRUncSEgoDdGJzEgtscmY6ITNzSUFFPRIYCgFxEhNkZW50aXN0YSB6b25hIG5vcnRlGhJsb2NhbC1wbGFjZS12aWV3ZXIYCiCn-PjdDQ" data-title="Google Meu Negócio — Exemplo 'dentista zona norte'"><span class="link-pill-icon">&#128205;</span> Exemplo Google Meu Negócio</span>
+      </div>
+      <div class="evidence-row">
+        <div class="mockup" style="text-align:center">
+          <div style="background:#f3f4f6;border-radius:8px;padding:10px 18px;display:inline-block;margin-bottom:16px;">
+            <span style="font-size:13px;color:#9ca3af;">google.com/search?q=</span><span style="font-size:13px;font-weight:700;color:#111;">rodger koller inglês</span>
+          </div>
+          <div style="font-size:48px;margin-bottom:10px">&#128269;</div>
+          <div style="font-size:18px;font-weight:700;color:#111;">Nenhum resultado relevante</div>
+          <p class="mockup-sm" style="margin-top:6px">"Rodger Koller", "Fly to Fluency curso",<br>"Rodger Koller inglês". Nada aparece.</p>
+          <p class="mockup-sm" style="margin-top:4px">Só funciona com: "MÉTODO KOLLER curso"</p>
+        </div>
+        <div class="evidence-text">
+          <h3>Você está <em>invisível</em> na maior rede de pesquisa do mundo</h3>
+          <p>Alguém ouve falar de você, pesquisa no Google, não te encontra. Desiste e vai procurar outro professor.</p>
+          <p>Você está <strong style="color:var(--green)">perdendo vendas todos os dias</strong> por causa disso.</p>
+          <div style="background:var(--green-soft);border:1px solid var(--green-border);border-radius:10px;padding:16px 20px;margin-top:12px;">
+            <span style="font-size:15px;font-weight:700;color:var(--green);">Com o novo site + Google Meu Negócio + SEO, seu nome aparece no Google com site profissional e link direto pro curso.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 13: BRANDING              -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="13">
+    <p class="tag tag-gold">Branding</p>
+    <h2 class="title">Sua marca está fragmentada em <span class="gold">vários nomes diferentes</span></h2>
+    <div class="content">
+      <div class="problem-grid">
+        <div class="problem-card warn">
+          <span class="problem-icon">&#128250;</span>
+          <div>
+            <div class="problem-title">YouTube</div>
+            <div class="problem-desc" style="font-size:18px;color:var(--gold);font-weight:600;">Fly to Fluency</div>
+          </div>
+        </div>
+        <div class="problem-card warn">
+          <span class="problem-icon">&#127891;</span>
+          <div>
+            <div class="problem-title">Hotmart</div>
+            <div class="problem-desc" style="font-size:18px;color:var(--gold);font-weight:600;">Método Koller</div>
+          </div>
+        </div>
+        <div class="problem-card warn">
+          <span class="problem-icon">&#127911;</span>
+          <div>
+            <div class="problem-title">Patreon / Spotify</div>
+            <div class="problem-desc" style="font-size:18px;color:var(--gold);font-weight:600;">Crazy Koller</div>
+          </div>
+        </div>
+        <div class="problem-card warn">
+          <span class="problem-icon">&#128241;</span>
+          <div>
+            <div class="problem-title">Redes sociais</div>
+            <div class="problem-desc" style="font-size:18px;color:var(--gold);font-weight:600;">@rodgerkoller</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px;background:var(--red-soft);border:1px solid var(--red-border);border-radius:10px;padding:18px 24px;">
+        <span style="font-size:15px;color:#fca5a5;line-height:1.6;">Isso é muito <strong style="color:var(--white)">confuso para o cliente</strong>. Não gera autoridade. A pessoa esquece rápido quando cada canal tem um nome diferente. Precisa ser <strong style="color:var(--white)">um nome só, em todo lugar</strong>.</span>
+      </div>
+      <div class="question-box">
+        <div class="question-icon">&#10067;</div>
+        <div class="question-text">Qual é o nome oficial da marca? MÉTODO KOLLER ou Fly to Fluency?</div>
+        <div class="question-hint">A gente unifica em todas as plataformas.</div>
+        <div class="answer-space" contenteditable="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 14: RESUMO DO DIAGNÓSTICO -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="14">
+    <p class="tag tag-red">Resumo do diagnóstico</p>
+    <h2 class="title">Seus dois funis estão <em>mortos ao mesmo tempo</em></h2>
+    <div class="content">
+      <div class="link-bar">
+        <span class="link-pill link-pill--red" data-href="https://rodgerkoller2018.systeme.io/21cb5077" data-title="Systeme.io — PDF Grátis (bloqueado)"><span class="link-pill-icon">&#128308;</span> Abrir Systeme.io</span>
+        <span class="link-pill link-pill--red" data-href="https://hotmart.com/en/marketplace/products/curso-de-ingles-definitivo-metodo-koller/M29908265M" data-title="Hotmart — Curso Método Koller"><span class="link-pill-icon">&#128308;</span> Abrir Hotmart</span>
+      </div>
+      <div class="funnel">
+        <div class="funnel-box">
+          <div class="funnel-label">Conteúdo</div>
+          <div class="funnel-value">412 vídeos</div>
+          <div style="font-size:12px;color:var(--muted)">32K inscritos &middot; 15.9K IG</div>
+          <span class="funnel-status f-ok">&#10003; Funciona</span>
+        </div>
+        <span class="funnel-arrow">&rarr;</span>
+        <div class="funnel-box">
+          <div class="funnel-label">Captação</div>
+          <div class="funnel-value">Systeme.io</div>
+          <div style="font-size:12px;color:var(--muted)">PDF gratuito por vídeo</div>
+          <span class="funnel-status f-dead">&#10005; Conta bloqueada</span>
+        </div>
+        <span class="funnel-arrow">&rarr;</span>
+        <div class="funnel-box">
+          <div class="funnel-label">Vendas</div>
+          <div class="funnel-value">Hotmart</div>
+          <div style="font-size:12px;color:var(--muted)">Curso Definitivo &middot; 4.8&#9733;</div>
+          <span class="funnel-status f-dead">&#10005; Indisponível</span>
+        </div>
+      </div>
+      <div class="funnel-result">
+        <strong>Resultado: ZERO conversão.</strong>
+        <span>Você produz conteúdo pra 32K inscritos que não têm pra onde ir.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 15: PERGUNTAS FINAIS      -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="15">
+    <p class="tag tag-gold">Perguntas finais</p>
+    <h2 class="title">Antes de apresentar a oferta, <span class="gold">precisamos saber</span></h2>
+    <div class="content">
+      <div class="questions-list">
+        <div class="q-card">
+          <div class="q-num">1</div>
+          <div>
+            <div class="q-text">O Systeme.io que distribuía os PDFs, você tirou do ar ou a plataforma bloqueou? Todos os links dos 412 vídeos estão mortos.</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+        <div class="q-card">
+          <div class="q-num">2</div>
+          <div>
+            <div class="q-text">Qual era o preço do curso "Definitivo" na Hotmart? Precisamos pra colocar no site.</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+        <div class="q-card">
+          <div class="q-num">3</div>
+          <div>
+            <div class="q-text">Quais redes sociais você utiliza ativamente hoje? Recomendamos focar só nessas e descartar as outras.</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+        <div class="q-card">
+          <div class="q-num">4</div>
+          <div>
+            <div class="q-text">Você já anuncia em alguma plataforma? Quanto investe em tráfego pago atualmente?</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 16: PERGUNTAS FINAIS (2)  -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="16">
+    <p class="tag tag-gold">Perguntas finais</p>
+    <h2 class="title">Mais algumas <span class="gold">perguntas rápidas</span></h2>
+    <div class="content">
+      <div class="questions-list">
+        <div class="q-card">
+          <div class="q-num">5</div>
+          <div>
+            <div class="q-text">Existe alguma outra rede social que você ainda utiliza ou está parada mas precisa de correção?</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+        <div class="q-card">
+          <div class="q-num">6</div>
+          <div>
+            <div class="q-text">Tem número de WhatsApp dedicado pro negócio? Precisamos disso pro site e pra automação.</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+        <div class="q-card">
+          <div class="q-num">7</div>
+          <div>
+            <div class="q-text">Qual é o seu foco principal agora? O que mais importa pra você nesse momento?</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+        <div class="q-card">
+          <div class="q-num">8</div>
+          <div>
+            <div class="q-text">O que mais te incomoda hoje? Qual a sua maior dificuldade no negócio?</div>
+            <div class="answer-space" contenteditable="true"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 17: DIVIDER - OFERTA      -->
+  <!-- =============================== -->
+  <div class="slide divider-slide glow-tr" data-slide="17">
+    <div class="content" style="align-items:center; text-align:center;">
+      <div class="divider-num green">02</div>
+      <div class="divider-title">O que a AutomaWeb oferece</div>
+      <div class="divider-sub">Tudo que você precisa pra transformar sua audiência em alunos pagantes</div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 18: PACOTE COMPLETO       -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="18">
+    <p class="tag tag-green">Pacote completo</p>
+    <h2 class="title">O que está <span class="green">incluso</span></h2>
+    <div class="content">
+      <div class="link-bar">
+        <span class="link-pill link-pill--green" data-href="file:///C:/Users/lucas/Desktop/Artimplan/site/nicho%20ingles/rodgerkoller/site/index.html" data-title="Novo site AutomaWeb"><span class="link-pill-icon">&#127760;</span> Ver novo site</span>
+        <span class="link-pill" data-href="file:///C:/Users/lucas/Desktop/Artimplan/site/nicho%20ingles/rodgerkoller/apresentacao-dm/slides.html" data-title="Slides — Apresentação completa"><span class="link-pill-icon">&#128202;</span> Slides da apresentação</span>
+      </div>
+      <div class="service-grid">
+        <div class="service-card highlight">
+          <div class="service-icon si-green">&#128269;</div>
+          <div>
+            <div class="service-title">Análise e correção de todas as redes</div>
+            <div class="service-desc">Bio, destaques, links, emails, visual. Tudo padronizado e profissional.</div>
+            <span class="service-badge sb-included">Incluso</span>
+          </div>
+        </div>
+        <div class="service-card highlight">
+          <div class="service-icon si-green">&#127760;</div>
+          <div>
+            <div class="service-title">Landing page de alta conversão</div>
+            <div class="service-desc">Site profissional com WhatsApp, depoimentos, SEO e link pro curso.</div>
+            <span class="service-badge sb-included">Incluso</span>
+          </div>
+        </div>
+        <div class="service-card highlight">
+          <div class="service-icon si-green">&#128241;</div>
+          <div>
+            <div class="service-title">Carrosséis automáticos</div>
+            <div class="service-desc">4 publicações por semana no Instagram e Facebook. Conteúdo visual profissional.</div>
+            <span class="service-badge sb-included">6 meses grátis</span>
+          </div>
+        </div>
+        <div class="service-card highlight">
+          <div class="service-icon si-green">&#128205;</div>
+          <div>
+            <div class="service-title">Google Meu Negócio</div>
+            <div class="service-desc">Finalmente aparecer no Google quando pesquisarem seu nome.</div>
+            <span class="service-badge sb-included">Incluso</span>
+          </div>
+        </div>
+        <div class="service-card bonus">
+          <div class="service-icon si-gold">&#127919;</div>
+          <div>
+            <div class="service-title">Bônus: R$1.000 em tráfego pago</div>
+            <div class="service-desc">Gestão completa de anúncios pra impulsionar seguidores e engajamento.</div>
+            <span class="service-badge sb-bonus">Bônus</span>
+          </div>
+        </div>
+        <div class="service-card highlight">
+          <div class="service-icon si-green">&#128202;</div>
+          <div>
+            <div class="service-title">Dashboard de métricas</div>
+            <div class="service-desc">Acompanhar performance do site e redes sociais em tempo real.</div>
+            <span class="service-badge sb-included">Acesso vitalício</span>
+          </div>
+        </div>
+      </div>
+      <div class="question-box" style="margin-top:24px;">
+        <div class="question-icon">&#128161;</div>
+        <div class="question-text">Rodger, faz sentido pra você? Quer saber mais sobre valores e como funciona?</div>
+        <div class="question-hint">Temos dois planos pensados pro seu momento. Vou te mostrar agora.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 19: PLANOS E INVESTIMENTO -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="19">
+    <p class="tag tag-green">Investimento</p>
+    <h2 class="title">Dois planos pra <span class="green">transformar sua presença</span></h2>
+    <div class="content">
+      <div class="compare-grid" style="align-items:stretch;">
+        <div class="pricing-card">
+          <div class="pricing-label">Plano Basico</div>
+          <div class="pricing-items">
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> Landing page de alta conversao</div>
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> Carrosseis automaticos (6 meses)</div>
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> 15 dias de teste e ajustes inclusos</div>
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> Dashboard AutomaWeb vitalicio</div>
+          </div>
+          <div class="pricing-divider"></div>
+          <div class="pricing-prices">
+            <div class="pricing-option pricing-option--highlight">
+              <div class="pricing-option-tag">A vista</div>
+              <div class="pricing-amount">R$ 10.000</div>
+              <div class="pricing-detail">Pagamento unico via PIX</div>
+            </div>
+            <div class="pricing-option">
+              <div class="pricing-option-tag">Parcelado</div>
+              <div class="pricing-amount-sub">R$ 12.000</div>
+              <div class="pricing-detail">ate 3x sem juros no cartao<br>acima de 3x, juros por conta do cliente</div>
+            </div>
+          </div>
+        </div>
+        <div class="pricing-card pricing-card--recommended">
+          <div class="pricing-badge">Recomendado</div>
+          <div class="pricing-label" style="color:var(--green)">Plano Completo</div>
+          <div class="pricing-items">
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> Analise e correcao de todas as redes</div>
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> Landing page de alta conversao</div>
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> Carrosseis automaticos (6 meses)</div>
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> 15 dias de teste e ajustes inclusos</div>
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> Google Meu Negocio configurado</div>
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> R$ 1.000 em Ads + gestao AutomaWeb</div>
+            <div class="pricing-item"><span class="pricing-check">&#10003;</span> Dashboard AutomaWeb vitalicio</div>
+          </div>
+          <div class="pricing-divider" style="border-color:var(--green-border)"></div>
+          <div class="pricing-prices">
+            <div class="pricing-option pricing-option--highlight">
+              <div class="pricing-option-tag">A vista</div>
+              <div class="pricing-amount">R$ 15.000</div>
+              <div class="pricing-detail">Pagamento unico via PIX</div>
+            </div>
+            <div class="pricing-option">
+              <div class="pricing-option-tag">Parcelado</div>
+              <div class="pricing-amount-sub">R$ 17.000</div>
+              <div class="pricing-detail">ate 3x sem juros no cartao<br>acima de 3x, juros por conta do cliente</div>
+            </div>
+          </div>
+          <div class="pricing-bonus-note">
+            <span class="pricing-bonus-icon">&#9733;</span>
+            O bonus de R$ 1.000 em Ads sera abatido do valor total do pacote.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 20: COMO COMECA            -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="20">
+    <p class="tag tag-green">Proximos passos</p>
+    <h2 class="title">Da aprovacao ao <span class="green">pacote rodando</span></h2>
+    <div class="content" style="max-width:900px;">
+      <div class="steps-row">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-title">Aprovacao</div>
+          <div class="step-desc">Voce escolhe o plano e confirma por WhatsApp.</div>
+        </div>
+        <div class="step-arrow">&rarr;</div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-title">Pagamento</div>
+          <div class="step-desc">Confirmacao do pagamento. A implementacao comeca somente apos essa etapa.</div>
+        </div>
+        <div class="step-arrow">&rarr;</div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-title">Entrega em 30 dias</div>
+          <div class="step-desc">Site, redes e tudo mais no ar. Voce comeca a receber resultados pelo digital.</div>
+        </div>
+      </div>
+      <div class="validity-box">
+        <div class="validity-icon">&#9889;</div>
+        <div>
+          <div class="validity-title">Inicio imediato apos pagamento</div>
+          <div class="validity-desc">Sem cronograma arrastado, sem reunioes interminaveis. O trabalho comeca somente apos a confirmacao do pagamento. Voce aprova, a gente entrega.</div>
+        </div>
+      </div>
+      <div class="validity-note">
+        Esta proposta e valida por <strong style="color:var(--white)">7 dias</strong> a partir da data de apresentacao. Aprovacao por WhatsApp ja e suficiente para iniciar.
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 21: PÓS-TESTE             -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="21">
+    <p class="tag tag-green">Período de teste</p>
+    <h2 class="title">Como funciona <span class="green">depois dos 15 dias</span></h2>
+    <div class="content" style="max-width:800px;">
+      <div class="info-card" style="border-color:var(--green-border);">
+        <div class="info-row">
+          <div class="info-icon">&#9989;</div>
+          <div>
+            <div class="info-title" style="color:var(--green)">Primeiros 15 dias: tudo incluso</div>
+            <div class="info-desc">Teste completo de todas as funcionalidades. Ajustes, correções e implementações sem custo.</div>
+          </div>
+        </div>
+        <div class="info-divider"></div>
+        <div class="info-row">
+          <div class="info-icon">&#128203;</div>
+          <div>
+            <div class="info-title">Após 15 dias: ajustes a partir de R$250</div>
+            <div class="info-desc">Valor mínimo para alterações, podendo aumentar conforme a complexidade. Ex: integrar rastreio dos Correios ou funcionalidades extras.</div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:15px;color:var(--muted);line-height:1.6;margin-top:20px;">O site continua seu, funcionando normalmente. Só cobra se precisar de mudanças novas.</p>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 22: ANTES vs DEPOIS       -->
+  <!-- =============================== -->
+  <div class="slide" data-slide="22">
+    <p class="tag tag-green">Resumo</p>
+    <h2 class="title">O que <span class="green">muda</span> com a AutomaWeb</h2>
+    <div class="content">
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:28px;align-items:start;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Hoje</div>
+          <div class="full-list">
+            <div class="full-item"><span class="full-item-icon">&#10005;</span><div><div class="full-item-title" style="color:var(--red)">Site antiprofissional</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10005;</span><div><div class="full-item-title" style="color:var(--red)">Redes desatualizadas</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10005;</span><div><div class="full-item-title" style="color:var(--red)">6 emails diferentes</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10005;</span><div><div class="full-item-title" style="color:var(--red)">Invisível no Google</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10005;</span><div><div class="full-item-title" style="color:var(--red)">Curso fora do ar</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10005;</span><div><div class="full-item-title" style="color:var(--red)">Marca fragmentada</div></div></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;height:100%;padding-top:40px;">
+          <div style="font-size:36px;color:rgba(255,255,255,0.1)">&rarr;</div>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Com a AutomaWeb</div>
+          <div class="full-list">
+            <div class="full-item"><span class="full-item-icon">&#10003;</span><div><div class="full-item-title" style="color:var(--green)">Site profissional e moderno</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10003;</span><div><div class="full-item-title" style="color:var(--green)">Redes padronizadas</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10003;</span><div><div class="full-item-title" style="color:var(--green)">1 email oficial unificado</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10003;</span><div><div class="full-item-title" style="color:var(--green)">Presença ativa no Google</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10003;</span><div><div class="full-item-title" style="color:var(--green)">Funil funcional com site + curso</div></div></div>
+            <div class="full-item"><span class="full-item-icon">&#10003;</span><div><div class="full-item-title" style="color:var(--green)">Marca unificada</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SLIDE 23: FECHAMENTO / CTA      -->
+  <!-- =============================== -->
+  <div class="slide s-cta glow-tr glow-bl" data-slide="23">
+    <div class="content" style="align-items:center; text-align:center;">
+      <p class="tag tag-green">Fechamento</p>
+      <h2 class="title">Faz sentido pra você?</h2>
+      <p class="subtitle" style="text-align:center;">Você já fez a parte mais difícil, construir a audiência e a credibilidade. Temos 2 planos, <strong style="color:var(--white)">básico e completo</strong>, com tudo pra transformar isso em resultado.</p>
+      <div class="cta-box">
+        <div class="cta-items">
+          <div class="cta-item">
+            <div class="cta-item-icon">&#127760;</div>
+            <div class="cta-item-text">Seu novo site</div>
+            <div class="cta-item-sub">pronto para lançar</div>
+          </div>
+          <div class="cta-item">
+            <div class="cta-item-icon">&#128241;</div>
+            <div class="cta-item-text">96 carrosséis</div>
+            <div class="cta-item-sub">em 6 meses</div>
+          </div>
+          <div class="cta-item">
+            <div class="cta-item-icon">&#128205;</div>
+            <div class="cta-item-text">Google</div>
+            <div class="cta-item-sub">presença ativa</div>
+          </div>
+          <div class="cta-item">
+            <div class="cta-item-icon">&#127919;</div>
+            <div class="cta-item-text">R$1.000</div>
+            <div class="cta-item-sub">em Ads de bônus</div>
+          </div>
+          <div class="cta-item">
+            <div class="cta-item-icon">&#128202;</div>
+            <div class="cta-item-text">Dashboard</div>
+            <div class="cta-item-sub">acesso vitalício</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="preview-panel" id="previewPanel">
+  <div class="preview-bar">
+    <span class="preview-bar-title" id="previewTitle"></span>
+    <div class="preview-bar-actions">
+      <button class="preview-btn preview-btn-tab" id="previewNewTab">Abrir em nova aba</button>
+      <button class="preview-btn preview-btn-close" id="previewClose">Fechar</button>
+    </div>
+  </div>
+  <iframe class="preview-iframe" id="previewIframe" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  let current = 0;
+  const total = slides.length;
+
+  function goTo(n) {
+    if (n < 0 || n >= total) return;
+    slides[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    progress.style.width = ((current / (total - 1)) * 100) + '%';
+    counter.textContent = (current + 1) + ' / ' + total;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.isContentEditable) return;
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'Backspace') { e.preventDefault(); goTo(current - 1); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+    if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  document.getElementById('navLeft').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('navRight').addEventListener('click', () => goTo(current + 1));
+
+  // Split-screen preview
+  const deck = document.getElementById('deck');
+  const panel = document.getElementById('previewPanel');
+  const iframe = document.getElementById('previewIframe');
+  const previewTitle = document.getElementById('previewTitle');
+  let currentPreviewUrl = '';
+
+  function openPreview(url, title) {
+    currentPreviewUrl = url;
+    previewTitle.textContent = title || url;
+    iframe.src = url;
+    panel.classList.add('open');
+    deck.classList.add('split');
+  }
+
+  function closePreview() {
+    panel.classList.remove('open');
+    deck.classList.remove('split');
+    iframe.src = '';
+    currentPreviewUrl = '';
+  }
+
+  document.getElementById('previewClose').addEventListener('click', closePreview);
+  document.getElementById('previewNewTab').addEventListener('click', () => {
+    if (currentPreviewUrl) window.open(currentPreviewUrl, '_blank');
+  });
+
+  document.addEventListener('click', (e) => {
+    const pill = e.target.closest('.link-pill');
+    if (pill) {
+      e.preventDefault();
+      e.stopPropagation();
+      openPreview(pill.dataset.href, pill.dataset.title);
+    }
+  });
+
+  goTo(0);
+</script>
+</body>
+</html>
