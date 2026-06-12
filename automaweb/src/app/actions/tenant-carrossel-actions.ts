@@ -7,7 +7,12 @@ import { after } from "next/server";
 import { MAX_TEXTO_SLIDE, type EdicaoSlide } from "@/lib/carrossel-edicao";
 import { notifyMasters } from "@/lib/email";
 import { emailInterno } from "@/lib/email-templates";
-import { deInputBR, dentroDoPrazo, LIMITE_EDICAO_MS } from "@/lib/agendamento";
+import {
+  deInputBR,
+  dentroDoPrazo,
+  proximaVagaAgendamento,
+  LIMITE_EDICAO_MS,
+} from "@/lib/agendamento";
 
 function revalidateAll() {
   revalidatePath("/tenant/carrossel");
@@ -45,17 +50,27 @@ export async function approveCarrossel(carrosselId: string) {
   if (carrossel.status !== "APROVACAO") {
     return { error: "Este post nao esta aguardando sua aprovacao" };
   }
+  if (!dentroDoPrazo(carrossel.agendadoPara)) {
+    return { error: "Este post esta perto de publicar e ja entrou na fila" };
+  }
 
   const conectado =
     carrossel.tenant.metaConnection?.status === "CONECTADO" &&
     !!carrossel.tenant.metaConnection.igUserId;
 
-  const novoStatus =
-    conectado && carrossel.agendadoPara ? "AGENDADO" : "APROVADO";
+  // aprovado sempre tem data: a marcada, ou a proxima vaga util do cliente
+  const dataMarcada =
+    carrossel.agendadoPara ?? (await proximaVagaAgendamento(carrossel.tenantId));
+  const novoStatus = conectado ? "AGENDADO" : "APROVADO";
 
   await db.carrossel.update({
     where: { id: carrosselId },
-    data: { status: novoStatus, feedbackCliente: null, ajustePedido: false },
+    data: {
+      status: novoStatus,
+      agendadoPara: dataMarcada,
+      feedbackCliente: null,
+      ajustePedido: false,
+    },
   });
 
   const aviso = emailInterno({

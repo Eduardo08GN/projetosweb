@@ -372,6 +372,12 @@ export async function getTenantCarousels(tenantId: string) {
     conectado,
     // data agendada no formato do input (hora de Brasilia), pra editar/remarcar
     agendadoParaInput: c.agendadoPara ? paraInputBR(c.agendadoPara) : "",
+    // dentro do prazo (5h antes): aprovar/editar/remarcar liberados
+    noPrazo: dentroDoPrazo(c.agendadoPara),
+    // o cliente pode mudar a data ate 5h antes da publicacao
+    remarcavel:
+      ["APROVACAO", "APROVADO", "AGENDADO"].includes(c.status) &&
+      dentroDoPrazo(c.agendadoPara),
     // fura o cache de imagem quando o slide e re-renderizado no mesmo endereco
     versao: c.updatedAt.getTime(),
   }));

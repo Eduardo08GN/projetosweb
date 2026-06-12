@@ -38,8 +38,20 @@ function InstagramIcon({
 }
 import { Button } from "@/components/ui/button";
 import { SlideImage } from "@/components/shared/slide-image";
-import { approveCarrossel } from "@/app/actions/tenant-carrossel-actions";
+import { DateTimeField } from "./datetime-field";
+import {
+  approveCarrossel,
+  reagendarCarrossel,
+} from "@/app/actions/tenant-carrossel-actions";
 import { EditSheet } from "./edit-sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export type CarouselData = {
   id: string;
@@ -56,6 +68,8 @@ export type CarouselData = {
   temEdicaoPendente: boolean;
   conectado: boolean;
   agendadoParaInput: string;
+  noPrazo: boolean;
+  remarcavel: boolean;
   versao: number;
 };
 
@@ -146,8 +160,13 @@ function SlidePreview({ slides, versao }: { slides: string[]; versao: number }) 
   );
 }
 
-/** Linha que sempre diz quando o post vai (ou foi) pro Instagram. */
+/** Linha que sempre diz quando o post vai (ou foi) pro Instagram.
+    Com data marcada e dentro do prazo, o cliente muda aqui mesmo. */
 function ScheduleLine({ data }: { data: CarouselData }) {
+  const [aberto, setAberto] = useState(false);
+  const [novaData, setNovaData] = useState(data.agendadoParaInput);
+  const [pending, startTransition] = useTransition();
+
   if (data.status === "PUBLICADO") {
     return (
       <div className="flex items-center gap-2 rounded-lg bg-[#F0FDF4] px-3.5 py-2.5">
@@ -161,22 +180,84 @@ function ScheduleLine({ data }: { data: CarouselData }) {
     );
   }
 
+  function salvar() {
+    startTransition(async () => {
+      const result = await reagendarCarrossel(data.id, novaData);
+      if (result.error) {
+        toast(result.error);
+      } else {
+        toast("Data atualizada");
+        setAberto(false);
+      }
+    });
+  }
+
   return (
-    <div className="flex items-center gap-2 rounded-lg bg-[#F4F4F5] px-3.5 py-2.5">
-      <Calendar size={14} strokeWidth={1.5} className="text-[#71717A]" />
-      <p className="text-xs font-medium text-[#52525B]">
-        {data.agendadoParaLabel
-          ? data.conectado
-            ? `Vai pro seu Instagram em ${data.agendadoParaLabel}`
-            : `Publicacao prevista pra ${data.agendadoParaLabel}`
-          : "Data de publicacao a combinar"}
-      </p>
-    </div>
+    <>
+      <div className="flex items-center justify-between gap-2 rounded-lg bg-[#F4F4F5] px-3.5 py-2.5">
+        <div className="flex min-w-0 items-center gap-2">
+          <Calendar
+            size={14}
+            strokeWidth={1.5}
+            className="shrink-0 text-[#71717A]"
+          />
+          <p className="truncate text-xs font-medium text-[#52525B]">
+            {data.agendadoParaLabel
+              ? data.conectado
+                ? `Vai pro seu Instagram em ${data.agendadoParaLabel}`
+                : `Publicacao prevista pra ${data.agendadoParaLabel}`
+              : data.remarcavel
+                ? "Sem data marcada"
+                : "Entra na agenda quando ficar pronto"}
+          </p>
+        </div>
+        {data.remarcavel && (
+          <button
+            onClick={() => {
+              setNovaData(data.agendadoParaInput);
+              setAberto(true);
+            }}
+            className="shrink-0 rounded-md px-2 py-1 text-xs font-semibold text-[#09090B] transition-colors duration-150 hover:bg-[#E4E4E7]"
+          >
+            {data.agendadoParaLabel ? "Mudar" : "Escolher data"}
+          </button>
+        )}
+      </div>
+
+      <Dialog open={aberto} onOpenChange={setAberto}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>Mudar a data</DialogTitle>
+            <DialogDescription>{data.titulo}</DialogDescription>
+          </DialogHeader>
+          <DateTimeField value={novaData} onChange={setNovaData} />
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setAberto(false)}
+              disabled={pending}
+              className="rounded-lg"
+            >
+              Voltar
+            </Button>
+            <Button
+              onClick={salvar}
+              disabled={pending || !novaData || novaData === data.agendadoParaInput}
+              className="gap-2 rounded-lg bg-[#18181B] text-[#FAFAFA] hover:bg-[#27272A]"
+            >
+              {pending && <Loader2 size={14} className="animate-spin" />}
+              {pending ? "Salvando..." : "Salvar"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
 export function CarouselCard({ data }: { data: CarouselData }) {
-  const needsAction = data.status === "APROVACAO";
+  // aprovar/editar so ate 5h antes da publicacao; depois o post esta na fila
+  const needsAction = data.status === "APROVACAO" && data.noPrazo;
   const hasSlides = data.slides.some((s) => s.startsWith("http"));
   const [sheetOpen, setSheetOpen] = useState(false);
   const [pending, startTransition] = useTransition();
