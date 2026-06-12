@@ -126,7 +126,7 @@ export async function submitEdit(
     const data = deInputBR(novaDataInput);
     if (!data) return { error: "Data invalida" };
     if (data.getTime() < Date.now() + LIMITE_EDICAO_MS) {
-      return { error: "Escolha um horario com pelo menos 5 horas de antecedencia" };
+      return { error: "Escolha um horario com pelo menos 4 horas de antecedencia" };
     }
     novaData = data;
   }

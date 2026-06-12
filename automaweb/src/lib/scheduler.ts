@@ -6,6 +6,7 @@ import { publishToInstagram } from "./instagram";
 import { r2Delete, r2KeyFromUrl } from "./r2";
 import { notifyMasters, notifyTenant } from "./email";
 import { getInvoiceUrl } from "./asaas";
+import { LIMITE_EDICAO_HORAS, LIMITE_EDICAO_MS } from "./agendamento";
 import {
   emailConexaoVencendo,
   emailConexaoVencida,
@@ -21,6 +22,32 @@ const MAX_TENTATIVAS = 3;
 let publicando = false;
 
 /**
+ * Aprovacao automatica: post que ficou aguardando o cliente ate o prazo
+ * (4h antes da publicacao) e aprovado pelo sistema e segue o fluxo.
+ * Cliente teve a janela inteira pra editar ou remarcar; silencio e ok.
+ */
+async function aprovarPorPrazo() {
+  const limite = new Date(Date.now() + LIMITE_EDICAO_MS);
+  const pendentes = await db.carrossel.findMany({
+    where: { status: "APROVACAO", agendadoPara: { not: null, lte: limite } },
+    include: { tenant: { include: { metaConnection: true } } },
+  });
+
+  for (const c of pendentes) {
+    const conectado =
+      c.tenant.metaConnection?.status === "CONECTADO" &&
+      !!c.tenant.metaConnection.igUserId;
+    await db.carrossel.update({
+      where: { id: c.id },
+      data: { status: conectado ? "AGENDADO" : "APROVADO" },
+    });
+    console.log(
+      `[robo] Aprovacao automatica de "${c.titulo}" (${c.tenant.name}): prazo de ${LIMITE_EDICAO_HORAS}h venceu sem resposta do cliente`
+    );
+  }
+}
+
+/**
  * Rotina PUBLICAR — roda a cada minuto.
  * Pega carrosseis AGENDADO com hora vencida e publica no Instagram do tenant.
  */
@@ -29,6 +56,9 @@ async function publicarAgendados() {
   publicando = true;
 
   try {
+    // antes de publicar: aprova quem ficou sem resposta ate o prazo
+    await aprovarPorPrazo();
+
     const vencidos = await db.carrossel.findMany({
       where: {
         status: "AGENDADO",

@@ -256,7 +256,7 @@ function ScheduleLine({ data }: { data: CarouselData }) {
 }
 
 export function CarouselCard({ data }: { data: CarouselData }) {
-  // aprovar/editar so ate 5h antes da publicacao; depois o post esta na fila
+  // aprovar/editar so ate 4h antes da publicacao; depois o post esta na fila
   const needsAction = data.status === "APROVACAO" && data.noPrazo;
   const hasSlides = data.slides.some((s) => s.startsWith("http"));
   const [sheetOpen, setSheetOpen] = useState(false);

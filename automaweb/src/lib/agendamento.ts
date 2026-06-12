@@ -10,7 +10,7 @@ import { db } from "./db";
 
 const BR_OFFSET_MS = 3 * 60 * 60 * 1000; // UTC = Brasilia + 3h
 export const HORA_PUBLICACAO_PADRAO = 13; // 13h BRT
-export const LIMITE_EDICAO_HORAS = 5; // edicao/remarcacao travam 5h antes
+export const LIMITE_EDICAO_HORAS = 4; // acoes do cliente travam 4h antes
 export const LIMITE_EDICAO_MS = LIMITE_EDICAO_HORAS * 60 * 60 * 1000;
 
 /** Instante UTC de uma hora-relogio de Brasilia (ano, mes 0-based, dia, hora). */

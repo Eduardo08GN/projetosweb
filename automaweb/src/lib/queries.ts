@@ -279,7 +279,7 @@ export async function getTenantNextPost(tenantId: string) {
     ((stepMap[next.status] ?? 1) / totalSteps) * 100
   );
 
-  // remarcavel ate 5h antes da publicacao; depois disso ja esta na fila
+  // remarcavel ate 4h antes da publicacao; depois disso ja esta na fila
   const editavel = next.status !== "PUBLICADO" && dentroDoPrazo(next.agendadoPara);
 
   return {
@@ -372,9 +372,9 @@ export async function getTenantCarousels(tenantId: string) {
     conectado,
     // data agendada no formato do input (hora de Brasilia), pra editar/remarcar
     agendadoParaInput: c.agendadoPara ? paraInputBR(c.agendadoPara) : "",
-    // dentro do prazo (5h antes): aprovar/editar/remarcar liberados
+    // dentro do prazo (4h antes): aprovar/editar/remarcar liberados
     noPrazo: dentroDoPrazo(c.agendadoPara),
-    // o cliente pode mudar a data ate 5h antes da publicacao
+    // o cliente pode mudar a data ate 4h antes da publicacao
     remarcavel:
       ["APROVACAO", "APROVADO", "AGENDADO"].includes(c.status) &&
       dentroDoPrazo(c.agendadoPara),

@@ -3,11 +3,11 @@
 import { Calendar } from "lucide-react";
 
 /* Campo de data e hora da publicacao. O valor e a hora-relogio de
-   Brasilia ("YYYY-MM-DDTHH:mm"); o servidor valida o minimo de 5h de
+   Brasilia ("YYYY-MM-DDTHH:mm"); o servidor valida o minimo de 4h de
    antecedencia. O min aqui e so a dica visual. */
 
 function minAgora() {
-  const d = new Date(Date.now() + 5 * 60 * 60 * 1000);
+  const d = new Date(Date.now() + 4 * 60 * 60 * 1000);
   const p = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
 }
