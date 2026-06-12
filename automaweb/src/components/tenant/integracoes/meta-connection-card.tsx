@@ -3,7 +3,13 @@
 import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
-import { CheckCircle2, AlertTriangle, XCircle, Unplug } from "lucide-react";
+import {
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  Unplug,
+  ChevronRight,
+} from "lucide-react";
 import { siInstagram } from "simple-icons";
 import { Button } from "@/components/ui/button";
 import { desconectarInstagram } from "@/app/actions/integracao-actions";
@@ -68,6 +74,50 @@ const DEFAULT_DISCONNECTED: MetaConnectionData = {
   status: "DESCONECTADO",
 };
 
+// erros que o retorno da Meta traz na URL, traduzidos pro cliente
+const ERROS_CONEXAO: Record<string, string> = {
+  denied: "Conexao cancelada no login da Meta. Tente de novo quando quiser.",
+  state: "A conexao demorou demais. Tente de novo.",
+  token: "A Meta nao liberou o acesso. Tente de novo em instantes.",
+  no_page: "Sua conta da Meta nao tem uma Pagina do Facebook. Veja o passo a passo abaixo.",
+  no_ig: "Seu Instagram ainda nao esta ligado a uma Pagina do Facebook. Veja o passo a passo abaixo.",
+};
+
+/** Pre-requisito da Meta numa linha, com passo a passo recolhido. */
+function PreRequisito({ abrirDireto }: { abrirDireto: boolean }) {
+  const [aberto, setAberto] = useState(abrirDireto);
+
+  return (
+    <div className="rounded-lg bg-[#FAFAFA] px-3.5 py-2.5">
+      <button
+        onClick={() => setAberto((v) => !v)}
+        className="flex w-full items-center gap-1.5 text-left text-xs text-[#71717A] transition-colors duration-150 hover:text-[#09090B]"
+      >
+        <ChevronRight
+          size={13}
+          strokeWidth={1.5}
+          className={`shrink-0 transition-transform duration-150 ${aberto ? "rotate-90" : ""}`}
+        />
+        Voce precisa de conta profissional ligada a uma Pagina do Facebook
+      </button>
+      {aberto && (
+        <ol className="mt-2.5 space-y-1.5 pl-5 text-xs leading-relaxed text-[#71717A]">
+          <li>
+            1. No Instagram: Configuracoes, depois{" "}
+            <span className="font-medium text-[#09090B]">Mudar para conta profissional</span>
+          </li>
+          <li>
+            2. Ainda la: Central de contas, depois{" "}
+            <span className="font-medium text-[#09090B]">vincular sua Pagina do Facebook</span>{" "}
+            (crie uma se nao tiver, leva 1 minuto)
+          </li>
+          <li className="text-[#A1A1AA]">Travou? Fale com a gente que conectamos juntos.</li>
+        </ol>
+      )}
+    </div>
+  );
+}
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -83,8 +133,10 @@ function daysUntil(iso: string) {
 
 export function MetaConnectionCard({
   initialData,
+  erroConexao,
 }: {
   initialData: MetaConnectionData | null;
+  erroConexao?: string;
 }) {
   const [connection, setConnection] = useState<MetaConnectionData>(
     initialData ?? DEFAULT_DISCONNECTED
@@ -92,6 +144,10 @@ export function MetaConnectionCard({
   const [disconnecting, startDisconnect] = useTransition();
   const config = statusConfig[connection.status];
   const StatusIcon = config.icon;
+
+  const msgErro = erroConexao ? ERROS_CONEXAO[erroConexao] : undefined;
+  // falhou por falta de pagina/vinculo: o passo a passo ja abre aberto
+  const faltaPreRequisito = erroConexao === "no_page" || erroConexao === "no_ig";
 
   function handleConnect() {
     window.location.href = "/api/meta/auth";
@@ -145,29 +201,18 @@ export function MetaConnectionCard({
               transition={{ duration: 0.15 }}
               className="space-y-4"
             >
-              <div className="space-y-2">
-                <p className="text-sm text-[#09090B]">
-                  Conecte sua conta do Instagram para que a AutomaWeb publique
-                  carrosséis automaticamente no seu perfil.
-                </p>
-                <div className="space-y-1.5">
-                  <p className="text-xs text-[#71717A]">Com a conexão ativa, você poderá:</p>
-                  <ul className="space-y-1 text-xs text-[#71717A]">
-                    <li className="flex items-center gap-2">
-                      <span className="h-1 w-1 rounded-full bg-[#A1A1AA]" />
-                      Publicar carrosséis direto no seu feed
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="h-1 w-1 rounded-full bg-[#A1A1AA]" />
-                      Agendar publicações com data e hora
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="h-1 w-1 rounded-full bg-[#A1A1AA]" />
-                      Acompanhar a situacao de cada post
-                    </li>
-                  </ul>
+              {msgErro && (
+                <div className="rounded-lg bg-[#FEF9C3] px-4 py-3">
+                  <p className="text-sm text-[#854D0E]">{msgErro}</p>
                 </div>
-              </div>
+              )}
+
+              <p className="text-sm text-[#09090B]">
+                Conecte sua conta do Instagram para que a AutomaWeb publique
+                carrosséis automaticamente no seu perfil.
+              </p>
+
+              <PreRequisito abrirDireto={faltaPreRequisito} />
 
               <Button
                 onClick={handleConnect}
