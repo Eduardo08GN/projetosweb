@@ -47,6 +47,19 @@ Fora de escopo (e do nosso produto): CRM completo do ManyChat — tags, campos
 customizados, segmentos, broadcast, caixa de entrada omnichannel. InteracaoDM
 ja registra igUserId/username; visao de contatos pode derivar disso depois.
 
+**Pre-requisito extra do tenant (so pra DM, nao pra publicacao)** — fonte:
+ebook de chatbot Instagram, auditoria 12/06/2026:
+
+- Alem de conta profissional + Pagina vinculada, o cliente precisa LIGAR
+  manualmente no app: Instagram > Config > Privacidade > Mensagens >
+  "Permitir acesso a mensagens" (toggle pra apps externos gerenciarem DM).
+- Cilada silenciosa: sem o toggle, o OAuth conecta com "sucesso" mas as
+  automacoes de DM nao disparam e NADA da erro. Suporte vai apanhar nisso.
+- Quando a guia Mensagens sair do "Em breve", o card de automacao precisa
+  de um aviso desse toggle (disclosure curto, igual ao da pagina do FB no
+  card do Instagram), e idealmente um teste de conexao que detecte se as
+  DMs estao acessiveis antes de o cliente confiar na automacao.
+
 **Depende de:** aprovacao fase 2 na Meta (permissoes `instagram_manage_comments`, `instagram_manage_messages`, `pages_manage_metadata`)
 
 ### 2. WhatsApp Business Integration
