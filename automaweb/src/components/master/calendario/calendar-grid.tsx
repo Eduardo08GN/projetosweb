@@ -47,12 +47,14 @@ export function CalendarGrid({
   // renderizam o mesmo mes e o mesmo dia marcado, sem divergencia
   const today = new Date(`${hoje}T12:00:00`);
   const [currentMonth, setCurrentMonth] = useState(today);
+  const [filtroTenant, setFiltroTenant] = useState<string | null>(null);
 
   // cada cliente ganha uma cor fixa, na ordem alfabetica do nome
   const tenantColors = new Map<string, (typeof COLOR_PALETTE)[number]>();
   for (const name of [...new Set(events.map((e) => e.tenant))].sort()) {
     tenantColors.set(name, COLOR_PALETTE[tenantColors.size % COLOR_PALETTE.length]);
   }
+  const tenants = [...tenantColors.keys()];
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -62,7 +64,9 @@ export function CalendarGrid({
 
   function getEventsForDay(day: Date) {
     const chave = format(day, "yyyy-MM-dd");
-    return events.filter((e) => e.dia === chave);
+    return events.filter(
+      (e) => e.dia === chave && (!filtroTenant || e.tenant === filtroTenant)
+    );
   }
 
   return (
@@ -92,6 +96,39 @@ export function CalendarGrid({
           </button>
         </div>
       </div>
+
+      {tenants.length > 1 && (
+        <div className="flex gap-1.5 overflow-x-auto border-b border-[#E4E4E7] px-5 py-3">
+          <button
+            onClick={() => setFiltroTenant(null)}
+            className={`shrink-0 rounded-md px-2.5 py-1 text-xs font-medium transition-colors duration-150 ${
+              filtroTenant === null
+                ? "bg-[#18181B] text-[#FAFAFA]"
+                : "text-[#71717A] hover:bg-[#F4F4F5] hover:text-[#09090B]"
+            }`}
+          >
+            Todos
+          </button>
+          {tenants.map((name) => {
+            const ativo = filtroTenant === name;
+            const cor = tenantColors.get(name)!;
+            return (
+              <button
+                key={name}
+                onClick={() => setFiltroTenant(ativo ? null : name)}
+                className={`flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors duration-150 ${
+                  ativo
+                    ? "bg-[#18181B] text-[#FAFAFA]"
+                    : "text-[#71717A] hover:bg-[#F4F4F5] hover:text-[#09090B]"
+                }`}
+              >
+                <span className={`h-2 w-2 rounded-full ${cor.bg}`} />
+                {name}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <div className="grid grid-cols-7">
         {WEEKDAYS.map((day) => (
