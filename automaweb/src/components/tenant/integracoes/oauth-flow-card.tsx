@@ -39,9 +39,9 @@ export function OAuthFlowCard() {
       </div>
 
       <div className="px-6 py-5">
-        <div className="flex items-start gap-3">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-3">
           {steps.map((step, i) => (
-            <div key={step.num} className="flex items-start gap-3">
+            <div key={step.num} className="flex items-start gap-3 sm:flex-1">
               <div className="flex flex-1 items-start gap-3">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F4F4F5] text-xs font-semibold text-[#09090B]">
                   {step.num}
@@ -57,7 +57,7 @@ export function OAuthFlowCard() {
                 <ArrowRight
                   size={14}
                   strokeWidth={1.5}
-                  className="mt-1.5 shrink-0 text-[#D4D4D8]"
+                  className="mt-1.5 hidden shrink-0 text-[#D4D4D8] sm:block"
                 />
               )}
             </div>
