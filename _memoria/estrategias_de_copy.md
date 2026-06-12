@@ -175,6 +175,9 @@ Nunca duplicar funcao: cada slide tem uma e somente uma funcao.
 - Instrucao clara: "Comenta [PALAVRA] que eu te mando [BENEFICIO] no DM"
 - Voce controla o proximo passo (nunca o prospect)
 - PROIBIDO: "salva esse post", "curte", "compartilha" como CTA final
+- PROIBIDO: "EU QUERO" como palavra-chave — esta batida, o Instagram
+  reconhece o padrao e degrada a entrega da DM. A palavra e sempre do
+  nicho do tenant (ex.: SORRISO pra odonto, INGLES pro professor)
 - Comentario e a interacao mais valiosa do Instagram
 
 ---
