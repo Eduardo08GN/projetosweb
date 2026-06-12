@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
   }
 
   const profile = await userRes.json();
-  const email = profile.email as string;
+  const email = (profile.email as string)?.trim().toLowerCase();
 
   const user = await db.user.findUnique({
     where: { email },

@@ -1,10 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { timingSafeEqual } from "crypto";
 import { db } from "@/lib/db";
 import { notifyMasters } from "@/lib/email";
 import { emailInterno } from "@/lib/email-templates";
 
 export const runtime = "nodejs";
+
+// comparacao em tempo constante: nao vaza o token por timing
+function tokenValido(recebido: string | null, esperado: string) {
+  if (!recebido) return false;
+  const a = Buffer.from(recebido);
+  const b = Buffer.from(esperado);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
 
 /* ── Webhook Asaas ──
    Quem vigia pagamento e o gateway, nao a equipe. Pagamento confirmado
@@ -30,7 +39,7 @@ export async function POST(request: NextRequest) {
     console.error("[asaas] ASAAS_WEBHOOK_TOKEN ausente, webhook recusado");
     return NextResponse.json({ error: "Nao configurado" }, { status: 500 });
   }
-  if (request.headers.get("asaas-access-token") !== esperado) {
+  if (!tokenValido(request.headers.get("asaas-access-token"), esperado)) {
     return NextResponse.json({ error: "Nao autorizado" }, { status: 401 });
   }
 
@@ -110,6 +119,33 @@ export async function POST(request: NextRequest) {
         `[asaas] Pagamento sem tenant vinculado (customer ${body.payment.customer})`
       );
     }
+  } else if (
+    (body.event === "PAYMENT_REFUNDED" ||
+      body.event === "PAYMENT_CHARGEBACK_REQUESTED" ||
+      body.event === "PAYMENT_CHARGEBACK_DISPUTE") &&
+    body.payment
+  ) {
+    // caminho reverso do pagamento: a validade NAO encolhe sozinha
+    // (pode haver acordo manual); o master decide na tabela de clientes
+    const tenant = await db.tenant.findFirst({
+      where: { asaasCustomerId: body.payment.customer },
+      select: { name: true },
+    });
+    const ehChargeback = body.event !== "PAYMENT_REFUNDED";
+    const aviso = emailInterno({
+      assunto: `${ehChargeback ? "Chargeback" : "Estorno"}: ${tenant?.name ?? "cliente sem vinculo"}`,
+      titulo: ehChargeback
+        ? "Cliente abriu disputa do pagamento"
+        : "Pagamento estornado no gateway",
+      resumo:
+        "A validade do plano NAO foi reduzida automaticamente. Se for o caso, ajuste o Valido ate na tabela de clientes (ou pause a conta).",
+      linhas: [
+        ["Cliente", tenant?.name ?? body.payment.customer],
+        ["Valor", `R$ ${body.payment.value}`],
+        ["Evento", body.event],
+      ],
+    });
+    await notifyMasters(aviso.subject, aviso.html);
   } else if (body.event === "PAYMENT_OVERDUE" && body.payment) {
     const tenant = await db.tenant.findFirst({
       where: { asaasCustomerId: body.payment.customer },

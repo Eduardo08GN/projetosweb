@@ -3,6 +3,9 @@
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { notifyMasters } from "@/lib/email";
+import { emailInterno } from "@/lib/email-templates";
 import {
   cancelAsaasSubscription,
   createAsaasSubscription,
@@ -62,7 +65,27 @@ export async function criarAssinatura(
       data: { asaasCustomerId: customerId, asaasSubscriptionId: subscriptionId },
     });
     if (vinculo.count === 0) {
-      await cancelAsaasSubscription(subscriptionId).catch(() => {});
+      try {
+        await cancelAsaasSubscription(subscriptionId);
+      } catch (err) {
+        // compensacao falhou: assinatura orfa cobrando no gateway.
+        // Nao pode falhar em silencio — vira pendencia da equipe
+        console.error(
+          `[asaas] Nao cancelei a assinatura duplicada ${subscriptionId}:`,
+          err instanceof Error ? err.message : err
+        );
+        const alerta = emailInterno({
+          assunto: `Assinatura duplicada no Asaas: ${tenant.name}`,
+          titulo: "Cancele uma assinatura manualmente no Asaas",
+          resumo:
+            "Dois cliques simultaneos criaram duas assinaturas e o cancelamento automatico da segunda falhou. Cancele no painel do Asaas pra nao cobrar o cliente duas vezes.",
+          linhas: [
+            ["Cliente", tenant.name],
+            ["Assinatura a cancelar", subscriptionId],
+          ],
+        });
+        after(() => notifyMasters(alerta.subject, alerta.html));
+      }
       return { error: "Este cliente ja tem assinatura ativa" };
     }
 
