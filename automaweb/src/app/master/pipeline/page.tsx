@@ -3,10 +3,15 @@ import { PageHeader } from "@/components/shared/page-header";
 import { KanbanBoard } from "@/components/master/pipeline/kanban-board";
 import { NewCarrosselModal } from "@/components/master/pipeline/new-carrossel-modal";
 
-export default async function PipelinePage() {
-  const [kanbanData, tenants] = await Promise.all([
+export default async function PipelinePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ carrossel?: string }>;
+}) {
+  const [kanbanData, tenants, { carrossel }] = await Promise.all([
     getKanbanData(),
     getActiveTenants(),
+    searchParams,
   ]);
 
   return (
@@ -16,7 +21,7 @@ export default async function PipelinePage() {
         description="Producao de conteudo"
         actions={<NewCarrosselModal tenants={tenants} />}
       />
-      <KanbanBoard data={kanbanData} />
+      <KanbanBoard data={kanbanData} abrirId={carrossel} />
     </div>
   );
 }

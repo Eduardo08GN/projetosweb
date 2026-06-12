@@ -25,9 +25,11 @@ const COLUMN_ORDER = [
 
 type Props = {
   data: Record<string, KanbanItem[]>;
+  /** vindo do calendario: abre o detalhe deste carrossel ao chegar */
+  abrirId?: string;
 };
 
-export function KanbanBoard({ data }: Props) {
+export function KanbanBoard({ data, abrirId }: Props) {
   const [columns, setColumns] = useState(data);
   const [activeItem, setActiveItem] = useState<KanbanItem | null>(null);
   const [detailItem, setDetailItem] = useState<KanbanItem | null>(null);
@@ -38,6 +40,19 @@ export function KanbanBoard({ data }: Props) {
   const [detailStatus, setDetailStatus] = useState("");
   const [detailOpen, setDetailOpen] = useState(false);
   const [, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!abrirId) return;
+    for (const [status, items] of Object.entries(data)) {
+      const item = items.find((i) => i.id === abrirId);
+      if (item) {
+        setDetailItem(item);
+        setDetailStatus(status);
+        setDetailOpen(true);
+        return;
+      }
+    }
+  }, [abrirId, data]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })

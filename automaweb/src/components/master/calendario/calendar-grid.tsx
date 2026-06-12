@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
@@ -167,15 +168,16 @@ export function CalendarGrid({
                 {dayEvents.map((event) => {
                   const color = tenantColors.get(event.tenant)!;
                   return (
-                    <div
+                    <Link
                       key={event.id}
-                      className={`truncate rounded px-1.5 py-0.5 text-[11px] font-medium ${color.bg} ${color.text} ${
+                      href={`/master/pipeline?carrossel=${event.id}`}
+                      className={`block truncate rounded px-1.5 py-0.5 text-[11px] font-medium transition-opacity duration-150 hover:opacity-70 ${color.bg} ${color.text} ${
                         event.publicado ? "" : "opacity-80"
                       }`}
                       title={`${event.titulo} — ${event.tenant} (${event.publicado ? "publicado" : "agendado"})`}
                     >
                       {event.titulo}
-                    </div>
+                    </Link>
                   );
                 })}
               </div>
