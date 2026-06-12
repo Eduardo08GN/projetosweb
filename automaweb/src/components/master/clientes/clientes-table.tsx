@@ -9,10 +9,9 @@ import { updateClientField } from "@/app/actions/client-actions";
 import {
   cancelarAssinatura,
   criarAssinatura,
-  gerarLinkPagamento,
   linkFaturaAssinatura,
 } from "@/app/actions/assinatura-actions";
-import { Check, Link2, Loader2, Pencil, Repeat, X } from "lucide-react";
+import { Check, Copy, Link2, Loader2, Pencil, Repeat, X } from "lucide-react";
 
 type ClienteRow = {
   id: string;
@@ -162,31 +161,55 @@ function SelectCell({
 /* ── Celula de recorrencia ──
    Sem assinatura: botao gera no Asaas e copia o link da fatura.
    Com assinatura: tag Ativa + copiar link + cancelar com confirmacao. */
+/* Chip com a URL de pagamento da assinatura: aparece na celula depois
+   de gerar (ou ao buscar a fatura), pronto pra copiar e mandar. */
+function LinkFaturaChip({ url }: { url: string }) {
+  const [copiado, setCopiado] = useState(false);
+
+  async function copiar() {
+    await navigator.clipboard.writeText(url).catch(() => {});
+    setCopiado(true);
+    setTimeout(() => setCopiado(false), 2000);
+  }
+
+  return (
+    <button
+      onClick={copiar}
+      title={url}
+      className="group/chip flex max-w-[210px] items-center gap-1.5 rounded-md bg-[#F4F4F5] px-2 py-1 text-[11px] text-[#52525B] transition-colors duration-150 hover:bg-[#E4E4E7]"
+    >
+      {copiado ? (
+        <Check size={11} strokeWidth={2} className="shrink-0 text-[#166534]" />
+      ) : (
+        <Copy size={11} strokeWidth={1.5} className="shrink-0 text-[#A1A1AA] group-hover/chip:text-[#09090B]" />
+      )}
+      <span className="truncate">
+        {copiado ? "Link copiado" : url.replace(/^https?:\/\//, "")}
+      </span>
+    </button>
+  );
+}
+
 function RecorrenciaCell({ cliente }: { cliente: ClienteRow }) {
   const [pending, startTransition] = useTransition();
-  const [pendingAvulso, startAvulso] = useTransition();
   const [confirmando, setConfirmando] = useState(false);
-
-  async function copiarLink(url: string | null | undefined) {
-    if (!url) return;
-    await navigator.clipboard.writeText(url).catch(() => {});
-  }
+  const [linkFatura, setLinkFatura] = useState<string | null>(null);
 
   if (!cliente.assinaturaAtiva) {
     return (
-      <div className="inline-flex items-center gap-1.5">
+      <div className="flex flex-col items-start gap-1.5">
         <button
-          disabled={pending || pendingAvulso}
+          disabled={pending}
           onClick={() =>
             startTransition(async () => {
               const result = await criarAssinatura(cliente.id);
               if (result.error) {
                 toast(result.error);
               } else {
-                await copiarLink(result.linkFatura);
+                setLinkFatura(result.linkFatura ?? null);
                 toast(
                   result.linkFatura
-                    ? "Assinatura criada. Link da fatura copiado"
+                    ? "Assinatura criada. Link de pagamento pronto"
                     : "Assinatura criada"
                 );
               }
@@ -201,47 +224,26 @@ function RecorrenciaCell({ cliente }: { cliente: ClienteRow }) {
           )}
           {pending ? "Gerando..." : "Gerar assinatura"}
         </button>
-        <button
-          disabled={pending || pendingAvulso}
-          title="Gerar link de pagamento de uma mensalidade (sem recorrencia)"
-          onClick={() =>
-            startAvulso(async () => {
-              const result = await gerarLinkPagamento(cliente.id);
-              if (result.error) toast(result.error);
-              else if (result.linkPagamento) {
-                await copiarLink(result.linkPagamento);
-                toast("Link de pagamento copiado. E so mandar pro cliente");
-              } else toast("Cobranca criada, mas o link nao veio. Confira no Asaas");
-            })
-          }
-          className="rounded-md border border-[#E4E4E7] bg-white p-1.5 text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B] disabled:opacity-50"
-        >
-          {pendingAvulso ? (
-            <Loader2 size={12} className="animate-spin" />
-          ) : (
-            <Link2 size={12} strokeWidth={1.5} />
-          )}
-        </button>
+        {linkFatura && <LinkFaturaChip url={linkFatura} />}
       </div>
     );
   }
 
   return (
-    <div className="inline-flex items-center gap-1.5">
+    <div className="flex flex-col items-start gap-1.5">
+      <div className="inline-flex items-center gap-1.5">
       <span className="rounded-md bg-[#DCFCE7] px-2 py-1 text-xs font-semibold text-[#166534]">
         Ativa
       </span>
       <button
         disabled={pending}
-        title="Copiar link da fatura"
+        title="Buscar link da fatura em aberto"
         onClick={() =>
           startTransition(async () => {
             const result = await linkFaturaAssinatura(cliente.id);
             if (result.error) toast(result.error);
-            else if (result.linkFatura) {
-              await copiarLink(result.linkFatura);
-              toast("Link da fatura copiado");
-            } else toast("Nenhuma fatura em aberto");
+            else if (result.linkFatura) setLinkFatura(result.linkFatura);
+            else toast("Nenhuma fatura em aberto");
           })
         }
         className="rounded-md p-1 text-[#71717A] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B] disabled:opacity-50"
@@ -285,6 +287,8 @@ function RecorrenciaCell({ cliente }: { cliente: ClienteRow }) {
           <X size={13} strokeWidth={1.5} />
         </button>
       )}
+      </div>
+      {linkFatura && <LinkFaturaChip url={linkFatura} />}
     </div>
   );
 }

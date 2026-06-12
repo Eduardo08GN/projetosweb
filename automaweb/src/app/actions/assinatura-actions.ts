@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 import {
   cancelAsaasSubscription,
   createAsaasSubscription,
-  createOneOffPayment,
   ensureAsaasCustomer,
   getInvoiceUrl,
 } from "@/lib/asaas";
@@ -73,60 +72,6 @@ export async function criarAssinatura(
     return { success: true, linkFatura };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erro ao criar assinatura" };
-  }
-}
-
-/**
- * Gera uma cobranca avulsa de UMA mensalidade e devolve o link de
- * pagamento pro master mandar manualmente (WhatsApp, email). Nao cria
- * recorrencia. Quando o cliente paga, o webhook estende a validade do
- * plano em 1 mes e reativa a conta se estava pausada.
- */
-export async function gerarLinkPagamento(
-  tenantId: string
-): Promise<{ error?: string; linkPagamento?: string | null }> {
-  const session = await getSession();
-  if (session?.role !== "MASTER") return { error: "Nao autorizado" };
-
-  const tenant = await db.tenant.findUnique({ where: { id: tenantId } });
-  if (!tenant) return { error: "Cliente nao encontrado" };
-  if (!tenant.planoMensalidade || tenant.planoMensalidade <= 0) {
-    return { error: "Defina a mensalidade antes de gerar o link" };
-  }
-  if (!tenant.documento?.replace(/\D/g, "")) {
-    return { error: "Preencha o CPF ou CNPJ do cliente (coluna Contato)" };
-  }
-
-  try {
-    const customerId = await ensureAsaasCustomer({
-      nome: tenant.name,
-      email: tenant.email,
-      telefone: tenant.phone,
-      documento: tenant.documento,
-      referencia: tenant.id,
-    });
-
-    // o vinculo customer -> tenant e o que permite ao webhook reconhecer
-    // o pagamento avulso e renovar o plano sozinho
-    if (tenant.asaasCustomerId !== customerId) {
-      await db.tenant.update({
-        where: { id: tenantId },
-        data: { asaasCustomerId: customerId },
-      });
-    }
-
-    const em3dias = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
-    const linkPagamento = await createOneOffPayment({
-      customerId,
-      valor: tenant.planoMensalidade,
-      vencimento: em3dias,
-      descricao: "AutomaWeb - mensalidade do plano de conteudo",
-      referencia: tenant.id,
-    });
-
-    return { linkPagamento };
-  } catch (err) {
-    return { error: err instanceof Error ? err.message : "Erro ao gerar link" };
   }
 }
 
