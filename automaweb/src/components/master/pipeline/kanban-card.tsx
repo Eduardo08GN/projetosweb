@@ -22,6 +22,7 @@ export type KanbanItem = {
   }> | null;
   editadoPeloCliente: boolean;
   agendadoParaLabel: string | null;
+  versao: number;
 };
 
 export function KanbanCard({

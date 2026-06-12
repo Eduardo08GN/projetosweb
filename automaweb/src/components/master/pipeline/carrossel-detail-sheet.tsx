@@ -13,6 +13,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { ImageCropper } from "@/components/shared/image-cropper";
+import { SlideImage } from "@/components/shared/slide-image";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -43,6 +44,7 @@ function SlideItem({
   index,
   url,
   carrosselId,
+  versao,
   onUpdate,
   onRemove,
   canRemove,
@@ -50,6 +52,7 @@ function SlideItem({
   index: number;
   url: string;
   carrosselId: string;
+  versao: number;
   onUpdate: (url: string) => void;
   onRemove: () => void;
   canRemove: boolean;
@@ -116,10 +119,12 @@ function SlideItem({
         <div className="min-w-0 flex-1 space-y-2">
           {isImageUrl(url) ? (
             <div className="relative aspect-[4/5] w-full max-w-[160px] overflow-hidden rounded-lg border border-[#E4E4E7] bg-white">
-              <img
+              <SlideImage
                 src={url}
                 alt={`Slide ${index + 1}`}
-                className="h-full w-full object-cover"
+                sizes="160px"
+                versao={versao}
+                className="object-cover"
               />
             </div>
           ) : url ? (
@@ -170,10 +175,12 @@ function SlideItem({
 function SlideEditor({
   slides,
   carrosselId,
+  versao,
   onChange,
 }: {
   slides: string[];
   carrosselId: string;
+  versao: number;
   onChange: (slides: string[]) => void;
 }) {
   function updateSlide(index: number, value: string) {
@@ -209,6 +216,7 @@ function SlideEditor({
           index={i}
           url={slide}
           carrosselId={carrosselId}
+          versao={versao}
           onUpdate={(url) => updateSlide(i, url)}
           onRemove={() => removeSlide(i)}
           canRemove={slides.length > 1}
@@ -376,7 +384,12 @@ export function CarrosselDetailSheet({
             />
           </div>
 
-          <SlideEditor slides={slides} carrosselId={item.id} onChange={setSlides} />
+          <SlideEditor
+            slides={slides}
+            carrosselId={item.id}
+            versao={item.versao}
+            onChange={setSlides}
+          />
 
           <div>
             <FieldLabel>Legenda</FieldLabel>

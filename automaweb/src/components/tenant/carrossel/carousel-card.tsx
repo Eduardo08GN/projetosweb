@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { variants, transitions } from "@/lib/animations";
@@ -37,6 +37,7 @@ function InstagramIcon({
   );
 }
 import { Button } from "@/components/ui/button";
+import { SlideImage } from "@/components/shared/slide-image";
 import { approveCarrossel } from "@/app/actions/tenant-carrossel-actions";
 import { EditSheet } from "./edit-sheet";
 
@@ -54,23 +55,18 @@ export type CarouselData = {
   editadoPeloCliente: boolean;
   temEdicaoPendente: boolean;
   conectado: boolean;
+  versao: number;
 };
 
-function SlidePreview({ slides }: { slides: string[] }) {
+function SlidePreview({ slides, versao }: { slides: string[]; versao: number }) {
   const [current, setCurrent] = useState(0);
   const [prontas, setProntas] = useState<Record<number, boolean>>({});
   const isImage = slides[current]?.startsWith("http");
 
-  // pre-carrega os vizinhos: navegar nao mostra area vazia esperando o R2
-  useEffect(() => {
-    for (const i of [current + 1, current - 1]) {
-      const url = slides[i];
-      if (url?.startsWith("http")) {
-        const img = new window.Image();
-        img.src = url;
-      }
-    }
-  }, [current, slides]);
+  // vizinhos montados invisiveis: navegar nao mostra area vazia esperando a rede
+  const vizinhos = [current - 1, current + 1].filter(
+    (i) => i >= 0 && i < slides.length && slides[i]?.startsWith("http")
+  );
 
   return (
     <div className="relative">
@@ -82,17 +78,18 @@ function SlidePreview({ slides }: { slides: string[] }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="flex h-full items-center justify-center"
+            className="relative flex h-full items-center justify-center"
           >
             {isImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <SlideImage
                 src={slides[current]}
                 alt={`Slide ${current + 1}`}
+                sizes="208px"
+                versao={versao}
                 onLoad={() =>
                   setProntas((p) => (p[current] ? p : { ...p, [current]: true }))
                 }
-                className="h-full w-full object-contain"
+                className="object-contain"
               />
             ) : (
               <p className="p-6 text-center text-sm text-[#71717A]">
@@ -101,6 +98,21 @@ function SlidePreview({ slides }: { slides: string[] }) {
             )}
           </motion.div>
         </AnimatePresence>
+        {vizinhos.map((i) => (
+          <div
+            key={`preload-${i}`}
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-0"
+          >
+            <SlideImage
+              src={slides[i]}
+              alt=""
+              sizes="208px"
+              versao={versao}
+              className="object-contain"
+            />
+          </div>
+        ))}
         {isImage && !prontas[current] && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <Loader2 size={20} className="animate-spin text-[#A1A1AA]" />
@@ -206,7 +218,7 @@ export function CarouselCard({ data }: { data: CarouselData }) {
 
           <div className="mt-4">
             {hasSlides ? (
-              <SlidePreview slides={data.slides} />
+              <SlidePreview slides={data.slides} versao={data.versao} />
             ) : data.status === "PUBLICADO" ? (
               <div className="flex h-32 flex-col items-center justify-center gap-2 rounded-lg bg-[#F4F4F5]">
                 <InstagramIcon size={20} className="text-[#A1A1AA]" />
@@ -300,6 +312,7 @@ export function CarouselCard({ data }: { data: CarouselData }) {
         <EditSheet
           carrosselId={data.id}
           slides={data.slides}
+          versao={data.versao}
           open={sheetOpen}
           onOpenChange={setSheetOpen}
         />

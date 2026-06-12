@@ -12,6 +12,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { ImageCropper } from "@/components/shared/image-cropper";
+import { SlideImage } from "@/components/shared/slide-image";
 import { submitEdit } from "@/app/actions/tenant-carrossel-actions";
 import { MAX_TEXTO_SLIDE, type EdicaoSlide } from "@/lib/carrossel-edicao";
 
@@ -23,11 +24,13 @@ type SlideEdit = { texto: string; imagemUrl?: string; previewUrl?: string };
 export function EditSheet({
   carrosselId,
   slides,
+  versao,
   open,
   onOpenChange,
 }: {
   carrosselId: string;
   slides: string[];
+  versao: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
@@ -142,11 +145,12 @@ export function EditSheet({
                   aria-label={`Slide ${i + 1}`}
                 >
                   {slide.startsWith("http") ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <SlideImage
                       src={slide}
                       alt=""
-                      className="h-full w-full object-cover"
+                      sizes="51px"
+                      versao={versao}
+                      className="object-cover"
                     />
                   ) : (
                     <span className="flex h-full items-center justify-center text-[10px] text-[#A1A1AA]">
@@ -171,11 +175,12 @@ export function EditSheet({
                 className="h-full w-full object-cover"
               />
             ) : slides[current]?.startsWith("http") ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <SlideImage
                 src={slides[current]}
                 alt={`Slide ${current + 1}`}
-                className="h-full w-full object-contain"
+                sizes="(max-width: 640px) 100vw, 448px"
+                versao={versao}
+                className="object-contain"
               />
             ) : null}
             {currentEdit.previewUrl && (

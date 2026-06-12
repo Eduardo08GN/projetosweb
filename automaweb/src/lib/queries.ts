@@ -127,6 +127,7 @@ export async function getKanbanData() {
     }> | null;
     editadoPeloCliente: boolean;
     agendadoParaLabel: string | null;
+    versao: number;
   }>> = {};
 
   for (const c of carrosseis) {
@@ -153,6 +154,8 @@ export async function getKanbanData() {
         }> | null) ?? null,
       editadoPeloCliente: c.editadoPeloCliente,
       agendadoParaLabel: c.agendadoPara ? formatDateTime(c.agendadoPara) : null,
+      // fura o cache de imagem quando o slide e re-renderizado no mesmo endereco
+      versao: c.updatedAt.getTime(),
     });
   }
 
@@ -334,6 +337,8 @@ export async function getTenantCarousels(tenantId: string) {
     editadoPeloCliente: c.editadoPeloCliente,
     temEdicaoPendente: c.edicaoPendente !== null,
     conectado,
+    // fura o cache de imagem quando o slide e re-renderizado no mesmo endereco
+    versao: c.updatedAt.getTime(),
   }));
 }
 
