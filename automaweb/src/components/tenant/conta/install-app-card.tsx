@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
-import { Smartphone, Share, SquarePlus, CheckCircle2 } from "lucide-react";
+import { Smartphone, Share, Download, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useInstallApp } from "@/components/shared/install-app";
 
@@ -47,7 +47,7 @@ export function InstallAppCard() {
                 onClick={instalar}
                 className="mt-4 gap-2 rounded-lg bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A]"
               >
-                <SquarePlus size={15} strokeWidth={1.5} />
+                <Download size={15} strokeWidth={1.5} />
                 Instalar aplicativo
               </Button>
             ) : ios ? (

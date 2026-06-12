@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Share, SquarePlus } from "lucide-react";
+import { Download, Share } from "lucide-react";
 
 /* Instalacao do aplicativo na tela de inicio.
    Android/Chrome entrega o prompt nativo (um toque); iPhone nao tem
@@ -55,7 +55,7 @@ export function InstallAppButton() {
         onClick={() => (promptNativo ? instalar() : setPassosIos(!passosIos))}
         className="flex items-center gap-2 rounded-lg border border-[#E4E4E7] bg-white px-4 py-2 text-xs font-medium text-[#52525B] transition-colors duration-150 hover:bg-[#F4F4F5] hover:text-[#09090B]"
       >
-        <SquarePlus size={14} strokeWidth={1.5} />
+        <Download size={14} strokeWidth={1.5} />
         Instalar aplicativo
       </button>
       {passosIos && (
