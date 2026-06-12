@@ -16,6 +16,7 @@ Conforme você for ativando skills, isso aqui vai sendo populado. Lista do que c
 | `/aprovar-post` | `postar-facebook.js` | Publica carrossel no Facebook via Meta Graph API |
 | `/anuncio-google` | (nenhum — gera CSV direto) | — |
 | `/relatorio-ads` | (lê CSV exportado das plataformas) | — |
+| operação AutomaWeb | `coolify.js` | CLI do deploy no Coolify: `status`, `deploy`, `restart`, `env list`, `env set` — saída curta, valores de env nunca aparecem |
 
 ## Pré-requisitos comuns
 
