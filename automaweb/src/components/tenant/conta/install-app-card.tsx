@@ -67,8 +67,8 @@ export function InstallAppCard() {
         ) : (
           <>
             <p className="text-sm text-[#09090B]">
-              Adicione a AutomaWeb na tela de inicio e abra seu painel com um
-              toque, como um aplicativo.
+              Instale o aplicativo da AutomaWeb no seu celular e abra seu
+              painel com um toque.
             </p>
 
             {promptNativo ? (
@@ -77,7 +77,7 @@ export function InstallAppCard() {
                 className="mt-4 gap-2 rounded-lg bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#FAFAFA] hover:bg-[#27272A]"
               >
                 <SquarePlus size={15} strokeWidth={1.5} />
-                Adicionar a tela de inicio
+                Instalar aplicativo
               </Button>
             ) : ios ? (
               <ol className="mt-4 space-y-2.5">
