@@ -8,6 +8,9 @@ const SECRET = new TextEncoder().encode(
 const PUBLIC_PATHS = [
   "/home",
   "/login",
+  // paginas legais: exigidas publicas pela revisao da Meta e pela LGPD
+  "/privacidade",
+  "/termos",
   "/api/meta/callback",
   "/api/auth/google",
   // webhook do gateway de cobranca: autentica por token proprio na rota

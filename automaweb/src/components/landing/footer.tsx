@@ -93,10 +93,24 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="mt-12 border-t border-[#E4E4E7] pt-6">
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-[#E4E4E7] pt-6">
           <p className="text-[13px] text-[#A1A1AA]">
             © 2026 AutomaWeb. Todos os direitos reservados.
           </p>
+          <nav aria-label="Legal" className="flex gap-5">
+            <a
+              href="/privacidade"
+              className="text-[13px] text-[#71717A] transition-colors duration-150 hover:text-[#09090B]"
+            >
+              Privacidade
+            </a>
+            <a
+              href="/termos"
+              className="text-[13px] text-[#71717A] transition-colors duration-150 hover:text-[#09090B]"
+            >
+              Termos
+            </a>
+          </nav>
         </div>
       </div>
     </footer>

@@ -1,6 +1,5 @@
 // Dados de contato e navegação da landing — fonte única de verdade.
-// TODO: trocar pelo número real da AutomaWeb antes de divulgar a página.
-export const WHATSAPP_URL = "https://wa.me/5511999999999";
+export const WHATSAPP_URL = "https://wa.me/5511974181452";
 
 export const CONTACT_EMAIL = "contato@automaweb.pro";
 
