@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roteiro Call — Rodger Koller | AutomaWeb</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #3b82f6;
+      --accent-dim: #1d4ed8;
+      --border: #334155;
+      --green: #4ade80;
+      --red: #f87171;
+      --orange: #fb923c;
+      --yellow: #fbbf24;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      line-height: 1.85;
+      background: var(--bg);
+      padding: 48px 28px;
+      max-width: 860px;
+      margin: 0 auto;
+      font-size: 16px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 44px;
+      padding-bottom: 28px;
+      border-bottom: 3px solid var(--accent);
+    }
+    header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    header p {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    section {
+      margin-bottom: 40px;
+      page-break-inside: avoid;
+    }
+
+    h2 {
+      font-size: 19px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent-dim);
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2 .num {
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .fala {
+      background: var(--bg-card);
+      border-left: 4px solid var(--accent);
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      border-radius: 0 8px 8px 0;
+      font-size: 16px;
+      line-height: 1.9;
+      color: #e2e8f0;
+    }
+
+    .fala strong { color: #fff; }
+
+    .fala .pergunta {
+      display: block;
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: #78350f;
+      border-radius: 6px;
+      color: var(--orange);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .answer-space {
+      margin: 8px 0 18px 0;
+      border: 2px dashed var(--border);
+      border-radius: 6px;
+      min-height: 56px;
+      padding: 8px 14px;
+      font-size: 14px;
+      color: var(--text-muted);
+      background: var(--bg-card);
+    }
+    .answer-space::before {
+      content: "Resposta:";
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .copy-box {
+      background: #14532d;
+      border: 2px solid var(--green);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin: 12px 0 18px 0;
+      font-size: 15px;
+      line-height: 1.8;
+      white-space: pre-line;
+      color: #bbf7d0;
+    }
+    .copy-box-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .emails-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 14px;
+    }
+    .emails-table th {
+      background: var(--accent-dim);
+      color: #fff;
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .emails-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Consolas', 'Courier New', monospace;
+      color: var(--text);
+    }
+    .emails-table tr:nth-child(even) { background: var(--bg-card); }
+
+    .offer-box {
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 12px 0;
+    }
+    .offer-box li {
+      font-size: 15px;
+      margin-bottom: 10px;
+      padding-left: 4px;
+      line-height: 1.7;
+    }
+    ul { padding-left: 22px; }
+
+    .instrucao {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .instrucao-mostrar { background: #14532d; color: var(--green); }
+
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media print {
+      body {
+        padding: 20px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+      }
+      .answer-space { min-height: 50px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ROTEIRO DE CALL &mdash; RODGER KOLLER</h1>
+  <p>AutomaWeb &bull; Lucas &amp; Eduardo &bull; Junho 2026</p>
+</header>
+
+<!-- 1. ABERTURA -->
+<section>
+  <h2><span class="num">1</span> Abertura</h2>
+
+  <div class="fala">
+    Rodger, prazer. Eu sou o Lucas e esse é o Eduardo, somos fundadores da <strong>AutomaWeb</strong>. A gente trabalha com automação de marketing digital, criação de sites de alta conversão e análise completa de redes sociais.
+    <br><br>
+    A gente fez uma <strong>análise completa e gratuita</strong> de toda a tua presença online &mdash; Instagram, YouTube, Facebook, Hotmart, tudo &mdash; e encontrou vários pontos que estão te fazendo perder alunos e vendas todos os dias. Alguns deles são críticos.
+    <br><br>
+    Antes de começar, quero deixar claro: a gente <strong>não está aqui pra criticar</strong> nada do que você fez até agora. Muito pelo contrário &mdash; você construiu uma base incrível: 34 mil inscritos, 412 vídeos, certificação Cambridge. O que falta é a <strong>estrutura digital</strong> pra transformar isso em resultado. E é exatamente isso que a gente resolve.
+    <br><br>
+    O que eu vou fazer agora é te mostrar ponto por ponto o que encontramos, o que precisa mudar, e como a gente já tem tudo pronto pra resolver. Pode ser?
+  </div>
+</section>
+
+<!-- 2. SITE ATUAL -->
+<section>
+  <h2><span class="num">2</span> Site Atual &mdash; Comparação</h2>
+
+  <div class="fala">
+    <span class="instrucao instrucao-mostrar">ABRIR O SITE DELE: flytofluency.com</span>
+    <br>
+    Rodger, antes de entrar nos detalhes de cada rede social, quero começar pelo ponto que mais impacta a tua imagem profissional hoje: o teu site. Esse aqui é o flytofluency.com, que está no ar agora. Dá uma olhada com calma. Percebe como ele é extremamente antiprofissional? Não transmite a autoridade que você tem. Quem entra aqui não sente confiança pra comprar um curso ou contratar uma mentoria.
+    <br><br>
+    <span class="instrucao instrucao-mostrar">ABRIR A PRÉVIA DO NOVO SITE NA TELA</span>
+    <br>
+    Agora olha o que a gente desenvolveu pra você. Esse é o novo site. Compara os dois. A diferença é gritante. Esse aqui foi feito pra converter &mdash; rápido, profissional, com todas as informações no lugar certo. É a cara de quem tem certificação Cambridge e 34 mil alunos.
+    <br><br>
+    Tudo o que eu vou te mostrar a partir de agora &mdash; redes sociais, emails, SEO &mdash; tudo vai apontar pra esse novo site como destino principal.
+  </div>
+</section>
+
+<!-- 3. INSTAGRAM -->
+<section>
+  <h2><span class="num">3</span> Instagram &mdash; Problemas e Correções</h2>
+
+  <div class="fala">
+    Começando pelo Instagram, que é a tua principal rede social. A primeira coisa que a gente notou é a <strong>descrição do perfil</strong>. Hoje ela está muito longa &mdash; o visitante precisa clicar em "mais" pra conseguir ler tudo, e ninguém faz isso. Além disso, está escrita em inglês e não deixa claras as tuas qualificações de forma rápida.
+    <br><br>
+    Antes da gente propor a correção, preciso te perguntar uma coisa:
+
+    <span class="pergunta">O teu maior público-alvo já fala inglês ou é brasileiro? Porque se for brasileiro, a bio precisa estar em português.</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    Certo. Independentemente do idioma, a gente já preparou uma versão corrigida que aparece <strong>inteira sem cortar</strong>. Olha só como ficaria:
+  </div>
+
+  <div class="copy-box">
+    <span class="copy-box-label">Nova bio proposta</span>
+Rodger Koller | Inglês 🇺🇸
+
+🎓 Prof de Inglês certificado por Cambridge.
+👨‍🏫 +34 mil alunos transformados.
+✅ YouTube | Curso | Mentoria
+Destrave sua fluência em 6 meses 👇
+[Link do Site feito pela AutomaWeb]</div>
+
+  <div class="fala">
+    Agora sobre os <strong>destaques do perfil</strong>. A gente sugere algumas mudanças pra deixar tudo com a cara do teu personagem e com congruência visual com o site:
+    <br><br>
+    Primeiro, o destaque <strong>"Eu sou Bonito"</strong> &mdash; a gente recomenda ocultar. Ele não tem relação com o conteúdo de inglês, é muito antigo e acaba poluindo o perfil.
+    <br><br>
+    Segundo, os outros três destaques: <strong>"DEPOIMENTOS"</strong>, <strong>"MEU CURSO"</strong> e <strong>"DEPOIMEN. 2"</strong> &mdash; a gente sugere trocar as imagens de capa pra usar as mesmas do site que criamos pra você. Então "DEPOIMENTOS" ficaria com a imagem do card <strong>Pronúncia</strong>, "MEU CURSO" com a do card <strong>Reading</strong>, e "DEPOIMEN. 2" com a do card <strong>Listening</strong>. Isso cria uma identidade visual unificada entre o Instagram e o site.
+    <br><br>
+    E essa padronização toda &mdash; bio e destaques &mdash; a gente vai replicar em <strong>todas as redes sociais</strong> onde for possível.
+  </div>
+</section>
+
+<!-- 4. CONSOLIDAÇÃO DE EMAILS -->
+<section>
+  <h2><span class="num">4</span> Consolidação de Emails</h2>
+
+  <div class="fala">
+    Esse ponto aqui é importante. Durante a análise, a gente encontrou <strong>mais de 6 emails diferentes</strong> espalhados pelas tuas redes sociais e plataformas. Olha essa lista:
+  </div>
+
+  <table class="emails-table">
+    <tr><th>Email</th><th>Onde aparece</th></tr>
+    <tr><td>rodgerkoller@flytofluency.com</td><td>Redes sociais</td></tr>
+    <tr><td>flytofluency.official@gmail.com</td><td>Redes sociais</td></tr>
+    <tr><td>rodgerkoller2018@gmail.com</td><td>Hotmart / Systeme.io</td></tr>
+    <tr><td>koller.institute@gmail.com</td><td>Instagram</td></tr>
+    <tr><td>onlineteacherkoller@gmail.com</td><td>Spotify / YouTube</td></tr>
+    <tr><td>crazykollers@gmail.com</td><td>YouTube (contato principal!)</td></tr>
+  </table>
+
+  <div class="fala">
+    Isso causa muita confusão pra quem quer entrar em contato contigo. A pessoa vê um email num lugar, outro email em outro lugar, e não sabe qual usar. E pior: você mesmo precisa ficar verificando vários emails pra não perder nenhuma mensagem.
+    <br><br>
+    Inclusive, o email que está configurado como contato principal no YouTube &mdash; que é talvez a tua maior rede pra captação de leads &mdash; é o <strong>crazykollers@gmail.com</strong>. Esse é o nome da tua marca antiga. Passa uma imagem amadora e desatualizada.
+    <br><br>
+    O que a gente propõe é simples: você define <strong>um único email oficial</strong> e a gente atualiza todas as redes e publicações ativas pra apontar somente pra ele.
+
+    <span class="pergunta">Qual email você quer manter como o oficial único?</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+</section>
+
+<!-- 5. LINKTREE → SITE -->
+<section>
+  <h2><span class="num">5</span> Linktree &rarr; Novo Site Profissional</h2>
+
+  <div class="fala">
+    <span class="instrucao instrucao-mostrar">ABRIR O LINKTREE DELE NA TELA</span>
+    <br>
+    Rodger, dá uma olhada aqui no teu Linktree atual. Percebe como o visual é amador? Os textos estão sendo cortados nos cards, não transmite profissionalismo nem confiança. Isso não é a cara de quem tem certificação Cambridge e 34 mil alunos.
+    <br><br>
+    A nossa recomendação é <strong>deletar o Linktree</strong>. Todo o tráfego das tuas redes sociais deve ser enviado pra um único lugar: o teu <strong>novo site profissional</strong>.
+    <br><br>
+    <span class="instrucao instrucao-mostrar">ABRIR A PRÉVIA DO SITE NA TELA</span>
+    <br>
+    E esse site a gente já criou. Olha só. Ele é rápido, profissional, e feito pra converter visitante em aluno. Tudo o que o Linktree faz, o site faz melhor &mdash; e muito mais.
+    <br><br>
+    Antes de seguir, preciso te perguntar:
+
+    <span class="pergunta">O grupo do Telegram e o grupo do WhatsApp que você mencionava nos vídeos, eles ainda estão ativos? Você ainda utiliza? Porque se sim, a gente integra eles diretamente dentro do site.</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    E aquele vídeo de depoimentos que você tem, junto com os depoimentos dos compradores do curso na Hotmart &mdash; tudo isso vai ser inserido diretamente dentro do site também.
+  </div>
+</section>
+
+<!-- 6. THREADS -->
+<section>
+  <h2><span class="num">6</span> Threads</h2>
+
+  <div class="fala">
+    No Threads a correção é rápida: a descrição do teu perfil lá precisa ficar <strong>idêntica à do Instagram</strong>. Mesma bio corrigida, mesmo link. Congruência total entre as plataformas.
+  </div>
+</section>
+
+<!-- 7. YOUTUBE -->
+<section>
+  <h2><span class="num">7</span> YouTube</h2>
+
+  <div class="fala">
+    Agora vamos pro YouTube, que é a tua rede com <strong>32 mil inscritos</strong> e o principal canal de captação. A descrição do canal hoje é só <em>"Intercâmbio na Irlanda"</em>. Só isso. Não menciona site, curso, contato, qualificações &mdash; nada. Quem entra no canal não sabe o que você oferece nem como entrar em contato.
+    <br><br>
+    E como eu já mencionei, o email de contato configurado lá é o <strong>crazykollers@gmail.com</strong> &mdash; marca antiga, amador. Isso precisa mudar.
+    <br><br>
+    A gente já preparou uma descrição nova e completa. Olha só:
+  </div>
+
+  <div class="copy-box">
+    <span class="copy-box-label">Nova descrição do YouTube</span>
+Aqui você aprende inglês de verdade, com quem vive o idioma na prática. Sou professor certificado pela Universidade de Cambridge (CPE | CELTA), moro na Irlanda, e já ajudei mais de 34.000 alunos a destravarem a fluência.
+
+Toda semana tem conteúdo novo de pronúncia, vocabulário e conversação real. Mas se você quer dar o próximo passo e aprender com o meu método completo...
+
+👇 ACESSE O MEU SITE OFICIAL:
+[LINK DO SITE AQUI]
+
+Lá você vai encontrar:
+✅ Meu Curso Completo (Método Koller)
+✅ Aulas Particulares e Mentoria VIP
+✅ Contato direto para falar comigo no WhatsApp
+
+Inscreva-se no canal e Let's fly to fluency! 🚀</div>
+</section>
+
+<!-- 8. HOTMART -->
+<section>
+  <h2><span class="num">8</span> Hotmart &mdash; Curso Offline</h2>
+
+  <div class="fala">
+    Rodger, esse ponto aqui é sério. O teu curso <strong>"Curso de Inglês Definitivo [Método Koller]"</strong> na Hotmart está com status de <strong>produto indisponível</strong>. Quem entra lá pra comprar simplesmente não consegue. Só aparece um formulário de lista de espera.
+    <br><br>
+    E olha, o curso tem <strong>4.8 estrelas</strong> e <strong>13 reviews positivos</strong>. É uma prova social excelente que está sendo completamente desperdiçada.
+
+    <span class="pergunta">Esse curso ainda está ativo? Você ainda deseja vendê-lo ou tem algum outro?</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    Se sim, o que a gente faz é: personalizar a thumbnail pra ficar mais chamativa, criar uma descrição melhor se precisar, e integrar o link de compra diretamente dentro do teu novo site. Assim quem quer comprar tem o caminho limpo e direto.
+  </div>
+</section>
+
+<!-- 9. X / TWITTER -->
+<section>
+  <h2><span class="num">9</span> X / Twitter</h2>
+
+  <div class="fala">
+    No X, a descrição do teu perfil também precisa ser atualizada pra manter congruência com as outras redes. Mas antes disso:
+
+    <span class="pergunta">O X/Twitter é uma rede social ativa e importante pra você? Porque se não for, é melhor desativar do que ter um perfil abandonado poluindo a tua presença online.</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+</section>
+
+<!-- 10. FACEBOOK -->
+<section>
+  <h2><span class="num">10</span> Facebook</h2>
+
+  <div class="fala">
+    O Facebook tá bem crítico. As informações estão totalmente desatualizadas: <strong>sem descrição, sem site, sem formas de contato</strong>.
+    <br><br>
+    Nas informações de contato constam <strong>dois @ do X/Twitter</strong> &mdash; um não funciona e o outro tá sem foto, parece desativado. E os únicos links disponíveis são o do Instagram e do YouTube, sendo que o do YouTube tá escondido. Não tem site, não tem email pra contato, não tem WhatsApp. Os emails só aparecem soltos na descrição de alguns posts.
+    <br><br>
+    A gente vai atualizar tudo: adicionar descrição, link do novo site, o email oficial único e o WhatsApp.
+  </div>
+</section>
+
+<!-- 11. SEO / GOOGLE -->
+<section>
+  <h2><span class="num">11</span> SEO / Google &mdash; Invisível na Pesquisa</h2>
+
+  <div class="fala">
+    Esse aqui talvez seja o ponto mais crítico de todos. Rodger, quando alguém pesquisa o teu nome no Google &mdash; "Rodger Koller" &mdash; <strong>não aparece nada</strong>. Se pesquisar "Fly to Fluency curso", nada. "Rodger Koller inglês", nada. Só aparece alguma coisa se a pessoa pesquisar especificamente por "MÉTODO KOLLER curso".
+    <br><br>
+    Isso significa que você está <strong>perdendo vendas todos os dias</strong>. Uma pessoa ouve falar de você, vai no Google pesquisar, e simplesmente não te encontra. Ela desiste e vai procurar outro professor.
+    <br><br>
+    Com o novo site, o Google Meu Negócio e a estratégia de SEO que a AutomaWeb faz, o teu nome vai aparecer no Google com site profissional, informações completas e link direto pro curso.
+  </div>
+</section>
+
+<!-- 12. BRANDING -->
+<section>
+  <h2><span class="num">12</span> Branding &mdash; Unificar a Marca</h2>
+
+  <div class="fala">
+    Outro ponto que impacta muito: hoje existe uma <strong>fragmentação total</strong> na tua marca. O curso se chama <strong>"Método Koller"</strong>, o canal do YouTube é <strong>"Fly to Fluency"</strong>, as redes sociais têm outros nomes, e ainda resta o antigo <strong>"Crazy Koller"</strong> no Patreon e no Spotify. São pelo menos <strong>5 nomes diferentes</strong> pra mesma pessoa.
+    <br><br>
+    Isso é muito confuso pro cliente. Não gera autoridade. A pessoa esquece rápido quando cada canal tem um nome diferente. Precisa ser tudo um nome só, em todo lugar.
+
+    <span class="pergunta">Qual é o nome oficial da marca que você quer manter e divulgar? MÉTODO KOLLER ou Fly to Fluency? A gente precisa unificar em todas as plataformas.</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+</section>
+
+<!-- 13. PERGUNTAS FINAIS -->
+<section>
+  <h2><span class="num">13</span> Perguntas Finais</h2>
+
+  <div class="fala">
+    Rodger, antes de ir pro que a gente oferece, tenho mais algumas perguntas rápidas pra garantir que a gente não deixe nada de fora:
+
+    <span class="pergunta">O Systeme.io que você usava pra distribuir os PDFs gratuitos nos vídeos do YouTube &mdash; você tirou do ar ou a plataforma bloqueou? Porque todos os links de PDF dos 412 vídeos estão mortos.</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    <span class="pergunta">Qual era o preço do curso "Definitivo" na Hotmart? Precisamos dessa informação pra colocar no site.</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    <span class="pergunta">Quais são as redes sociais que você utiliza ativamente hoje? Porque a gente recomenda focar só nessas e descartar as outras. Ter rede social abandonada só gera confusão. Claro que fica ao seu critério abandonar ou não as que geram pouco engajamento.</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    <span class="pergunta">Existe alguma outra rede social que você ainda utiliza ou que está parada mas precisa de correção? Essas que a gente mostrou foram todas as que encontramos na análise.</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    <span class="pergunta">Você já anuncia em alguma plataforma? Quanto investe em tráfego pago atualmente?</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    <span class="pergunta">Tem número de WhatsApp dedicado pro negócio? A gente precisa disso pro site e pra automação.</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    <span class="pergunta">E por último: qual é o teu foco principal agora? O que mais importa pra você nesse momento?</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+
+  <div class="fala">
+    <span class="pergunta">O que mais te incomoda hoje? O que você sente que é sua maior dificuldade no seu negócio?</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+</section>
+
+<!-- 14. O QUE A AUTOMAWEB OFERECE -->
+<section>
+  <h2><span class="num">14</span> O que a AutomaWeb oferece</h2>
+
+  <div class="fala">
+    Rodger, tudo o que a gente mostrou até agora &mdash; cada problema, cada correção, cada sugestão &mdash; já demonstra o valor que a AutomaWeb entrega <strong>antes mesmo de fechar contrato</strong>. Essa análise inteira foi feita de graça pra você.
+    <br><br>
+    Agora vou te mostrar o pacote completo do que a gente oferece:
+  </div>
+
+  <div class="offer-box">
+    <ul>
+      <li><strong>Análise aprofundada e correção de todas as redes sociais</strong> &mdash; bio, destaques, links, emails, visual. Tudo padronizado e profissional.</li>
+      <li><strong>Landing page de alta conversão</strong> &mdash; o site profissional que você já viu, pronto, rápido, otimizado pra captar alunos e vender o curso.</li>
+      <li><strong>Carrosséis automáticos</strong> &mdash; conteúdo pronto pra postar nas redes sociais <strong>4 vezes por semana durante 6 meses grátis</strong>.</li>
+      <li><strong>Google Meu Negócio</strong> &mdash; implementação ou ajuste do teu negócio na maior rede de pesquisa do mundo. Finalmente aparecer no Google.</li>
+      <li><strong>Bônus de R$1.000 em tráfego pago</strong> &mdash; gestão completa de anúncios otimizados pela AutomaWeb pra impulsionar, arrecadar seguidores e engajamento no Instagram e Facebook.</li>
+      <li><strong>Acesso vitalício ao Dashboard da AutomaWeb</strong> pra análise de métricas e acompanhamento de resultados.</li>
+      <li><strong>15 dias de teste gratuito</strong> &mdash; todas as funcionalidades da nova landing page com direito a ajustes e implementações grátis. Após o período de teste, o valor mínimo pra ajuste passa a ser R$250, podendo aumentar conforme a complexidade. Por exemplo, se no futuro você precisar de uma integração de rastreio dos Correios, já seria algo mais complexo.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 15. FECHAMENTO -->
+<section>
+  <h2><span class="num">15</span> Fechamento</h2>
+
+  <div class="fala">
+    Rodger, resumindo: hoje você tem <strong>34 mil inscritos</strong>, <strong>412 vídeos</strong>, certificação <strong>Cambridge</strong> e um curso com <strong>4.8 estrelas</strong>. Você já fez a parte mais difícil &mdash; construir a audiência e a credibilidade. Mas não existe nenhum caminho funcional do conteúdo até o pagamento. O funil de captação no Systeme.io tá bloqueado e o curso na Hotmart tá indisponível. Os dois estão mortos ao mesmo tempo.
+    <br><br>
+    A AutomaWeb resolve tudo isso: presença online unificada, site profissional, conteúdo automatizado, SEO, tráfego pago e acompanhamento. Você só precisa continuar fazendo o que faz de melhor &mdash; ensinar inglês. A parte digital fica com a gente.
+
+    <span class="pergunta">Faz sentido pra você? Podemos te mostrar nossas propostas dos 2 planos que oferecemos hoje, que são o básico e o completo, e tudo que eles abordam?</span>
+  </div>
+  <div class="answer-space" contenteditable="true"></div>
+</section>
+
+<footer>
+  AutomaWeb &mdash; Documento interno de uso exclusivo para a call com Rodger Koller &bull; Junho 2026
+</footer>
+
+</body>
+</html>
