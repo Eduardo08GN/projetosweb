@@ -30,8 +30,12 @@ Rota que recebe eventos da Meta (comentarios em posts) e dispara DM automatica c
 **Requisitos absorvidos do benchmark ManyChat (auditoria 12/06/2026)** —
 lacunas do schema atual que precisam entrar junto com o webhook:
 
-- `AutomacaoDM.gatilho` (COMENTARIO | STORY | DM) + `postId` opcional pra
-  limitar a um post especifico — hoje a keyword nao tem origem nem escopo
+- `AutomacaoDM.gatilho` (COMENTARIO | STORY_RESPOSTA | STORY_MENCAO |
+  LIVE_COMENTARIO | DM | INICIO_CONVERSA) + `postId` opcional pra limitar a
+  um post especifico — hoje a keyword nao tem origem nem escopo.
+  Mencao em story (cliente marcado por alguem) e comentario em live sao
+  gatilhos distintos da resposta a story; INICIO_CONVERSA e o botao de
+  "ice breaker" que aparece quando alguem abre o chat pela primeira vez
 - `AutomacaoDM.respostasPublicas` (Json, ~5 variacoes): quando o gatilho e
   comentario, responder o comentario publicamente com variacao sorteada
   ("Te mandei no direct" etc.) — resposta identica em massa = risco de bloqueio
@@ -42,6 +46,19 @@ lacunas do schema atual que precisam entrar junto com o webhook:
 - Matching case-insensitive + aceitar singular/plural da keyword
 - Pequeno delay com jitter antes de responder (parecer organico, respeitar rate limit)
 - Respeitar a janela de 24h da Meta pra mensagens de follow-up
+- Keyword "EU QUERO" esta batida: o Instagram reconhece o padrao e isso pode
+  degradar a entrega. Cada tenant deve usar keyword propria do nicho (ex.:
+  SORRISO, AGENDA) — vale ja HOJE nos CTAs dos carrosseis da fabrica
+- A primeira DM automatica cai em "Solicitacoes" se a pessoa nunca conversou
+  com o perfil; a resposta publica ao comentario deve avisar ("confere nas
+  solicitacoes") pra mensagem nao morrer invisivel
+
+**v2 da fase 2 (depois do webhook basico no ar) — sequencia de reengajamento:**
+entrega de conteudo em gotas (apos X min/horas/dias) pra quem interagiu, tipo
+"dica 1 em 3min, dica 2 em 1 dia". Regras de entrega da Meta: sem interacao
+do usuario, mensagens com mais de ~7 dias de intervalo podem simplesmente nao
+chegar — sequencias curtas, sempre ancoradas na ultima interacao. Modelagem:
+tabela SequenciaDM (passos com offset de tempo) + job no scheduler que ja existe.
 
 Fora de escopo (e do nosso produto): CRM completo do ManyChat — tags, campos
 customizados, segmentos, broadcast, caixa de entrada omnichannel. InteracaoDM
