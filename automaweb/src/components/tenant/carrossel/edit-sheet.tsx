@@ -113,7 +113,8 @@ export function EditSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="overflow-y-auto bg-white sm:max-w-md"
+        // mobile: tela inteira (edicao e tarefa imersiva); desktop: painel lateral
+        className="w-full overflow-y-auto bg-white sm:w-3/4 sm:max-w-md"
       >
         <SheetHeader>
           <SheetTitle className="text-sm font-semibold text-[#09090B]">
@@ -137,7 +138,7 @@ export function EditSheet({
                     setCurrent(i);
                     setCropFile(null);
                   }}
-                  className={`relative h-16 w-[51px] shrink-0 overflow-hidden rounded-md border transition-colors duration-150 ${
+                  className={`relative h-20 w-16 shrink-0 overflow-hidden rounded-md border transition-colors duration-150 sm:h-16 sm:w-[51px] ${
                     current === i
                       ? "border-[#18181B]"
                       : "border-[#E4E4E7] opacity-70 hover:opacity-100"
@@ -148,7 +149,7 @@ export function EditSheet({
                     <SlideImage
                       src={slide}
                       alt=""
-                      sizes="51px"
+                      sizes="64px"
                       versao={versao}
                       className="object-cover"
                     />
@@ -215,7 +216,7 @@ export function EditSheet({
               onChange={(e) => setTexto(e.target.value)}
               placeholder="Escreva como o texto deve ficar"
               rows={3}
-              className="mt-1.5 w-full resize-none rounded-lg border border-[#E4E4E7] bg-white px-3.5 py-3 text-sm text-[#09090B] outline-none transition-colors duration-150 placeholder:text-[#D4D4D8] focus:border-[#18181B]"
+              className="mt-1.5 w-full resize-none rounded-lg border border-[#E4E4E7] bg-white px-3.5 py-3 text-base text-[#09090B] outline-none transition-colors duration-150 placeholder:text-[#D4D4D8] focus:border-[#18181B] sm:text-sm"
             />
           </div>
 
