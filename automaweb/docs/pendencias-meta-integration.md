@@ -27,6 +27,26 @@ Rota que recebe eventos da Meta (comentarios em posts) e dispara DM automatica c
 - Envio de DM via `instagram_manage_messages`
 - Deduplicacao (1 mensagem por usuario por keyword)
 
+**Requisitos absorvidos do benchmark ManyChat (auditoria 12/06/2026)** —
+lacunas do schema atual que precisam entrar junto com o webhook:
+
+- `AutomacaoDM.gatilho` (COMENTARIO | STORY | DM) + `postId` opcional pra
+  limitar a um post especifico — hoje a keyword nao tem origem nem escopo
+- `AutomacaoDM.respostasPublicas` (Json, ~5 variacoes): quando o gatilho e
+  comentario, responder o comentario publicamente com variacao sorteada
+  ("Te mandei no direct" etc.) — resposta identica em massa = risco de bloqueio
+- Fluxo de confirmacao em 2 etapas: primeira DM pede confirmacao com botao
+  ("Toca aqui que te mando"), o clique libera o conteudo. Compliance da Meta:
+  o usuario interage antes de receber o link. Conta na aprovacao da fase 2
+- DM final com botao estruturado (`linkUrl` + `linkLabel`), nao link cru no texto
+- Matching case-insensitive + aceitar singular/plural da keyword
+- Pequeno delay com jitter antes de responder (parecer organico, respeitar rate limit)
+- Respeitar a janela de 24h da Meta pra mensagens de follow-up
+
+Fora de escopo (e do nosso produto): CRM completo do ManyChat — tags, campos
+customizados, segmentos, broadcast, caixa de entrada omnichannel. InteracaoDM
+ja registra igUserId/username; visao de contatos pode derivar disso depois.
+
 **Depende de:** aprovacao fase 2 na Meta (permissoes `instagram_manage_comments`, `instagram_manage_messages`, `pages_manage_metadata`)
 
 ### 2. WhatsApp Business Integration
