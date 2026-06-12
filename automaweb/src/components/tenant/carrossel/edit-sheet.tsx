@@ -113,8 +113,7 @@ export function EditSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        // mobile: tela inteira (edicao e tarefa imersiva); desktop: painel lateral
-        className="w-full overflow-y-auto bg-white sm:w-3/4 sm:max-w-md"
+        className="overflow-y-auto bg-white sm:max-w-md"
       >
         <SheetHeader>
           <SheetTitle className="text-sm font-semibold text-[#09090B]">
