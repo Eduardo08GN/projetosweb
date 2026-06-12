@@ -15,15 +15,15 @@ export type EmailPronto = { subject: string; html: string };
 type Cta = { label: string; url: string };
 
 function paragrafo(texto: string) {
-  return `<p style="margin:0 0 14px;font-family:${FONTE};font-size:14px;line-height:1.65;color:#52525B;">${texto}</p>`;
+  return `<p style="margin:0 0 14px;font-family:${FONTE};font-size:15px;line-height:1.7;color:#3F3F46;">${texto}</p>`;
 }
 
 function caixaInfo(linhas: Array<[string, string]>) {
   const rows = linhas
     .map(
       ([label, valor], i) => `
-        <p style="margin:${i === 0 ? "0" : "14px"} 0 3px;font-family:${FONTE};font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#A1A1AA;">${label}</p>
-        <p style="margin:0;font-family:${FONTE};font-size:14px;font-weight:600;color:#09090B;">${valor}</p>`
+        <p style="margin:${i === 0 ? "0" : "14px"} 0 3px;font-family:${FONTE};font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#71717A;">${label}</p>
+        <p style="margin:0;font-family:${FONTE};font-size:15px;font-weight:600;color:#09090B;">${valor}</p>`
     )
     .join("");
   return `
@@ -85,23 +85,29 @@ function layout({
           </tr>
           <tr>
             <td style="background-color:#FFFFFF;border:1px solid #E4E4E7;border-radius:14px;padding:40px;">
-              <p style="margin:0 0 12px;font-family:${FONTE};font-size:11px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:#A1A1AA;">${eyebrow}</p>
+              <p style="margin:0 0 12px;font-family:${FONTE};font-size:11px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:#71717A;">${eyebrow}</p>
               <h1 style="margin:0 0 18px;font-family:${FONTE};font-size:22px;line-height:1.35;font-weight:600;color:#09090B;">${titulo}</h1>
               ${corpo}
               ${cta ? botao(cta) : ""}
             </td>
           </tr>
           <tr>
-            <td style="padding:30px 6px 0;">
-              <p style="margin:0 0 4px;font-family:${FONTE};font-size:13px;font-weight:600;color:#52525B;">AutomaWeb</p>
-              <p style="margin:0 0 12px;font-family:${FONTE};font-size:12px;line-height:1.6;color:#A1A1AA;">Sites, conteudo e presenca digital para o seu negocio.</p>
-              <p style="margin:0 0 12px;font-family:${FONTE};font-size:12px;color:#A1A1AA;">
-                <a href="${SITE}" target="_blank" style="color:#71717A;text-decoration:none;">automaweb.pro</a>
-                &nbsp;&middot;&nbsp;
-                <a href="mailto:contato@automaweb.pro" style="color:#71717A;text-decoration:none;">contato@automaweb.pro</a>
-              </p>
-              <p style="margin:0 0 6px;font-family:${FONTE};font-size:11px;line-height:1.6;color:#A1A1AA;">${motivo}</p>
-              <p style="margin:0;font-family:${FONTE};font-size:11px;color:#A1A1AA;">&copy; ${ano} AutomaWeb &middot; Contagem, MG, Brasil &middot; Todos os direitos reservados.</p>
+            <td style="padding:36px 6px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-top:1px solid #E4E4E7;padding-top:30px;">
+                    <img src="${LOGO}" alt="AutomaWeb" height="16" style="display:block;border:0;height:16px;width:auto;margin:0 0 14px;">
+                    <p style="margin:0 0 20px;font-family:${FONTE};font-size:13px;line-height:1.7;color:#71717A;max-width:400px;">Sites, conteudo e presenca digital cuidados de ponta a ponta para o seu negocio.</p>
+                    <p style="margin:0 0 26px;font-family:${FONTE};font-size:13px;">
+                      <a href="${SITE}" target="_blank" style="font-weight:600;color:#3F3F46;text-decoration:none;">automaweb.pro</a>
+                      <span style="color:#D4D4D8;">&nbsp;&nbsp;&#124;&nbsp;&nbsp;</span>
+                      <a href="mailto:contato@automaweb.pro" style="font-weight:600;color:#3F3F46;text-decoration:none;">contato@automaweb.pro</a>
+                    </p>
+                    <p style="margin:0 0 6px;font-family:${FONTE};font-size:11px;line-height:1.7;color:#A1A1AA;">${motivo}</p>
+                    <p style="margin:0;font-family:${FONTE};font-size:11px;letter-spacing:0.3px;color:#A1A1AA;">&copy; ${ano} AutomaWeb &middot; Contagem, MG &middot; Brasil</p>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
@@ -254,42 +260,68 @@ export function emailConexaoVencida(): EmailPronto {
   };
 }
 
-export function emailPlanoVencendo({ dias }: { dias: number }): EmailPronto {
+export function emailPlanoVencendo({
+  dias,
+  linkPagamento,
+}: {
+  dias: number;
+  linkPagamento?: string | null;
+}): EmailPronto {
   const prazo = dias <= 1 ? "amanha" : `em ${dias} dias`;
   return {
     subject: `Seu plano vence ${prazo}`,
     html: layout({
-      preheader: "Renove e suas publicacoes seguem sem pausa.",
+      preheader: linkPagamento
+        ? "Pague com Pix ou cartao e tudo segue sem pausa."
+        : "Renove e suas publicacoes seguem sem pausa.",
       eyebrow: "Seu plano",
       titulo: "Seu periodo incluso esta chegando ao fim",
       corpo:
         paragrafo(
           `O periodo incluso no seu pacote vence ${prazo}. Depois dessa data, as publicacoes automaticas entram em espera.`
         ) +
-        paragrafo(
-          "Pra seguir sem pausa, escolha um plano de continuidade no seu painel ou fale com a gente. Leva um minuto."
-        ),
-      cta: { label: "Ver planos no painel", url: `${SITE}/tenant/conta` },
+        (linkPagamento
+          ? paragrafo(
+              "Seu link de pagamento ja esta pronto: da pra pagar com Pix ou cartao em menos de um minuto e tudo segue sem pausa."
+            )
+          : paragrafo(
+              "Pra seguir sem pausa, escolha um plano de continuidade no seu painel ou fale com a gente. Leva um minuto."
+            )),
+      cta: linkPagamento
+        ? { label: "Pagar com Pix ou cartao", url: linkPagamento }
+        : { label: "Ver planos no painel", url: `${SITE}/tenant/conta` },
       motivo: "Voce recebeu este aviso porque seu plano na AutomaWeb esta perto de vencer.",
     }),
   };
 }
 
-export function emailPlanoVencido(): EmailPronto {
+export function emailPlanoVencido({
+  linkPagamento,
+}: {
+  linkPagamento?: string | null;
+} = {}): EmailPronto {
   return {
     subject: "Seu plano venceu, suas publicacoes vao pausar",
     html: layout({
-      preheader: "Regularize em poucos dias e nada para.",
+      preheader: linkPagamento
+        ? "Pague com Pix ou cartao e nada para."
+        : "Regularize em poucos dias e nada para.",
       eyebrow: "Acao necessaria",
       titulo: "Seu periodo incluso terminou",
       corpo:
         paragrafo(
           "O periodo incluso no seu pacote venceu. Suas publicacoes seguem por mais alguns dias e depois entram em espera automaticamente."
         ) +
-        paragrafo(
-          "Escolha um plano de continuidade no seu painel ou fale com a gente pra manter tudo rodando."
-        ),
-      cta: { label: "Regularizar agora", url: `${SITE}/tenant/conta` },
+        (linkPagamento
+          ? paragrafo(
+              "Pra manter tudo rodando, e so pagar pelo link abaixo: aceita Pix ou cartao e a confirmacao e na hora."
+            )
+          : paragrafo(
+              "Escolha um plano de continuidade no seu painel ou fale com a gente pra manter tudo rodando."
+            )),
+      cta: linkPagamento
+        ? { label: "Pagar agora", url: linkPagamento }
+        : { label: "Regularizar agora", url: `${SITE}/tenant/conta` },
       motivo: "Voce recebeu este aviso porque seu plano na AutomaWeb venceu.",
     }),
   };

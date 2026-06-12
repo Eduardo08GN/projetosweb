@@ -5,6 +5,7 @@ import { db } from "./db";
 import { publishToInstagram } from "./instagram";
 import { r2Delete, r2KeyFromUrl } from "./r2";
 import { notifyMasters, notifyTenant } from "./email";
+import { getInvoiceUrl } from "./asaas";
 import {
   emailConexaoVencendo,
   emailConexaoVencida,
@@ -222,7 +223,13 @@ async function vigiarPlanos() {
       status: "ATIVO",
       planoValidoAte: { gt: agora, lte: em7dias },
     },
-    select: { id: true, name: true, planoValidoAte: true, planoAvisoDias: true },
+    select: {
+      id: true,
+      name: true,
+      planoValidoAte: true,
+      planoAvisoDias: true,
+      asaasSubscriptionId: true,
+    },
   });
   for (const tenant of vencendo) {
     const dias = Math.ceil(
@@ -232,7 +239,11 @@ async function vigiarPlanos() {
     if (tenant.planoAvisoDias !== null && tenant.planoAvisoDias <= faixa) continue;
 
     console.log(`[robo] Plano do ${tenant.name} vence em ${dias} dia(s). Avisando`);
-    const aviso = emailPlanoVencendo({ dias });
+    // se o cliente tem assinatura, o email leva o link de pagamento direto
+    const linkPagamento = tenant.asaasSubscriptionId
+      ? await getInvoiceUrl(tenant.asaasSubscriptionId).catch(() => null)
+      : null;
+    const aviso = emailPlanoVencendo({ dias, linkPagamento });
     await notifyTenant(tenant.id, aviso.subject, aviso.html);
     await db.tenant.update({
       where: { id: tenant.id },
@@ -246,13 +257,16 @@ async function vigiarPlanos() {
       status: "ATIVO",
       planoValidoAte: { lte: agora, gt: limiteCarencia },
     },
-    select: { id: true, name: true, planoAvisoDias: true },
+    select: { id: true, name: true, planoAvisoDias: true, asaasSubscriptionId: true },
   });
   for (const tenant of vencidos) {
     if (tenant.planoAvisoDias !== null && tenant.planoAvisoDias <= 0) continue;
 
     console.warn(`[robo] Plano do ${tenant.name} venceu. Carencia de ${CARENCIA_DIAS} dias`);
-    const aviso = emailPlanoVencido();
+    const linkPagamento = tenant.asaasSubscriptionId
+      ? await getInvoiceUrl(tenant.asaasSubscriptionId).catch(() => null)
+      : null;
+    const aviso = emailPlanoVencido({ linkPagamento });
     await notifyTenant(tenant.id, aviso.subject, aviso.html);
     await db.tenant.update({
       where: { id: tenant.id },
