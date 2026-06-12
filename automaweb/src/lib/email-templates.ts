@@ -100,11 +100,9 @@ function layout({
                     <p style="margin:0 0 20px;font-family:${FONTE};font-size:13px;line-height:1.7;color:#71717A;max-width:400px;">Sites, conteudo e presenca digital cuidados de ponta a ponta para o seu negocio.</p>
                     <p style="margin:0 0 26px;font-family:${FONTE};font-size:13px;">
                       <a href="${SITE}" target="_blank" style="font-weight:600;color:#3F3F46;text-decoration:none;">automaweb.pro</a>
-                      <span style="color:#D4D4D8;">&nbsp;&nbsp;&#124;&nbsp;&nbsp;</span>
-                      <a href="mailto:contato@automaweb.pro" style="font-weight:600;color:#3F3F46;text-decoration:none;">contato@automaweb.pro</a>
                     </p>
                     <p style="margin:0 0 6px;font-family:${FONTE};font-size:11px;line-height:1.7;color:#A1A1AA;">${motivo}</p>
-                    <p style="margin:0;font-family:${FONTE};font-size:11px;letter-spacing:0.3px;color:#A1A1AA;">&copy; ${ano} AutomaWeb &middot; Contagem, MG &middot; Brasil</p>
+                    <p style="margin:0;font-family:${FONTE};font-size:11px;letter-spacing:0.3px;color:#A1A1AA;">&copy; ${ano} AutomaWeb &middot; Todos os direitos reservados.</p>
                   </td>
                 </tr>
               </table>
