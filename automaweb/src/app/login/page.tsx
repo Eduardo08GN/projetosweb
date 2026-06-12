@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
+import { InstallAppButton } from "@/components/shared/install-app";
 
 const GOOGLE_ERRORS: Record<string, string> = {
   google_denied: "Login com Google cancelado",
@@ -150,6 +151,7 @@ function LoginForm() {
         <p className="mt-6 text-center text-xs text-[#A1A1AA]">
           Acesso restrito a clientes AutomaWeb
         </p>
+        <InstallAppButton />
       </motion.div>
     </div>
   );

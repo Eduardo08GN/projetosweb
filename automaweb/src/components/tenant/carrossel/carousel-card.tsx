@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { variants, transitions } from "@/lib/animations";
@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Download,
+  Loader2,
   Pencil,
 } from "lucide-react";
 import { siInstagram } from "simple-icons";
@@ -57,11 +58,23 @@ export type CarouselData = {
 
 function SlidePreview({ slides }: { slides: string[] }) {
   const [current, setCurrent] = useState(0);
+  const [prontas, setProntas] = useState<Record<number, boolean>>({});
   const isImage = slides[current]?.startsWith("http");
+
+  // pre-carrega os vizinhos: navegar nao mostra area vazia esperando o R2
+  useEffect(() => {
+    for (const i of [current + 1, current - 1]) {
+      const url = slides[i];
+      if (url?.startsWith("http")) {
+        const img = new window.Image();
+        img.src = url;
+      }
+    }
+  }, [current, slides]);
 
   return (
     <div className="relative">
-      <div className="h-64 w-full overflow-hidden rounded-lg bg-[#F4F4F5]">
+      <div className="relative h-64 w-full overflow-hidden rounded-lg bg-[#F4F4F5]">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -76,6 +89,9 @@ function SlidePreview({ slides }: { slides: string[] }) {
               <img
                 src={slides[current]}
                 alt={`Slide ${current + 1}`}
+                onLoad={() =>
+                  setProntas((p) => (p[current] ? p : { ...p, [current]: true }))
+                }
                 className="h-full w-full object-contain"
               />
             ) : (
@@ -85,6 +101,11 @@ function SlidePreview({ slides }: { slides: string[] }) {
             )}
           </motion.div>
         </AnimatePresence>
+        {isImage && !prontas[current] && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <Loader2 size={20} className="animate-spin text-[#A1A1AA]" />
+          </div>
+        )}
       </div>
 
       <div className="mt-2 flex items-center justify-between">

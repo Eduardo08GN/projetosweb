@@ -1,45 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { variants, transitions } from "@/lib/animations";
 import { Smartphone, Share, SquarePlus, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useInstallApp } from "@/components/shared/install-app";
 
 /* Card de instalacao do aplicativo na tela de inicio.
-   Android/Chrome: o navegador entrega o prompt nativo (um toque).
-   iPhone/iPad: Safari nao tem prompt, entao mostramos os 2 passos.
    Ja instalado (aberto pelo icone): vira confirmacao. */
 
-type BeforeInstallPromptEvent = Event & {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
-};
-
 export function InstallAppCard() {
-  const [instalado, setInstalado] = useState(false);
-  const [ios, setIos] = useState(false);
-  const [promptNativo, setPromptNativo] = useState<BeforeInstallPromptEvent | null>(null);
-
-  useEffect(() => {
-    setInstalado(window.matchMedia("(display-mode: standalone)").matches);
-    setIos(/iPhone|iPad|iPod/.test(navigator.userAgent));
-
-    function captura(e: Event) {
-      e.preventDefault();
-      setPromptNativo(e as BeforeInstallPromptEvent);
-    }
-    window.addEventListener("beforeinstallprompt", captura);
-    return () => window.removeEventListener("beforeinstallprompt", captura);
-  }, []);
-
-  async function instalar() {
-    if (!promptNativo) return;
-    await promptNativo.prompt();
-    const escolha = await promptNativo.userChoice;
-    if (escolha.outcome === "accepted") setInstalado(true);
-    setPromptNativo(null);
-  }
+  const { instalado, ios, promptNativo, instalar } = useInstallApp();
 
   return (
     <motion.div
