@@ -93,10 +93,9 @@ Modulo inteiro — nao existe nada no codigo hoje.
 
 ### 3. Variaveis de ambiente em producao
 
-Configurar no Coolify quando a aprovacao da Meta sair:
-
-- `META_APP_ID`
-- `META_APP_SECRET`
+- `META_APP_ID` e `META_APP_SECRET` — FEITO (12/06/2026, setadas no
+  Coolify e deploy rodado; valores vieram do app "AutomaWeb Carrossel",
+  ID 1672945567264311)
 
 Para WhatsApp (futuro):
 
@@ -108,6 +107,29 @@ Para WhatsApp (futuro):
 
 - **Fase 1** (Instagram publishing, 4 permissoes) — pronta pra submeter. Guia em `docs/guia-aprovacao-meta.md`
 - **Fase 2** (DM + messaging, 4 permissoes adicionais) — submeter so depois do webhook (item 1) estar construido e testado
+
+### 5. Melhoria futura — Instagram Login sem Pagina do Facebook
+
+O fluxo atual (Instagram Graph API via Facebook Login) exige de TODO
+tenant: conta profissional + Pagina do Facebook + vinculo entre os dois +
+quem conecta ser admin da Pagina. E o maior atrito do onboarding.
+
+A Meta tem uma trilha mais nova, **"Instagram API with Instagram Login"**,
+que elimina a Pagina: o cliente loga direto com a conta do Instagram e
+pronto. Permissoes proprias (`instagram_business_basic`,
+`instagram_business_content_publish`, `instagram_business_manage_messages`,
+`instagram_business_manage_comments`).
+
+Custo de migrar: reescrever OAuth (/api/meta/auth e callback), trocar os
+endpoints de publicacao (graph.instagram.com em vez de graph.facebook.com)
+e refazer o App Review nessa trilha. Limitacao conhecida: essa trilha nao
+cobre Facebook Messenger (`pages_messaging`) — se a automacao de DM do
+Facebook for requisito, a Pagina volta a ser necessaria pra essa parte.
+
+**Decisao:** nao trocar agora. Fase 1 e 2 seguem na trilha atual, que ja
+esta implementada e a caminho da aprovacao. Reavaliar quando o atrito de
+onboarding virar problema real (clientes travando no pre-requisito da
+Pagina) ou quando a fase 2 estiver aprovada e estavel.
 
 ---
 
