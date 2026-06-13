@@ -38,7 +38,10 @@ export function MobileTabBar({ items }: { items: NavItem[] }) {
 
   return (
     <nav
-      className="z-30 shrink-0 border-t border-[#E4E4E7] bg-white pb-[env(safe-area-inset-bottom)] lg:hidden"
+      // fixed em vez de item do flex: garante a barra visivel mesmo em
+      // WebView antigo sem suporte a dvh (altura do container colapsa e
+      // a barra ia parar abaixo do conteudo em paginas longas)
+      className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E4E4E7] bg-white pb-[env(safe-area-inset-bottom)] lg:hidden"
       style={{ boxShadow: "0 -1px 2px rgba(0,0,0,0.04)" }}
     >
       <div
