@@ -72,9 +72,50 @@ export async function GET(request: NextRequest) {
   const pagesData = await pagesRes.json();
   const pages: FacebookPage[] = pagesData.data ?? [];
 
-  if (pages.length === 0) return fail("no_page");
-
   const page = pages.find((p) => p.instagram_business_account) ?? null;
+
+  // DIAGNOSTICO TEMPORARIO (remover apos resolver a conexao do Lucas):
+  // grava no banco o que a Meta devolveu, sem tokens, pra entender por que
+  // a Pagina nao aparece em /me/accounts mesmo concedida no consentimento.
+  if (pages.length === 0 || !page?.instagram_business_account) {
+    try {
+      const me = await (
+        await fetch(`${GRAPH}/me?fields=id,name&access_token=${accessToken}`)
+      ).json();
+      const biz = await (
+        await fetch(
+          `${GRAPH}/me/businesses?fields=id,name&access_token=${accessToken}`
+        )
+      ).json();
+      const payload = {
+        tenantId,
+        reason: pages.length === 0 ? "no_page" : "no_ig",
+        longLivedOk: Boolean(longLivedData.access_token),
+        me: { id: me.id ?? null, name: me.name ?? null, error: me.error ?? null },
+        accountsError: pagesData.error ?? null,
+        pages: pages.map((p) => ({
+          id: p.id,
+          name: p.name,
+          hasIg: Boolean(p.instagram_business_account),
+        })),
+        businessesCount: Array.isArray(biz.data) ? biz.data.length : null,
+        businesses: Array.isArray(biz.data)
+          ? biz.data.map((b: { id: string; name: string }) => b.name)
+          : biz.error ?? null,
+      };
+      await db.$executeRawUnsafe(
+        `CREATE TABLE IF NOT EXISTS "_meta_debug" (id serial primary key, created timestamptz default now(), payload jsonb)`
+      );
+      await db.$executeRawUnsafe(
+        `INSERT INTO "_meta_debug"(payload) VALUES ($1::jsonb)`,
+        JSON.stringify(payload)
+      );
+    } catch {
+      // diagnostico nao pode quebrar o fluxo de erro
+    }
+  }
+
+  if (pages.length === 0) return fail("no_page");
   if (!page?.instagram_business_account) return fail("no_ig");
 
   const igUserId = page.instagram_business_account.id;
