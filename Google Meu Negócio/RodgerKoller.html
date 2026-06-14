@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia GBP — Rodger Koller | AutomaWeb</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --black: #0A0A0A;
+    --white: #FFFFFF;
+    --green: #2BF5A0;
+    --green-dark: #1FCC84;
+    --gray-50: #FAFAFA;
+    --gray-100: #F4F4F5;
+    --gray-200: #E4E4E7;
+    --gray-300: #D4D4D8;
+    --gray-500: #71717A;
+    --gray-700: #3F3F46;
+    --gray-900: #18181B;
+    --red: #EF4444;
+    --amber: #F59E0B;
+    --blue: #3B82F6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--gray-900);
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  @media print {
+    body { font-size: 11px; }
+    .page-break { page-break-before: always; }
+    .no-print { display: none; }
+    @page { margin: 1.5cm; }
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 32px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--black);
+    color: var(--white);
+    padding: 48px 32px;
+    text-align: center;
+    border-radius: 0 0 16px 16px;
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--green);
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .header h1 span { color: var(--green); }
+  .header p {
+    color: var(--gray-300);
+    font-size: 14px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .header-meta {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 12px;
+    color: var(--gray-500);
+  }
+  .header-meta strong { color: var(--green); }
+
+  /* SECTIONS */
+  .section {
+    margin-top: 40px;
+  }
+  .section-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--black);
+    color: var(--green);
+    font-weight: 800;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--gray-900);
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-bottom: 24px;
+    margin-left: 44px;
+  }
+
+  /* PRIORITY BADGES */
+  .priority {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .priority-critical { background: var(--red); color: white; }
+  .priority-high { background: var(--amber); color: var(--black); }
+  .priority-medium { background: var(--blue); color: white; }
+
+  /* STEPS */
+  .step {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .step-check {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--gray-300);
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--gray-900);
+  }
+  .step-body {
+    margin-left: 34px;
+    color: var(--gray-700);
+    font-size: 13px;
+  }
+  .step-body ul {
+    margin-top: 8px;
+    padding-left: 18px;
+  }
+  .step-body li {
+    margin-bottom: 4px;
+  }
+  .step-body li strong {
+    color: var(--gray-900);
+  }
+  .step-tip {
+    margin-top: 12px;
+    background: #ECFDF5;
+    border-left: 3px solid var(--green);
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 12px;
+    color: var(--gray-700);
+  }
+  .step-tip strong { color: var(--green-dark); }
+  .step-warning {
+    margin-top: 12px;
+    background: #FEF3C7;
+    border-left: 3px solid var(--amber);
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 12px;
+    color: var(--gray-700);
+  }
+  .step-warning strong { color: #B45309; }
+  .step-danger {
+    margin-top: 12px;
+    background: #FEF2F2;
+    border-left: 3px solid var(--red);
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 12px;
+    color: var(--gray-700);
+  }
+  .step-danger strong { color: var(--red); }
+  .step-example {
+    margin-top: 10px;
+    background: var(--white);
+    border: 1px dashed var(--gray-300);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--gray-700);
+    font-style: italic;
+  }
+
+  /* QUESTION FIELDS */
+  .question-block {
+    background: var(--white);
+    border: 2px solid var(--green);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .question-label {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+  }
+  .question-why {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  .question-field {
+    width: 100%;
+    min-height: 48px;
+    border: 1px dashed var(--gray-300);
+    border-radius: 8px;
+    padding: 12px;
+    background: var(--gray-50);
+    font-size: 13px;
+    color: var(--gray-500);
+  }
+  .question-field.tall { min-height: 80px; }
+
+  /* DIVIDERS */
+  .divider {
+    height: 1px;
+    background: var(--gray-200);
+    margin: 40px 0;
+  }
+
+  /* CLIENT SECTION */
+  .client-section {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+  }
+  .client-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .client-section-subtitle {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-bottom: 16px;
+  }
+
+  /* INFO TABLE */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  .info-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--gray-100);
+    font-weight: 600;
+    border-bottom: 1px solid var(--gray-200);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-500);
+  }
+  .info-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: top;
+  }
+  .info-table td:first-child {
+    font-weight: 600;
+    color: var(--gray-700);
+    width: 200px;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 48px;
+    padding: 24px 32px;
+    background: var(--black);
+    color: var(--gray-500);
+    border-radius: 16px 16px 0 0;
+    text-align: center;
+    font-size: 12px;
+  }
+  .footer strong { color: var(--green); }
+
+  /* COUNTER */
+  .counter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .counter-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .counter-card .number {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--green-dark);
+  }
+  .counter-card .label {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-700);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<div class="header">
+  <div class="header-badge">Documento Interno</div>
+  <h1>Guia GBP<br><span>Rodger Koller — Fly to Fluency</span></h1>
+  <p>Passo a passo completo para criar, otimizar e ranquear o Google Meu Negócio do cliente</p>
+  <div class="header-meta">
+    <span>Cliente: <strong>Rodger Koller</strong></span>
+    <span>Data: <strong>13/06/2026</strong></span>
+    <span>Por: <strong>AutomaWeb</strong></span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ============ RESUMO DO CLIENTE ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">i</span>
+    Dados do Cliente
+  </div>
+  <div class="section-subtitle">Informações conhecidas sobre o Rodger Koller para configurar o GBP</div>
+
+  <table class="info-table">
+    <tr><td>Nome / Marca</td><td><strong>Rodger Koller — Fly to Fluency &reg;</strong></td></tr>
+    <tr><td>Atividade</td><td>Professor de inglês online, tradutor, intérprete</td></tr>
+    <tr><td>Método</td><td>MÉTODO KOLLER — imersão, transformar alunos em "falantes ativos"</td></tr>
+    <tr><td>Certificações</td><td>CPE + CELTA (University of Cambridge) — Letras + Pós em Tradução (FMU)</td></tr>
+    <tr><td>Localização</td><td>São Paulo, SP</td></tr>
+    <tr><td>Alunos declarados</td><td>+34.000</td></tr>
+    <tr><td>YouTube</td><td>@RodgerKoller — 32.2K inscritos, 412 vídeos</td></tr>
+    <tr><td>Instagram</td><td>@rodgerkoller — 15.9K seguidores</td></tr>
+    <tr><td>E-mail comercial</td><td>koller.institute@gmail.com</td></tr>
+    <tr><td>Produto pago</td><td>Curso de Inglês Definitivo [Método Koller] — Hotmart (indisponível)</td></tr>
+    <tr><td>Site</td><td>Sem site funcional (Systeme.io bloqueado)</td></tr>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============ PERGUNTAS PARA O CLIENTE ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">?</span>
+    Perguntas para o Rodger
+  </div>
+  <div class="section-subtitle">Respostas necessárias antes de iniciar a configuração do GBP. Perguntar ao cliente e preencher.</div>
+
+  <div class="question-block">
+    <div class="question-label">1. Você já tem um perfil no Google Meu Negócio?</div>
+    <div class="question-why">Define se vamos criar do zero ou solicitar acesso a um perfil existente. Se sim, qual e-mail usou?</div>
+    <div class="question-field">Resposta: </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">2. Qual é o endereço do seu local de trabalho / estúdio / escritório?</div>
+    <div class="question-why">Endereço visível no GBP é um dos fatores mais importantes de ranqueamento. Mesmo que seja home office, precisamos de um endereço para o Google verificar e vincular ao mapa.</div>
+    <div class="question-field tall">Resposta: </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">3. Você atende alunos presencialmente ou só online?</div>
+    <div class="question-why">Define o tipo de empresa no GBP: "Serviço local" (vai até o aluno), "Loja física" (aluno vai até você), "Online" ou combinação. Também define a área de cobertura.</div>
+    <div class="question-field">Resposta: </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">4. Qual número de telefone/WhatsApp quer exibir no perfil?</div>
+    <div class="question-why">Consistência NAP: esse número precisa ser o mesmo no site, redes sociais, GBP e diretórios. Precisa ter WhatsApp ativo com alguém monitorando.</div>
+    <div class="question-field">Resposta: </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">5. Quais são seus horários de atendimento / disponibilidade?</div>
+    <div class="question-why">Perfis com horário definido ranqueiam melhor. Se o aluno pesquisa fora do horário, o Google pode priorizar concorrentes "abertos". Horários amplos são vantagem.</div>
+    <div class="question-field tall">Resposta: </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">6. Quais cidades/regiões você atende? (aulas online = Brasil todo? Exterior?)</div>
+    <div class="question-why">Define a área de cobertura no GBP e as palavras-chave geográficas que vamos usar na otimização.</div>
+    <div class="question-field">Resposta: </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">7. Além de aulas de inglês, quais serviços você oferece?</div>
+    <div class="question-why">Precisamos cadastrar todos os serviços no GBP (como produtos também, para aparecerem com foto). Ex: aulas particulares, curso online, tradução, interpretação, preparatório Cambridge, etc.</div>
+    <div class="question-field tall">Resposta: </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">8. Tem fotos profissionais ou do ambiente de trabalho? (estúdio, gravação, aulas)</div>
+    <div class="question-why">Fotos de qualidade aumentam CTR (cliques) e tempo no perfil — ambos são fatores de ranqueamento. Precisamos de no mínimo 10 fotos para o setup inicial.</div>
+    <div class="question-field">Resposta: </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">9. Tem alunos que poderiam deixar uma avaliação no Google nos primeiros dias?</div>
+    <div class="question-why">Avaliações são o maior fator de confiança do Google. Precisamos de um grupo inicial (5-10 alunos) para as primeiras avaliações com texto descritivo. Depois, 1-4 por semana de forma constante.</div>
+    <div class="question-field">Resposta: </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-label">10. Qual e-mail do Gmail quer usar para gerenciar o perfil?</div>
+    <div class="question-why">Cada perfil de GBP precisa de um Gmail. Pode ser o koller.institute@gmail.com ou criamos um dedicado. A AutomaWeb receberá acesso como administradora.</div>
+    <div class="question-field">Resposta: </div>
+  </div>
+</div>
+
+<div class="divider page-break"></div>
+
+<!-- ============ FASE 1: CRIAÇÃO E SETUP ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">1</span>
+    Criação e Setup do Perfil
+    <span class="priority priority-critical">Essencial</span>
+  </div>
+  <div class="section-subtitle">Responsabilidade 100% AutomaWeb — executar na primeira semana</div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">1.1 — Criar conta ou solicitar acesso</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>Se o Rodger <strong>não tem perfil:</strong> acessar business.google.com com o Gmail dele, clicar "Começar agora" e criar do zero</li>
+        <li>Se <strong>já tem perfil:</strong> usar o Método 1 (ele adiciona nosso e-mail como administrador via Configurações > Pessoas e acesso > Adicionar)</li>
+        <li>Se ele <strong>não sabe ou perdeu acesso:</strong> pesquisar o nome no Google Business, ver a prévia do e-mail, solicitar acesso — o Google libera em 5-7 dias com verificação</li>
+      </ul>
+      <div class="step-tip">
+        <strong>Boa prática:</strong> A AutomaWeb deve ser adicionada como <em>Administradora</em>, nunca como proprietária. O Rodger mantém a propriedade principal do perfil.
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">1.2 — Verificar o perfil com o Google</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li><strong>Por telefone/SMS</strong> (mais rápido): Google envia código para o celular cadastrado</li>
+        <li><strong>Por vídeo:</strong> Gravar fachada + interior do local de trabalho + área restrita</li>
+        <li><strong>Por carta:</strong> Código enviado por correio (até 12 dias — evitar se possível)</li>
+        <li><strong>Videochamada com suporte Google:</strong> Último recurso — exige presença física no local</li>
+      </ul>
+      <div class="step-warning">
+        <strong>Atenção:</strong> O perfil NÃO aparece publicamente até a verificação ser concluída. Pode levar até 5 dias úteis.
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">1.3 — Nome da empresa com keyword</div>
+    </div>
+    <div class="step-body">
+      <p>Configurar o nome comercial incluindo a palavra-chave principal de forma legítima:</p>
+      <div class="step-example">
+        <strong>Sugestão:</strong> "Fly to Fluency — Professor de Inglês | Rodger Koller"<br>
+        <strong>Alternativa:</strong> "Rodger Koller — Aulas de Inglês Online | Fly to Fluency"
+      </div>
+      <div class="step-danger">
+        <strong>Cuidado:</strong> O nome deve refletir a marca real. Keyword stuffing artificial (ex: "Professor de Inglês São Paulo Aulas Online Curso") causa suspensão do perfil.
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">1.4 — Categoria principal + categorias adicionais</div>
+    </div>
+    <div class="step-body">
+      <p>A categoria principal é o fator #1 de ranqueamento. Escolher a mais específica:</p>
+      <ul>
+        <li><strong>Principal:</strong> "Professor de inglês" ou "Escola de idiomas" (pesquisar qual aparece para concorrentes bem posicionados)</li>
+        <li><strong>Adicionais:</strong> "Escola de inglês", "Serviço de tradução", "Serviço de interpretação", "Tutor" (todas que se aplicam legitimamente)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">1.5 — Tipo de empresa e endereço</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li><strong>Tipo:</strong> Marcar "Varejo online" + "Serviços locais" (se atende online + presencial) — depende da resposta à pergunta 3</li>
+        <li><strong>Endereço:</strong> Inserir endereço real (mesmo que home office) — endereço visível ranqueia melhor que oculto</li>
+        <li><strong>Pino do mapa:</strong> Verificar se está exatamente no local correto após a criação</li>
+        <li><strong>Área de cobertura:</strong> Adicionar cidades/regiões atendidas (depende da resposta à pergunta 6)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">1.6 — Telefone e site</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li><strong>Telefone:</strong> Número com WhatsApp ativo e monitorado (resposta à pergunta 4)</li>
+        <li><strong>Site:</strong> URL da landing page que a AutomaWeb está criando</li>
+        <li>Se o site ainda não estiver pronto, deixar em branco e adicionar assim que publicar</li>
+      </ul>
+      <div class="step-tip">
+        <strong>Sinergia site + GBP:</strong> Um site com SEO bem feito é um dos fatores mais fortes para ranquear o perfil. O perfil puxa o site e o site puxa o perfil.
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">1.7 — Horários de funcionamento</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>Configurar horário real para cada dia da semana (resposta à pergunta 5)</li>
+        <li>Configurar horários especiais / feriados</li>
+        <li><strong>Importante:</strong> Se o perfil diz "aberto" e o cliente liga e ninguém responde, usuários reportam — prejudica o ranking</li>
+        <li>Horários amplos são vantagem: se o concorrente fecha às 18h e o Rodger atende até as 21h, o Google prioriza o Rodger em buscas noturnas</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider page-break"></div>
+
+<!-- ============ FASE 2: OTIMIZAÇÃO COMPLETA ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">2</span>
+    Otimização Completa do Perfil
+    <span class="priority priority-critical">Essencial</span>
+  </div>
+  <div class="section-subtitle">Responsabilidade 100% AutomaWeb — executar na primeira semana junto com a Fase 1</div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">2.1 — Descrição otimizada (até 750 caracteres)</div>
+    </div>
+    <div class="step-body">
+      <p>Escrever descrição com keywords naturais (2-3 vezes) + localização. Usar IA para gerar e depois refinar.</p>
+      <div class="step-example">
+        <strong>Modelo sugerido:</strong><br><br>
+        "O Fly to Fluency, do professor de inglês Rodger Koller, transforma alunos em falantes ativos com o exclusivo Método Koller — baseado em imersão total no idioma. Com certificação CPE e CELTA pela University of Cambridge e mais de 34.000 alunos formados, Rodger oferece aulas de inglês online para alunos de todo o Brasil, desde o nível básico até o avançado. Se você busca um professor de inglês com método comprovado e acompanhamento personalizado, o Fly to Fluency é a sua melhor escolha."
+      </div>
+      <p style="margin-top: 8px;"><strong>Keywords inseridas:</strong> professor de inglês (2x), aulas de inglês online, Método Koller, Cambridge, Fly to Fluency (2x)</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">2.2 — Serviços cadastrados com descrição</div>
+    </div>
+    <div class="step-body">
+      <p>Adicionar todos os serviços com descrição otimizada. Baseado no que sabemos do Rodger:</p>
+      <ul>
+        <li><strong>Aulas de inglês online</strong> — individuais e em grupo, do básico ao avançado</li>
+        <li><strong>Curso de Inglês Definitivo (Método Koller)</strong> — 6 módulos, imersão, acompanhamento pessoal</li>
+        <li><strong>Aulas particulares de inglês</strong> — personalizado por nível e objetivo</li>
+        <li><strong>Preparatório para exames de Cambridge</strong> — CPE, CAE, FCE</li>
+        <li><strong>Tradução</strong> — português-inglês, documentos e conteúdo</li>
+        <li><strong>Interpretação</strong> — eventos, reuniões, guia turístico</li>
+      </ul>
+      <p style="margin-top: 8px;">Confirmar lista com o Rodger (resposta à pergunta 7) e adicionar/remover conforme necessário.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">2.3 — Serviços duplicados como PRODUTOS (hack de visibilidade)</div>
+    </div>
+    <div class="step-body">
+      <p>Cadastrar os mesmos serviços também na seção de <strong>Produtos</strong>. Por quê?</p>
+      <ul>
+        <li>Serviços no GBP <strong>não mostram foto</strong> e não aparecem visualmente no perfil</li>
+        <li>Produtos <strong>mostram foto + título</strong> e aparecem no perfil com destaque</li>
+        <li>Cada produto deve ter: nome com keyword, foto de qualidade, descrição otimizada, link para o site</li>
+      </ul>
+      <div class="step-example">
+        <strong>Exemplo de produto:</strong><br>
+        Nome: "Aulas de Inglês Online — Método Koller"<br>
+        Descrição: "Aprenda inglês com o Método Koller do professor Rodger Koller. Aulas personalizadas do básico ao avançado com acompanhamento semanal."<br>
+        Foto: Rodger dando aula ou screenshot do ambiente de aula
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">2.4 — Fotos iniciais (mínimo 10)</div>
+    </div>
+    <div class="step-body">
+      <p>Upload do lote inicial de fotos. Fontes possíveis:</p>
+      <ul>
+        <li>Ambiente de gravação / estúdio (se tiver)</li>
+        <li>Screenshots de aulas ao vivo</li>
+        <li>Fotos do Rodger ensinando / gravando</li>
+        <li>Certificados Cambridge (CPE, CELTA)</li>
+        <li>Depoimentos visuais de alunos (se tiver)</li>
+        <li>Avatar/identidade visual da marca</li>
+      </ul>
+      <div class="step-tip">
+        <strong>SEO nas fotos:</strong> Renomear TODOS os arquivos com keywords antes do upload. O Google lê o nome do arquivo.<br>
+        Ex: <code>professor-de-ingles-rodger-koller-fly-to-fluency.jpg</code> em vez de <code>IMG_4523.jpg</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">2.5 — Logotipo e foto de capa</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li><strong>Logotipo:</strong> Logo do Fly to Fluency ou foto profissional do Rodger</li>
+        <li><strong>Foto de capa:</strong> Imagem com slogan ou diferenciais (ex: "CPE Cambridge | +34.000 alunos | Método Koller")</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">2.6 — Redes sociais vinculadas</div>
+    </div>
+    <div class="step-body">
+      <p>Adicionar links das redes ativas no perfil:</p>
+      <ul>
+        <li><strong>Instagram:</strong> instagram.com/rodgerkoller</li>
+        <li><strong>YouTube:</strong> youtube.com/@RodgerKoller</li>
+        <li><strong>Facebook:</strong> facebook.com/RodgerKoller</li>
+      </ul>
+      <p style="margin-top: 8px;">Não adicionar LinkedIn (abandonado) nem plataformas mortas (Spotify, Patreon).</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">2.7 — Atributos e informações complementares</div>
+    </div>
+    <div class="step-body">
+      <p>Preencher TODOS os campos disponíveis no perfil:</p>
+      <ul>
+        <li>Idiomas de atendimento: Português, Inglês, Espanhol</li>
+        <li>Opções de serviço: Atendimento online (sim)</li>
+        <li>Acessibilidade (se aplicável)</li>
+        <li>Necessidade de agendamento: Sim</li>
+        <li>Data de abertura da empresa</li>
+        <li>Qualquer outro campo que o Google disponibilizar para a categoria</li>
+      </ul>
+      <div class="step-tip">
+        <strong>Regra de ouro:</strong> Não deixar NENHUM campo em branco. Perfil 100% completo é base de tudo. A maioria dos concorrentes não preenche — isso é vantagem competitiva imediata.
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">2.8 — Link de agendamento</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>Adicionar link direto para WhatsApp (api.whatsapp.com/send?phone=55XXXXXXXXXXX) ou para página de agendamento no site</li>
+        <li>Facilita a conversão direta — aluno clica e já inicia contato</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">2.9 — Resgatar crédito de R$ 1.200 em Google Ads</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>Ao criar o perfil, o Google oferece crédito promocional para anúncios</li>
+        <li><strong>Sempre resgatar</strong> — é gratuito e pode ser usado para impulsionar o perfil nos primeiros meses</li>
+        <li>Mesmo que o Rodger não queira anunciar agora, vale guardar o crédito</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider page-break"></div>
+
+<!-- ============ FASE 3: SEO EXTERNO ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">3</span>
+    SEO Externo e Consistência NAP
+    <span class="priority priority-high">Alta Prioridade</span>
+  </div>
+  <div class="section-subtitle">Responsabilidade AutomaWeb — executar nas semanas 2-3</div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">3.1 — Definir e padronizar o NAP</div>
+    </div>
+    <div class="step-body">
+      <p>Definir o NAP oficial (Name, Address, Phone) e garantir que seja <strong>idêntico</strong> em todos os canais:</p>
+      <table class="info-table">
+        <tr><th>Canal</th><th>Deve conter o mesmo NAP</th></tr>
+        <tr><td>Google Meu Negócio</td><td>Nome + Endereço + Telefone</td></tr>
+        <tr><td>Site (rodapé + contato)</td><td>Nome + Endereço + Telefone</td></tr>
+        <tr><td>Instagram (bio)</td><td>Nome + Telefone/WhatsApp</td></tr>
+        <tr><td>YouTube (sobre)</td><td>Nome + contato</td></tr>
+        <tr><td>Facebook</td><td>Nome + Endereço + Telefone</td></tr>
+        <tr><td>Diretórios locais</td><td>Nome + Endereço + Telefone exatos</td></tr>
+      </table>
+      <div class="step-danger">
+        <strong>Erro fatal:</strong> Nome diferente em cada plataforma (Fly to Fluency no YT, Koller Institute no e-mail, Crazy Koller no Patreon, @rodgerkoller no IG). O Google não consegue associar como a mesma empresa. Precisamos unificar.
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">3.2 — Cadastrar em diretórios locais</div>
+    </div>
+    <div class="step-body">
+      <p>Cadastrar a empresa nos principais diretórios brasileiros (benefício triplo: consistência NAP + backlink + citação):</p>
+      <ul>
+        <li><strong>Telelistas.net</strong></li>
+        <li><strong>Apontador</strong></li>
+        <li><strong>Guia Mais</strong></li>
+        <li><strong>Yelp Brasil</strong></li>
+        <li>Diretórios de professores/escolas de idiomas (se existirem)</li>
+      </ul>
+      <p style="margin-top: 8px;">Em todos: usar o NAP exatamente como definido no passo 3.1 + link do site.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">3.3 — SEO do site vinculado ao GBP</div>
+    </div>
+    <div class="step-body">
+      <p>Garantir que a landing page do Rodger (que a AutomaWeb está criando) tenha:</p>
+      <ul>
+        <li><strong>Title tag:</strong> Contendo "Professor de Inglês" + "Aulas Online" + "Rodger Koller"</li>
+        <li><strong>Meta description:</strong> Com keywords e call to action</li>
+        <li><strong>NAP no rodapé:</strong> Nome, endereço e telefone idênticos ao GBP</li>
+        <li><strong>Velocidade otimizada:</strong> Carregamento rápido (testar no PageSpeed Insights)</li>
+        <li><strong>Mobile-friendly:</strong> Responsivo para celular</li>
+        <li><strong>Schema markup:</strong> LocalBusiness ou EducationalOrganization</li>
+        <li><strong>Páginas por serviço:</strong> Página dedicada para cada serviço principal (aulas online, Método Koller, tradução, etc.)</li>
+      </ul>
+      <div class="step-tip">
+        <strong>Relação simbiótica:</strong> Quanto melhor o ranqueamento do site, melhor o ranqueamento do GBP — e vice-versa. Esse é o fator que a maioria dos concorrentes negligencia e o principal motivo de perfis otimizados não ranquearem.
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">3.4 — Backlinks iniciais</div>
+    </div>
+    <div class="step-body">
+      <p>Construir os primeiros backlinks de qualidade apontando para o site:</p>
+      <ul>
+        <li>Diretórios locais (já feito no passo 3.2)</li>
+        <li>Perfis de redes sociais (link do site no Instagram, YouTube, Facebook)</li>
+        <li>Hotmart / plataformas de curso (quando reativado)</li>
+        <li>Artigos/guest posts em blogs de educação (médio prazo)</li>
+      </ul>
+      <div class="step-warning">
+        <strong>Regra:</strong> Construção gradual — nunca criar muitos backlinks de uma vez. Consistência ao longo dos meses.
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">3.5 — Monitorar concorrentes e combater spam</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>Pesquisar "professor de inglês" + cidade do Rodger no Google Maps</li>
+        <li>Identificar os 3 primeiros colocados — analisar: quantas avaliações, nota, perfil completo?</li>
+        <li>Se encontrar perfis falsos ou suspeitos de spam, denunciar ao Google</li>
+        <li>Monitorar periodicamente o pino do mapa (concorrentes podem sugerir mudança)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider page-break"></div>
+
+<!-- ============ FASE 4: PRIMEIRAS AVALIAÇÕES ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">4</span>
+    Avaliações — Lançamento Inicial
+    <span class="priority priority-high">Alta Prioridade</span>
+  </div>
+  <div class="section-subtitle">Responsabilidade AutomaWeb (preparar) + Cliente (pedir aos alunos) — semanas 2-4</div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">4.1 — Gerar link de avaliação</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>No painel do GBP, ir em "Solicitar avaliações"</li>
+        <li>Copiar o link gerado</li>
+        <li>Encurtar com Bitly ou similar para facilitar o envio</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">4.2 — Preparar mensagem de solicitação</div>
+    </div>
+    <div class="step-body">
+      <p>Criar template de mensagem para o Rodger enviar aos alunos:</p>
+      <div class="step-example">
+        <strong>Modelo sugerido:</strong><br><br>
+        "Oi [nome]! Tudo bem? Criei um perfil no Google para o Fly to Fluency e seria muito importante ter a sua avaliação. Pode ser bem curtinho — conta como foi sua experiência nas aulas e o que achou do método. Se puder anexar uma foto (pode ser screenshot de uma aula), melhor ainda! Leva menos de 2 minutos: [link]"
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">4.3 — Orientar o Rodger sobre o fluxo ideal de avaliações</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li><strong>Semana 1-2:</strong> Pedir para 5-10 alunos mais próximos (grupo inicial)</li>
+        <li><strong>Depois:</strong> 1-4 avaliações por semana, de forma constante</li>
+        <li><strong>Nunca:</strong> Explodir com 50 avaliações de uma vez e parar — o Google detecta e pode não exibir</li>
+        <li><strong>Pedir que incluam:</strong> Texto descritivo (não só estrelas), palavras como "professor de inglês", "aulas de inglês", "Método Koller", e se possível uma foto</li>
+      </ul>
+      <div class="step-tip">
+        <strong>Incentivo:</strong> Oferecer algo em troca (aula bônus, material extra, desconto) aumenta muito a adesão.
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">4.4 — Responder TODAS as avaliações</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>A AutomaWeb responde ou orienta o Rodger a responder cada avaliação</li>
+        <li>Respostas personalizadas (nunca copiar/colar a mesma resposta)</li>
+        <li>Incluir keywords naturalmente na resposta (ex: "Obrigado! Fico feliz que as aulas de inglês do Método Koller tenham te ajudado...")</li>
+        <li>Avaliações negativas: responder com profissionalismo e empatia, nunca ignorar</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider page-break"></div>
+
+<!-- ============ FASE 5: PRIMEIRA POSTAGEM ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">5</span>
+    Primeira Postagem e Ativação
+    <span class="priority priority-medium">Prioridade Média</span>
+  </div>
+  <div class="section-subtitle">Responsabilidade AutomaWeb — executar na semana 2</div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">5.1 — Publicar post de inauguração</div>
+    </div>
+    <div class="step-body">
+      <p>Criar e publicar a primeira atualização no perfil:</p>
+      <ul>
+        <li>Post de apresentação com imagem profissional + descrição com keywords</li>
+        <li>Pode incluir botão com link para o site ou WhatsApp</li>
+        <li>Sinaliza ao Google que o perfil está ativo e sendo gerenciado</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">5.2 — Criar oferta inicial (se aplicável)</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>Se o Rodger tiver uma aula experimental gratuita ou desconto para novos alunos, cadastrar como oferta no GBP</li>
+        <li>Ofertas com data de início/fim geram urgência e cliques</li>
+        <li>Incluir cupom se houver, link do site e detalhes da oferta</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider page-break"></div>
+
+<!-- ============ FASE 6: GESTÃO MENSAL ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">6</span>
+    Gestão Mensal (Manutenção AutomaWeb)
+    <span class="priority priority-medium">Prioridade Média</span>
+  </div>
+  <div class="section-subtitle">Responsabilidade AutomaWeb — execução contínua durante o contrato</div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">6.1 — Verificação mensal do perfil</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>Verificar se o pino do mapa continua no lugar correto</li>
+        <li>Verificar se todas as informações estão atualizadas</li>
+        <li>Verificar horários especiais / feriados do próximo mês</li>
+        <li>Monitorar se o Google fez alguma alteração automática no perfil</li>
+        <li>Checar métricas de desempenho (interações, chamadas, orientações, cliques)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">6.2 — Responder avaliações e perguntas</div>
+    </div>
+    <div class="step-body">
+      <ul>
+        <li>Responder novas avaliações (positivas e negativas)</li>
+        <li>Responder perguntas públicas (Q&A)</li>
+        <li>Responder mensagens privadas (se chat estiver ativado)</li>
+        <li>Monitorar e denunciar avaliações/perfis spam de concorrentes</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-check"></div>
+      <div class="step-title">6.3 — Relatório mensal para o cliente</div>
+    </div>
+    <div class="step-body">
+      <p>Enviar relatório com:</p>
+      <ul>
+        <li>Interações do mês (total + por tipo)</li>
+        <li>Novas avaliações recebidas</li>
+        <li>Posição no ranking para keywords principais</li>
+        <li>Comparação com mês anterior</li>
+        <li>Recomendações de melhoria</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider page-break"></div>
+
+<!-- ============ ORIENTAÇÕES PARA O CLIENTE ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">7</span>
+    Orientações para o Cliente
+  </div>
+  <div class="section-subtitle">Ações que dependem do Rodger — a AutomaWeb orienta mas não executa</div>
+
+  <div class="client-section">
+    <div class="client-section-title">7.1 — Pedir avaliações constantemente</div>
+    <div class="client-section-subtitle">Impacto no ranking: ALTO | Esforço: baixo | Frequência: semanal</div>
+    <p>O Rodger deve criar o hábito de pedir 1-4 avaliações por semana aos alunos. A AutomaWeb fornece o link e o template de mensagem. O Rodger envia pessoalmente (mais eficaz vindo do professor do que de uma agência).</p>
+  </div>
+
+  <div class="client-section">
+    <div class="client-section-title">7.2 — Postar fotos semanalmente</div>
+    <div class="client-section-subtitle">Impacto no ranking: MÉDIO | Esforço: baixo | Frequência: 1x por semana</div>
+    <p>Subir ao menos 1 foto por semana no perfil do GBP: fotos de aulas, bastidores de gravação, screenshots de alunos satisfeitos (com permissão), certificados, eventos. Mostra ao Google que o perfil está vivo e ativo. Renomear as fotos com keywords antes do upload.</p>
+  </div>
+
+  <div class="client-section">
+    <div class="client-section-title">7.3 — Incentivar fotos de terceiros</div>
+    <div class="client-section-subtitle">Impacto no ranking: MÉDIO-ALTO | Esforço: muito baixo | Frequência: contínuo</div>
+    <p>Alunos que postam fotos/avaliações com fotos no perfil do Google têm peso extra para o algoritmo. O Rodger pode pedir isso naturalmente no final das aulas ou quando um aluno compartilha uma conquista.</p>
+  </div>
+
+  <div class="client-section">
+    <div class="client-section-title">7.4 — Manter horários atualizados</div>
+    <div class="client-section-subtitle">Impacto no ranking: MÉDIO | Esforço: muito baixo | Frequência: quando mudar</div>
+    <p>Se o Rodger mudar horários de atendimento, férias, ou qualquer indisponibilidade, avisar a AutomaWeb para atualizar no GBP. Horários errados causam frustração e prejudicam o ranking.</p>
+  </div>
+
+  <div class="client-section">
+    <div class="client-section-title">7.5 — Investir em branding (volume de busca pelo nome)</div>
+    <div class="client-section-subtitle">Impacto no ranking: MÉDIO | Esforço: orgânico | Frequência: contínuo</div>
+    <p>Quanto mais pessoas pesquisarem "Fly to Fluency" ou "Rodger Koller" no Google, mais o algoritmo entende a marca como relevante. Isso vem naturalmente com conteúdo no YouTube/Instagram — o Rodger já faz isso, basta continuar e reforçar o nome da marca.</p>
+  </div>
+
+  <div class="client-section">
+    <div class="client-section-title">7.6 — Publicar vídeos curtos no perfil</div>
+    <div class="client-section-subtitle">Impacto no ranking: BAIXO-MÉDIO | Esforço: baixo | Frequência: quinzenal</div>
+    <p>O GBP aceita upload de vídeos curtos. O Rodger pode reaproveitar shorts do YouTube ou gravar clips rápidos apresentando serviços. Não é obrigatório, mas diferencia o perfil dos concorrentes.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============ RESUMO VISUAL ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">R</span>
+    Resumo — Linha do Tempo
+  </div>
+
+  <table class="info-table">
+    <tr>
+      <th>Quando</th>
+      <th>O que fazer</th>
+      <th>Quem</th>
+    </tr>
+    <tr>
+      <td><strong>Semana 1</strong></td>
+      <td>Criar conta, verificar, preencher 100% do perfil (nome, categorias, descrição, serviços, produtos, fotos, horários, atributos, redes sociais, link de agendamento)</td>
+      <td>AutomaWeb</td>
+    </tr>
+    <tr>
+      <td><strong>Semana 2</strong></td>
+      <td>Padronizar NAP em todos os canais, cadastrar em diretórios locais, publicar primeiro post, resgatar crédito Google Ads, gerar link de avaliação</td>
+      <td>AutomaWeb</td>
+    </tr>
+    <tr>
+      <td><strong>Semana 2-3</strong></td>
+      <td>SEO do site vinculado (title, meta, NAP no rodapé, Schema, velocidade, mobile), primeiros backlinks</td>
+      <td>AutomaWeb</td>
+    </tr>
+    <tr>
+      <td><strong>Semana 2-4</strong></td>
+      <td>Primeiras 5-10 avaliações (grupo inicial de alunos próximos)</td>
+      <td>Rodger + AutomaWeb</td>
+    </tr>
+    <tr>
+      <td><strong>Mensal</strong></td>
+      <td>Verificação do perfil, responder avaliações/perguntas, relatório de desempenho, monitorar concorrentes</td>
+      <td>AutomaWeb</td>
+    </tr>
+    <tr>
+      <td><strong>Contínuo</strong></td>
+      <td>Pedir 1-4 avaliações/semana, postar foto semanal, manter horários atualizados</td>
+      <td>Rodger</td>
+    </tr>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============ FATORES DE RANKING ============ -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-number">+</span>
+    Referência — Os 3 Fatores Macro do Google
+  </div>
+  <div class="section-subtitle">Divulgados pelo próprio Google — base de toda a estratégia deste guia</div>
+
+  <div class="counter-grid">
+    <div class="counter-card">
+      <div class="number">1</div>
+      <div class="label"><strong>Relevância</strong><br>Keywords no perfil, serviços, descrição e site</div>
+    </div>
+    <div class="counter-card">
+      <div class="number">2</div>
+      <div class="label"><strong>Distância</strong><br>Localização do negócio vs. do usuário (incontrolável)</div>
+    </div>
+    <div class="counter-card">
+      <div class="number">3</div>
+      <div class="label"><strong>Destaque</strong><br>Avaliações, nota, site com SEO, presença online</div>
+    </div>
+  </div>
+  <div class="step-tip" style="margin-top: 16px;">
+    <strong>Insight chave:</strong> Se relevância e destaque forem fortes o suficiente, a distância se torna irrelevante — a empresa aparece no top 3 independente de onde o cliente pesquisa.
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <strong>AutomaWeb</strong> — Documento interno de operação<br>
+  Baseado em 6 fontes especializadas sobre Google Meu Negócio (2026)<br>
+  Atualizado em 13/06/2026
+</div>
+
+</body>
+</html>
